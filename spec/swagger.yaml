@@ -377,6 +377,11 @@ paths:
       tags:
         - Registry Data
       parameters:
+        - in: path
+          name: registryDataId
+          required: true
+          type: string
+          format: ObjectId
         - in: body
           name: body
           required: true

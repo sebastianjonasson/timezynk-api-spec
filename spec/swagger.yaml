@@ -775,18 +775,32 @@ definitions:
     items:
       type: object
       properties:
-        shift-id:
+        shift-selector:
+          type: object
+          properties:
+            start:
+              $ref: '#/definitions/DateSelector'
+            end:
+              $ref: '#/definitions/DateSelector'
+            rolling-id:
+              type: string
+              format: ObjectId
+            rolling-shift-id:
+              type: string
+              format: ObjectId
+        user-ids:
+          type: array
+          description: User IDs
+          items:
+            type: string
+            format: ObjectId
+        conflict-policy:
           type: string
-          format: ObjectId
-          description: Shift ID
-        user-id:
-          type: string
-          format: ObjectId
-          description: User ID
-        allow-double-booking:
-          type: boolean
-          default: false
-          description: Set to true to allow double-booking the user
+          enum:
+            - skip
+            - overwrite
+            - double-book
+          default: skip
       required:
         - shift-id
         - user-id
@@ -798,6 +812,18 @@ definitions:
         type: number
       unbooked-shifts:
         type: number
+
+  DateSelector:
+    type: object
+    properties:
+      _gte_:
+        type: string
+        format: date
+        description: Find items starting on or after this date
+      _lt_:
+        type: string
+        format: date
+        description: Find items starting before this date
 
   Error:
     type: object

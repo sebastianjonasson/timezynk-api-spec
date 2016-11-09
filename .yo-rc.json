@@ -1,0 +1,11 @@
+{
+  "generator-openapi-repo": {
+    "importExistingSpec": true,
+    "importedSpec": "/Users/jheander/repo/devel/server/tzbackend/resources/public/swagger.yml",
+    "name": "TimeZynk",
+    "repo": "TimeZynk/timezynk-api-spec",
+    "splitSpec": false,
+    "samples": true,
+    "installSwaggerUI": true
+  }
+}

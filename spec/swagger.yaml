@@ -797,13 +797,13 @@ definitions:
         conflict-policy:
           type: string
           enum:
-            - skip
+            - fail
             - overwrite
             - double-book
-          default: skip
+          default: fail
       required:
-        - shift-id
-        - user-id
+        - shift-selector
+        - user-ids
 
   ShiftBookingResponse:
     type: object
@@ -812,6 +812,18 @@ definitions:
         type: number
       unbooked-shifts:
         type: number
+      unresolved-conflicts:
+        type: object
+        properties:
+          user-id:
+            type: string
+            format: ObjectId
+          requested-shift-id:
+            type: string
+            format: ObjectId
+          conflict-shift-id:
+            type: string
+            format: ObjectId
 
   DateSelector:
     type: object

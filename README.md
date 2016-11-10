@@ -3,26 +3,26 @@
 
 ## Links
 
-- Documentation(ReDoc): https://timezynk.github.io/timezynk-api-spec/
-- SwaggerUI: https://timezynk.github.io/timezynk-api-spec/swagger-ui/
+- Documentation(ReDoc): http://developer.timezynk.com/
+- SwaggerUI: http://developer.timezynk.com/swagger-ui/
 - Look full spec:
-    + JSON https://timezynk.github.io/timezynk-api-spec/swagger.json
-    + YAML https://timezynk.github.io/timezynk-api-spec/swagger.yaml
-- Preview spec version for branch `[branch]`: https://timezynk.github.io/timezynk-api-spec/preview/[branch]
+    + JSON http://developer.timezynk.com/swagger.json
+    + YAML http://developer.timezynk.com/swagger.yaml
+- Preview spec version for branch `[branch]`: http://developer.timezynk.com/preview/[branch]
 
 **Warning:** All above links are updated only after Travis CI finishes deployment
 
 ## Working on specification
 ### Install
 
-1. Install [Node JS](https://nodejs.org/)
+1. Install [Node JS](https://nodejs.org/) and [Yarn](https://yarnpkg.com/)
 2. Clone repo and `cd`
     + Run `yarn install`
 
 ### Usage
 
 1. Run `yarn run start`
-2. Checkout console output to see where local server is started. You can use all [links](#links) (except `preview`) by replacing https://timezynk.github.io/timezynk-api-spec/ with url from the message: `Server started <url>`
+2. Checkout console output to see where local server is started. You can use all [links](#links) (except `preview`) by replacing http://developer.timezynk.com/ with url from the message: `Server started <url>`
 3. Make changes using your favorite editor or `swagger-editor` (look for URL in console output)
 4. All changes are immediately propagated to your local server, moreover all documentation pages will be automagically refreshed in a browser after each change
 **TIP:** you can open `swagger-editor`, documentation and `swagger-ui` in parallel

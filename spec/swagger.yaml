@@ -114,20 +114,11 @@ paths:
     get:
       summary: Fetch planned shifts
       parameters:
-        - name: start[_gte_]
-          in: query
-          type: string
-          format: date
-          description: Find shifts starting at or after date
-          required: true
-        - name: end[_lt_]
-          in: query
-          type: string
-          format: date
-          description: Find shifts starting before date
-          required: true
-        - name: booked-users
-          in: query
+        - $ref: '#/parameterDefinitions/startParam'
+        - $ref: '#/parameterDefinitions/endParam'
+        - $ref: '#/parameterDefinitions/criteriaParam'
+        - in: query
+          name: booked-users
           type: string
           format: ObjectId
           description: Find shifts where the given user id is booked
@@ -246,6 +237,86 @@ paths:
           description: Unbookings completed
           schema:
             $ref: '#/definitions/ShiftBookingResponse'
+
+  /timereports:
+    get:
+      summary: Fetch time reports
+      tags:
+        - Time Reports
+      parameters:
+        - $ref: '#/parameterDefinitions/startParam'
+        - $ref: '#/parameterDefinitions/endParam'
+        - $ref: '#/parameterDefinitions/criteriaParam'
+        - in: query
+          name: user-id
+          type: string
+          format: ObjectId
+          description: Find time reports for the given user id
+      responses:
+        200:
+          description: Array of time reports
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Timereport'
+    post:
+      summary: Create new time report
+      tags:
+        - Time Reports
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Timereport'
+      responses:
+        200:
+          description: Created time report
+          schema:
+            $ref: '#/definitions/Timereport'
+        400:
+          description: Validation failed
+
+  /timereports/{reportId}:
+    get:
+      summary: Fetch time report
+      tags:
+        - Time Reports
+      parameters:
+        - in: path
+          name: reportId
+          description: Time report id
+          required: true
+      responses:
+        200:
+          description: Time report
+          schema:
+            $ref: '#/definitions/Timereport'
+        404:
+          description: Not found
+    put:
+      summary: Update time report
+      tags:
+        - Time Reports
+      parameters:
+        - in: path
+          name: reportId
+          description: Time report id
+          required: true
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Timereport'
+      responses:
+        200:
+          description: Updated time report
+          schema:
+            $ref: '#/definitions/Timereport'
+        400:
+          description: Validation failed
+        404:
+          description: Not found
 
   /registry:
     get:
@@ -608,6 +679,44 @@ definitions:
       - start
       - end
 
+  Timereport:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique time report ID
+        format: ObjectId
+        readOnly: true
+      start:
+        type: string
+        format: date-time
+        description: Start of time report
+      end:
+        type: string
+        format: date-time
+        description: End of time report
+      breaks:
+        type: array
+        description: List of breaks
+        items:
+          $ref: '#/definitions/Break'
+      user-id:
+        type: string
+        description: User ID
+        format: ObjectId
+      shift-id:
+        type: string
+        description: Reported against shift with this id.
+        format: ObjectId
+      values:
+        type: object
+        description: Values for custom registry fields
+    required:
+      - id
+      - start
+      - end
+      - user-id
+
   Break:
     type: object
     properties:
@@ -778,9 +887,7 @@ definitions:
         shift-selector:
           type: object
           properties:
-            start:
-              $ref: '#/definitions/DateSelector'
-            end:
+            interval:
               $ref: '#/definitions/DateSelector'
             rolling-id:
               type: string
@@ -828,14 +935,21 @@ definitions:
   DateSelector:
     type: object
     properties:
-      _gte_:
+      start:
         type: string
         format: date
-        description: Find items starting on or after this date
-      _lt_:
+        description: Start of matching interval
+      end:
         type: string
         format: date
-        description: Find items starting before this date
+        description: End of matching interval
+      criteria:
+        type: string
+        description: Define how to match the interval
+        enum:
+          - intersects
+          - start-in
+        default: start-in
 
   Error:
     type: object
@@ -844,3 +958,28 @@ definitions:
         type: string
       trace:
         type: string
+
+parameterDefinitions:
+  startParam:
+    in: query
+    name: interval[start]
+    type: string
+    format: date
+    description: Start of matching interval
+    required: true
+  endParam:
+    in: query
+    name: interval[end]
+    type: string
+    format: date
+    description: End of matching interval
+    required: true
+  criteriaParam:
+    in: query
+    name: interval[match]
+    type: string
+    description: Define how to match the interval
+    enum:
+      - intersects
+      - start-in
+    default: start-in

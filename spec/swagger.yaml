@@ -114,9 +114,9 @@ paths:
     get:
       summary: Fetch planned shifts
       parameters:
-        - $ref: '#/parameterDefinitions/startParam'
-        - $ref: '#/parameterDefinitions/endParam'
-        - $ref: '#/parameterDefinitions/criteriaParam'
+        - $ref: '#/parameters/startParam'
+        - $ref: '#/parameters/endParam'
+        - $ref: '#/parameters/criteriaParam'
         - in: query
           name: booked-users
           type: string
@@ -244,9 +244,9 @@ paths:
       tags:
         - Time Reports
       parameters:
-        - $ref: '#/parameterDefinitions/startParam'
-        - $ref: '#/parameterDefinitions/endParam'
-        - $ref: '#/parameterDefinitions/criteriaParam'
+        - $ref: '#/parameters/startParam'
+        - $ref: '#/parameters/endParam'
+        - $ref: '#/parameters/criteriaParam'
         - in: query
           name: user-id
           type: string
@@ -285,6 +285,7 @@ paths:
       parameters:
         - in: path
           name: reportId
+          type: string
           description: Time report id
           required: true
       responses:
@@ -301,6 +302,7 @@ paths:
       parameters:
         - in: path
           name: reportId
+          type: string
           description: Time report id
           required: true
         - in: body
@@ -959,7 +961,7 @@ definitions:
       trace:
         type: string
 
-parameterDefinitions:
+parameters:
   startParam:
     in: query
     name: interval[start]

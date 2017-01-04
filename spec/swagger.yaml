@@ -17,7 +17,7 @@ securityDefinitions:
   TZApiAuth:
     type: oauth2
     description: OAuth2 API authentication
-    authorizationUrl: https://pro.timezynk.com/api/oauth2/v1/token
+    authorizationUrl: https://pro.timezynk.com/api/oauth2/v1/auth
     tokenUrl: https://pro.timezynk.com/api/oauth2/v1/token
     flow: accessCode
     scopes:
@@ -319,6 +319,8 @@ paths:
           description: Validation failed
         404:
           description: Not found
+
+  /
 
   /registry:
     get:

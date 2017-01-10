@@ -320,7 +320,46 @@ paths:
         404:
           description: Not found
 
-  /
+  /blocked-inquiries:
+    get:
+      summary: Find blocked inquiries
+      description: Find open inquiries that are blocked by overlapping or adjacent shifts
+      tags:
+        - Inquiries
+      responses:
+        200:
+          description: List blocked inquiries with blocking info
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                inquiry-id:
+                  type: string
+                  format: ObjectId
+                shift-id:
+                  type: string
+                  format: ObjectId
+                user-id:
+                  type: string
+                  format: ObjectId
+                overlapping-shift-ids:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+                adjacent-shift-ids:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+                overlapping-availability-ids:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+        404:
+          description: No blocked inquiries found
 
   /registry:
     get:
@@ -884,37 +923,47 @@ definitions:
         description: Tag combination required for creating independent time reports
 
   ShiftBookingRequest:
-    type: array
-    items:
-      type: object
-      properties:
-        shift-selector:
+    type: object
+    properties:
+      conditions:
+        type: array
+        description: Use conditions in this array.
+        items:
           type: object
           properties:
-            interval:
-              $ref: '#/definitions/DateSelector'
-            rolling-id:
+            shift-selector:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: Shift IDs
+                  items:
+                    type: string
+                    format: ObjectId
+                interval:
+                  $ref: '#/definitions/DateSelector'
+                rolling-id:
+                  type: string
+                  format: ObjectId
+                rolling-shift-id:
+                  type: string
+                  format: ObjectId
+            user-ids:
+              type: array
+              description: User IDs
+              items:
+                type: string
+                format: ObjectId
+            conflict-policy:
               type: string
-              format: ObjectId
-            rolling-shift-id:
-              type: string
-              format: ObjectId
-        user-ids:
-          type: array
-          description: User IDs
-          items:
-            type: string
-            format: ObjectId
-        conflict-policy:
-          type: string
-          enum:
-            - fail
-            - overwrite
-            - double-book
-          default: fail
-      required:
-        - shift-selector
-        - user-ids
+              enum:
+                - fail
+                - overwrite
+                - double-book
+              default: fail
+          required:
+            - shift-selector
+            - user-ids
 
   ShiftBookingResponse:
     type: object

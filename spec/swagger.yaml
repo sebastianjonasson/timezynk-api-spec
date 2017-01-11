@@ -334,9 +334,10 @@ paths:
             items:
               type: object
               properties:
-                inquiry-id:
+                id:
                   type: string
                   format: ObjectId
+                  description: Inquiry ID
                 shift-id:
                   type: string
                   format: ObjectId
@@ -353,11 +354,17 @@ paths:
                   items:
                     type: string
                     format: ObjectId
-                overlapping-availability-ids:
+                overlapping-availability:
                   type: array
                   items:
-                    type: string
-                    format: ObjectId
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: ObjectId
+                      available:
+                        type: boolean
+                        description: True if user is available, false if not available.
         404:
           description: No blocked inquiries found
 

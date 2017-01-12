@@ -208,7 +208,7 @@ paths:
 
   /booked-shifts:
     put:
-      summary: Book users on shifts
+      summary: Book and unbook users on shifts
       tags:
         - Shift
       parameters:
@@ -220,21 +220,6 @@ paths:
       responses:
         200:
           description: Bookings completed
-          schema:
-            $ref: '#/definitions/ShiftBookingResponse'
-    delete:
-      summary: Unbook users from shifts
-      tags:
-        - Shift
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/ShiftBookingRequest'
-      responses:
-        200:
-          description: Unbookings completed
           schema:
             $ref: '#/definitions/ShiftBookingResponse'
 
@@ -955,17 +940,24 @@ definitions:
                 rolling-shift-id:
                   type: string
                   format: ObjectId
-            user-ids:
+            not-booked-user-ids:
               type: array
-              description: User IDs
+              description: User IDs that should not be booked on these shifts
+              items:
+                type: string
+                format: ObjectId
+            booked-user-ids:
+              type: array
+              description: User IDs that should be booked on these shift, sorted in the order they should be booked
               items:
                 type: string
                 format: ObjectId
             conflict-policy:
               type: string
+              description: How to proceed if a user is already booked on an overlapping shift.
               enum:
-                - fail
-                - overwrite
+                - skip
+                - move
                 - double-book
               default: fail
           required:
@@ -975,22 +967,26 @@ definitions:
   ShiftBookingResponse:
     type: object
     properties:
-      booked-shifts:
-        type: number
-      unbooked-shifts:
-        type: number
+      updated-shifts:
+        type: array
+        items:
+          $ref: '#/definitions/Shift'
       unresolved-conflicts:
-        type: object
-        properties:
-          user-id:
-            type: string
-            format: ObjectId
-          requested-shift-id:
-            type: string
-            format: ObjectId
-          conflict-shift-id:
-            type: string
-            format: ObjectId
+        type: array
+        items:
+          type: object
+          properties:
+            user-id:
+              type: string
+              format: ObjectId
+            requested-shift-id:
+              type: string
+              format: ObjectId
+            conflict-shift-ids:
+              type: array
+              items:
+                type: string
+                format: ObjectId
 
   DateSelector:
     type: object

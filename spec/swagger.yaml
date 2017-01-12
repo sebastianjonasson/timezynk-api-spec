@@ -350,6 +350,15 @@ paths:
                       available:
                         type: boolean
                         description: True if user is available, false if not available.
+                      start:
+                        type: string
+                        format: date-time
+                        description: Start of shift
+                      end:
+                        type: string
+                        format: date-time
+                        description: End of shift
+
         404:
           description: No blocked inquiries found
 

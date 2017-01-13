@@ -926,52 +926,46 @@ definitions:
   ShiftBookingRequest:
     type: object
     properties:
-      conditions:
-        type: array
-        description: Use conditions in this array.
-        items:
-          type: object
-          properties:
-            shift-selector:
-              type: object
-              properties:
-                ids:
-                  type: array
-                  description: Shift IDs
-                  items:
-                    type: string
-                    format: ObjectId
-                interval:
-                  $ref: '#/definitions/DateSelector'
-                rolling-id:
-                  type: string
-                  format: ObjectId
-                rolling-shift-id:
-                  type: string
-                  format: ObjectId
-            not-booked-user-ids:
-              type: array
-              description: User IDs that should not be booked on these shifts
-              items:
-                type: string
-                format: ObjectId
-            booked-user-ids:
-              type: array
-              description: User IDs that should be booked on these shift, sorted in the order they should be booked
-              items:
-                type: string
-                format: ObjectId
-            conflict-policy:
+      shift-selector:
+        type: object
+        properties:
+          ids:
+            type: array
+            description: Shift IDs
+            items:
               type: string
-              description: How to proceed if a user is already booked on an overlapping shift.
-              enum:
-                - skip
-                - move
-                - double-book
-              default: fail
-          required:
-            - shift-selector
-            - user-ids
+              format: ObjectId
+          interval:
+            $ref: '#/definitions/DateSelector'
+          rolling-id:
+            type: string
+            format: ObjectId
+          rolling-shift-id:
+            type: string
+            format: ObjectId
+      not-booked-user-ids:
+        type: array
+        description: User IDs that should not be booked on these shifts
+        items:
+          type: string
+          format: ObjectId
+      booked-user-ids:
+        type: array
+        description: User IDs that should be booked on these shift, sorted in the order they should be booked
+        items:
+          type: string
+          format: ObjectId
+      conflict-policy:
+        type: string
+        description: How to proceed if a user is already booked on an overlapping shift.
+        enum:
+          - skip
+          - move
+          - double-book
+        default: fail
+    required:
+      - shift-selector
+      - user-ids
 
   ShiftBookingResponse:
     type: object

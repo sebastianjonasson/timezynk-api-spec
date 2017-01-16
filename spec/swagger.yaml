@@ -962,10 +962,9 @@ definitions:
           - skip
           - move
           - double-book
-        default: fail
+        default: skip
     required:
       - shift-selector
-      - user-ids
 
   ShiftBookingResponse:
     type: object

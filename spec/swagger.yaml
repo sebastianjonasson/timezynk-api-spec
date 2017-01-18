@@ -329,6 +329,14 @@ paths:
                 user-id:
                   type: string
                   format: ObjectId
+                duplicity:
+                  type: number
+                  description: Maximum (and desired) number of booked users
+                booked-users:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
                 overlapping-shift-ids:
                   type: array
                   items:

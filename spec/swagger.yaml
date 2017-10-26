@@ -239,6 +239,23 @@ paths:
           schema:
             $ref: '#/definitions/ShiftBookingResponse'
 
+  /published-shifts:
+    put:
+      summary: Publish and unpublish shifts
+      tags:
+        - Shift
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ShiftPublishRequest'
+      responses:
+        200:
+          description: Bookings completed
+          schema:
+            $ref: '#/definitions/ShiftPublishResponse'
+
   /timereports:
     get:
       summary: Fetch time reports
@@ -1013,6 +1030,54 @@ definitions:
               items:
                 type: string
                 format: ObjectId
+
+  ShiftPublishRequest:
+    type: object
+    properties:
+      published-selector:
+        type: object
+        description: Shifts matching selector will be ensured to be published.
+        properties:
+          ids:
+            type: array
+            description: Shift IDs
+            items:
+              type: string
+              format: ObjectId
+          interval:
+            $ref: '#/definitions/DateSelector'
+          rolling-id:
+            type: string
+            format: ObjectId
+          rolling-shift-id:
+            type: string
+            format: ObjectId
+      unpublished-selector:
+        type: object
+        description: Shifts matching selector will be ensured to be unpublished.
+        properties:
+          ids:
+            type: array
+            description: Shift IDs
+            items:
+              type: string
+              format: ObjectId
+          interval:
+            $ref: '#/definitions/DateSelector'
+          rolling-id:
+            type: string
+            format: ObjectId
+          rolling-shift-id:
+            type: string
+            format: ObjectId
+
+  ShiftPublishResponse:
+    type: object
+    properties:
+      updated-shifts:
+        type: array
+        items:
+          $ref: '#/definitions/Shift'
 
   DateSelector:
     type: object

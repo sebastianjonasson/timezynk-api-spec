@@ -241,7 +241,7 @@ paths:
 
   /published-shifts:
     put:
-      summary: Publish and unpublish shifts
+      summary: Publish shifts
       tags:
         - Shift
       parameters:
@@ -250,6 +250,21 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/ShiftPublishRequest'
+      responses:
+        200:
+          description: Bookings completed
+          schema:
+            $ref: '#/definitions/ShiftPublishResponse'
+    delete:
+      summary: Unpublish shifts
+      tags:
+        - Shift
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ShiftUnpublishRequest'
       responses:
         200:
           description: Bookings completed
@@ -759,6 +774,7 @@ definitions:
       withhold:
         type: boolean
         description: Hide shift from users making it visible for managers only
+        readOnly: true
     required:
       - id
       - start
@@ -1034,7 +1050,7 @@ definitions:
   ShiftPublishRequest:
     type: object
     properties:
-      published-selector:
+      shift-selector:
         type: object
         description: Shifts matching selector will be ensured to be published.
         properties:
@@ -1052,7 +1068,11 @@ definitions:
           rolling-shift-id:
             type: string
             format: ObjectId
-      unpublished-selector:
+
+  ShiftUnpublishRequest:
+    type: object
+    properties:
+      shift-selector:
         type: object
         description: Shifts matching selector will be ensured to be unpublished.
         properties:

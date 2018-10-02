@@ -1,0 +1,9 @@
+allOf:
+  - $ref: '#/components/schemas/OrderFormField'
+  - properties: 
+      field-id:
+        type: string
+        format: ObjectId
+        description: Id of the field instance
+    required:
+      - field-id

@@ -1,0 +1,19 @@
+get:
+  summary: >
+    [Client] Fetch forms
+  description: Endpoint for fetching order forms for a client.
+  tags:
+    - Order Forms
+  responses:
+    200:
+      description: Single order client form item
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/OrderForm'
+    404:
+      description: Order client not found
+    default:
+      description: Unexpected error
+      schema:
+        $ref: '#/components/schemas/Error'

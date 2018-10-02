@@ -1,0 +1,19 @@
+allOf:
+  - $ref: '#/components/schemas/OrderFormField'
+  - properties: 
+      field-template-id:
+        type: string
+        format: ObjectId
+        description: Id of the registry field type used
+    required:
+      - field-template-id
+OrderFormShiftField:
+  allOf:
+  - $ref: '#/components/schemas/OrderFormField'
+  - properties: 
+      field-id:
+        type: string
+        format: ObjectId
+        description: Id of the field instance
+    required:
+      - field-id

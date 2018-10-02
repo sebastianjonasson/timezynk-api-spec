@@ -1,0 +1,18 @@
+get:
+  summary: List available suppliers
+  description: |
+    The Order Suppliers endpoint returns a list of all available to place orders from.
+  tags:
+    - Order Suppliers
+
+  responses:
+    200:
+      description: An array of order suppliers
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/OrderSupplier'
+    default:
+      description: Unexpected error
+      schema:
+        $ref: '#/components/schemas/Error'

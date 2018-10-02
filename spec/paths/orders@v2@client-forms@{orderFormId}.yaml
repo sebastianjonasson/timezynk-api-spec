@@ -1,0 +1,23 @@
+get:
+  summary: >
+    [Client] Fetch single form
+  description: Endpoint for fetching a signel order form for a client.
+  tags:
+    - Order Forms
+  parameters:
+    - name: orderFormId
+      in: path
+      required: true
+      type: string
+      format: ObjectId
+  responses:
+    200:
+      description: Array of order client forms
+      schema:
+        $ref: '#/components/schemas/OrderForm'
+    404:
+      description: Order client not found
+    default:
+      description: Unexpected error
+      schema:
+        $ref: '#/components/schemas/Error'

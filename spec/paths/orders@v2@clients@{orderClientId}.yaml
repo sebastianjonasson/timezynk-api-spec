@@ -1,0 +1,22 @@
+get:
+  summary: Fetch single order client
+  description: Endpoint for fetching a single order client
+  tags:
+    - Order Clients
+  parameters:
+    - name: orderClientId
+      in: path
+      required: true
+      type: string
+      format: ObjectId
+  responses:
+    200:
+      description: Single order client
+      schema:
+        $ref: '#/components/schemas/OrderClient'
+    404:
+      description: Order client not found
+    default:
+      description: Unexpected error
+      schema:
+        $ref: '#/components/schemas/Error'

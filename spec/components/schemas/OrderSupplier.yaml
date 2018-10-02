@@ -1,0 +1,25 @@
+type: object
+  properties: 
+    id:
+      type: string
+      description: Unique identifier representing a specific Supplier.
+      format: ObjectId
+      readOnly: true
+    contact-name:
+      type: string
+      description: The suppliers's contact name.
+    contact-phone:
+      type: string
+      description: The suppliers's contact phone.
+    contact-email:
+      type: string
+      description: The suppliers's contact email.
+    supplier-title:
+      type: string
+      description: Title of the supplier.
+    order-forms:
+      type: array
+      description: List of order form ids which the client has access to view.
+      items:
+        type: string
+        format: ObjectId

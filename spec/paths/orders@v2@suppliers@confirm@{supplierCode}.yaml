@@ -1,0 +1,19 @@
+put:
+  summary: Confirm supplier
+  description: |
+    The Confirm Supplier endpoint allows a user to confirm a client invitation from a supplier.
+  tags:
+    - Order Suppliers
+  parameters:
+    - name: supplierCode
+      in: path
+      required: true
+      type: string
+      format: ObjectId
+  responses:
+    200:
+      description: OK
+    default:
+      description: Unexpected error
+      schema:
+        $ref: '#/components/schemas/Error'

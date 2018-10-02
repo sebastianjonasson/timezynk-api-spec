@@ -1,0 +1,28 @@
+allOf:
+  - $ref: '#/components/schemas/DefaultEntityFields'
+  - properties: 
+      email:
+        type: string
+        description: The order client's email.
+      client-company-id:
+        type: string
+        format: ObjectId
+        description: Id to representing the client's company-id
+      client-title:
+        type: string
+        description: Title of the order client
+      supplier-title:
+        type: string
+        description: Title of the order supplier
+      order-forms:
+        type: array
+        description: List of order form ids which the client has access to view.
+        items:
+          type: string
+          format: ObjectId
+      values:
+        type: object
+        description: Client specific values which can be inherited into an order if specified in the order form.
+      supplier-code:
+        type: string
+        description: The supplier code is used to invite new clients. The code can only be used once, and to be able the user as a client, the email is required to match the invited users email.

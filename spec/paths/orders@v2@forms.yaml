@@ -1,0 +1,17 @@
+get:
+  summary: List order forms
+  description: |
+    The Order Forms endpoint returns a list of all created order forms.
+  tags:
+    - Order Forms
+  responses:
+    200:
+      description: An array of order froms
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/OrderForm'
+    default:
+      description: Unexpected error
+      schema:
+        $ref: '#/components/schemas/Error'

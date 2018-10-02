@@ -1,0 +1,42 @@
+get:
+  summary: List order clients
+  description: |
+    The Order Clients endpoint returns a list of all invited and active order clients.
+  tags:
+    - Order Clients
+  responses:
+    200:
+      description: An array of order clients
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/OrderClient'
+    default:
+      description: Unexpected error
+      schema:
+        $ref: '#/components/schemas/Error'
+post:
+  summary: Create order clients
+  description: |
+    Endpoint for creating an order client. When the order client is created, an email invitation will be sent to the entered email.
+  tags:
+    - Order Clients
+  parameters:
+    - in: body
+      name: body
+      description: Order client to be created.
+      required: true
+      schema:
+        $ref: '#/components/schemas/OrderClient'
+
+  responses:
+    200:
+      description: An array of order clients
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/OrderClient'
+    default:
+      description: Unexpected error
+      schema:
+        $ref: '#/components/schemas/Error'

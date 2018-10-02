@@ -39,10 +39,164 @@ tags:
     description: Data contained in a registry.
   - name: Fields
     description: The fields are used to specify the format for a specific registry instance.
+  - name: Orders
+    description: Calls for fetching and creating orders.
+  - name: Order Forms
+    description: Calls for fetching and order forms.
+  - name: Order Clients
+    description: Calls for fetching order clients.
   - name: Experimental
     description: These APIs are experimental and and may be changed at any time without warning.
 
 paths:
+  /orders:
+    get:
+      summary: List orders
+      description: |
+        The Orders endpoint returns a list of all created orders.
+      tags:
+        - Orders
+      responses:
+        200:
+          description: An array of orders
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Order'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create order
+      description: Create a new order
+      parameters:
+        - in: body
+          name: body
+          description: Order object to be created.
+          required: true
+          schema:
+            allOf:
+            - $ref: '#/definitions/Order'
+            - properties: 
+                shifts:
+                  type: array
+                  description: List of shifts to be created for this order.
+                  items:
+                    $ref: '#/definitions/Shift'
+      tags:
+        - Orders
+      responses:
+        200:
+          description: Newly added order object
+          schema:
+            $ref: '#/definitions/Order'
+  /orders/{orderId}:
+    get:
+      summary: Fetch single order
+      description: Endpoint for fetching a single user
+      tags:
+        - Orders
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          type: string
+          format: ObjectId
+      responses:
+        200:
+          description: A single order object
+          schema:
+            $ref: '#/definitions/Order'
+        404:
+          description: Order not found
+
+  /order-forms:              
+    get:
+      summary: List order forms
+      description: |
+        The Order Forms endpoint returns a list of all created order forms.
+      tags:
+        - Order Forms
+      responses:
+        200:
+          description: An array of order froms
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/OrderForm'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /order-forms/{orderFormId}:              
+    get:
+      summary: Fetch single order form
+      description: Endpoint for fetching a single order form
+      tags:
+        - Order Forms
+      parameters:
+        - name: orderFormId
+          in: path
+          required: true
+          type: string
+          format: ObjectId
+      responses:
+        200:
+          description: Single order form
+          schema:
+            $ref: '#/definitions/OrderForm'
+        404:
+          description: Order form not found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /order-clients:              
+    get:
+      summary: List order clients
+      description: |
+        The Order Clients endpoint returns a list of all invited and active order clients.
+      tags:
+        - Order Clients
+      responses:
+        200:
+          description: An array of order clients
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/OrderClient'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /order-forms/{orderClientId}:              
+    get:
+      summary: Fetch single order client
+      description: Endpoint for fetching a single order client
+      tags:
+        - Order Clients
+      parameters:
+        - name: orderClientId
+          in: path
+          required: true
+          type: string
+          format: ObjectId
+      responses:
+        200:
+          description: Single order client
+          schema:
+            $ref: '#/definitions/OrderClient'
+        404:
+          description: Order client not found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
   /users:
     get:
       summary: Users
@@ -613,6 +767,215 @@ paths:
           description: Validation failed
 
 definitions:
+  DefaultEntityFields:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier representing a specific item
+        format: ObjectId
+        readOnly: true
+      vid:
+        type: string
+        description: Unique identifier representing a specific version of an item
+        format: ObjectId
+        readOnly: true
+      archived:
+        type: number
+        format: timestamp
+        description: Specifies if and item is archived. If set, the timestamp represents when the item was set as archived.
+        default: null
+      valid-from:
+        type: number
+        format: timestamp
+        description: Specifies if and item is archived. If set, the timestamp represents when the item was set as archived.
+        readOnly: true
+      valid-to:
+        type: number
+        format: timestamp
+        description: Specifies if and item is archived. If set, the timestamp represents when the item was set as archived.
+        readOnly: true
+      created:
+        type: number
+        format: timestamp
+        description: Timestamp representing when the item was created.
+        readOnly: true
+      created-by:
+        type: string
+        description: Id of the user who created the item.
+        format: ObjectId
+        readOnly: true
+      changed-by:
+        type: string
+        description: Id of the user who most recently made changes to the item.
+        format: ObjectId
+        readOnly: true
+      company-id:
+        type: string
+        description: Id of the company who owns this item.
+        format: ObjectId
+        readOnly: true
+      
+  Order:
+    allOf:
+    - $ref: '#/definitions/DefaultEntityFields'
+    - properties: 
+        status:
+          type: string
+          description: Status of the order
+          readOnly: true
+        order-ref-id:
+          type: string
+          description: [SHOULD WE INCLUDE THIS?]
+          format: ObjectId
+          readOnly: true
+        order-no:
+          type: string
+          description: The order number.
+          readOnly: true
+        form-id:
+          type: string
+          description: Id of the order form used to create the order.
+          format: ObjectId
+        form-vid:
+          type: string
+          description: Vid of the order form used to create the order.
+          format: ObjectId
+        original-duplicity:
+          type: number
+          description: Amount of people to be booked for the this order.
+          readOnly: true
+        client:
+          type: object
+          description: Name and contact defails of the client requesting the order.
+        client-id:
+          type: string
+          description: Id of the company requesting the order
+          format: ObjectId
+        supplier-id:
+          type: string
+          description: Id of the company supplying the order
+          format: ObjectId
+        message:
+          type: string
+          description: Message entered by the client when creating the order.
+        values:
+          type: object
+          description: Values for custom fields defined in the order form associated with the order.
+          default: {}
+        shift-dates:
+          type: array
+          description: All dates which where shifts are occuring during the order
+          items:
+            type: string
+          readOnly: true
+      required:
+        - form-id
+        - form-vid
+        - client-id
+        - supplier-id
+        - shifts
+        - values
+        - email
+  OrderFormField:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier representing a specific custom field
+        format: ObjectId
+        readOnly: true
+      field-type:
+        type: string
+        description: Field storage type
+      required:
+        type: boolean
+        description: Is this field required?
+      public:
+        type: boolean
+        description: |
+          Allow the client to see this field.
+      protected:
+        type: boolean
+        description: Field should only the editable by and visible for the supplier.
+      readonly:
+        type: boolean
+        description: Field is read-only
+      values:
+        type: object
+        description: Type specific values
+      settings:
+        type: object
+        description: Type specific settings
+      title:
+        type: string
+        description: Human-readable field title
+    required:
+     - title
+  OrderFormCustomField:
+    allOf:
+    - $ref: '#/definitions/OrderFormField'
+    - properties: 
+        field-template-id:
+          type: ObjectId
+          description: Id of the registry field type used
+      required:
+       - field-template-id
+  OrderFormShiftField:
+    allOf:
+    - $ref: '#/definitions/OrderFormField'
+    - properties: 
+        field-id:
+          type: ObjectId
+          description: Id of the field instance
+      required:
+       - field-id
+  OrderForm:
+    allOf:
+    - $ref: '#/definitions/DefaultEntityFields'
+    - properties: 
+        title: 
+            type: string
+            description: Name of the order form
+        shift-fields:
+          type: array
+          description: List of shifts fields related to the order.
+          items:
+            $ref: '#/definitions/OrderFormShiftField'
+        fields:
+          type: array
+          description: List of additional custom fields related to the order.
+          items:
+            $ref: '#/definitions/OrderFormCustomField'
+  OrderClient:
+    allOf:
+    - $ref: '#/definitions/DefaultEntityFields'
+    - properties: 
+        email:
+          type: string
+          description: The order client's email
+        client-company-id:
+          type: string
+          format: ObjectId
+          description: Id to representing the client's company-id
+        client-title:
+          type: string
+          description: Title of the order client
+        supplier-title:
+          type: string
+          description: Title of the order supplier
+        order-forms:
+          type: array
+          description: List of order form ids which the client has access to view.
+          items:
+            type: string
+            format: ObjectId
+        values:
+          type: object
+          description: Client specific values which can be inherited into an order if specified in the order form.
+        supplier-code:
+          type: string
+          description: The supplier code is used to invite new clients. The code can only be used once, and to be able the user as a client, the email is required to match the invited users email.
   User:
     type: object
     properties:
@@ -734,89 +1097,81 @@ definitions:
       - email
 
   Shift:
-    type: object
-    properties:
-      id:
-        type: string
-        description: Unique shift ID
-        format: ObjectId
-        readOnly: true
-      start:
-        type: string
-        format: date-time
-        description: Start of shift
-      end:
-        type: string
-        format: date-time
-        description: End of shift
-      breaks:
-        type: array
-        description: List of breaks
-        items:
-          $ref: '#/definitions/Break'
-      booked-users:
-        type: array
-        description: List of booked users
-        readOnly: true
-        items:
+    allOf:
+    - $ref: '#/definitions/DefaultEntityFields'
+    - properties: 
+        start:
           type: string
-          format: ObjectId
-      booked:
-        type: number
-        readOnly: true
-        description: Number of booked users
-      duplicity:
-        type: number
-        description: Maximum (and desired) number of booked users
-      values:
-        type: object
-        description: Values for custom registry fields
-      withhold:
-        type: boolean
-        description: Hide shift from users making it visible for managers only
-        readOnly: true
-    required:
-      - id
-      - start
-      - end
+          format: date-time
+          description: Start of shift
+        end:
+          type: string
+          format: date-time
+          description: End of shift
+        breaks:
+          type: array
+          description: List of breaks
+          items:
+            $ref: '#/definitions/Break'
+        booked-users:
+          type: array
+          description: List of booked users
+          readOnly: true
+          items:
+            type: string
+            format: ObjectId
+        booked:
+          type: number
+          readOnly: true
+          description: Number of booked users
+        duplicity:
+          type: number
+          description: Maximum (and desired) number of booked users
+        values:
+          type: object
+          description: Values for custom registry fields
+        withhold:
+          type: boolean
+          description: Hide shift from users making it visible for managers only
+          readOnly: true
+      required:
+        - id
+        - start
+        - end
 
   Timereport:
-    type: object
-    properties:
-      id:
-        type: string
-        description: Unique time report ID
-        format: ObjectId
-        readOnly: true
-      start:
-        type: string
-        format: date-time
-        description: Start of time report
-      end:
-        type: string
-        format: date-time
-        description: End of time report
-      breaks:
-        type: array
-        description: List of breaks
-        items:
-          $ref: '#/definitions/Break'
-      user-id:
-        type: string
-        description: User ID
-        format: ObjectId
-      shift-id:
-        type: string
-        description: Reported against shift with this id.
-        format: ObjectId
-      values:
-        type: object
-        description: Values for custom registry fields
-    required:
-      - id
-      - start
-      - end
-      - user-id
+    allOf:
+    - $ref: '#/definitions/DefaultEntityFields'
+    - properties: 
+        start:
+          type: string
+          format: date-time
+          description: Start of time report
+        end:
+          type: string
+          format: date-time
+          description: End of time report
+        breaks:
+          type: array
+          description: List of breaks
+          items:
+            $ref: '#/definitions/Break'
+        user-id:
+          type: string
+          description: User ID
+          format: ObjectId
+        shift-id:
+          type: string
+          description: Reported against shift with this id.
+          format: ObjectId
+        values:
+          type: object
+          description: Values for custom registry fields
+      required:
+        - id
+        - start
+        - end
+        - user-id
 
   Break:
     type: object
@@ -834,24 +1189,21 @@ definitions:
       - end
 
   Registry:
-    type: object
-    properties:
-      id:
-        type: string
-        description: Unique registry ID
-        readOnly: true
-      title:
-        type: string
-        description: Localized registry title
-      description:
-        type: string
-        description: Human-readable registry description
-      archived:
-        type: number
-        description: UNIX Epoch in milliseconds when this registry was archived.
-    required:
-      - id
-      - title
+    allOf:
+    - $ref: '#/definitions/DefaultEntityFields'
+    - properties: 
+        title:
+          type: string
+          description: Localized registry title
+        description:
+          type: string
+          description: Human-readable registry description
+        archived:
+          type: number
+          description: UNIX Epoch in milliseconds when this registry was archived.
+      required:
+        - id
+        - title
 
   FieldType:
     type: object
@@ -941,32 +1293,28 @@ definitions:
       - weight
 
   RegistryData:
-    type: object
-    properties:
-      id:
-        type: string
-        format: ObjectId
-        description: Unique ID
-        readOnly: true
-      title:
-        type: string
-        description: Human-readable title
-      registry-id:
-        type: string
-        format: ObjectId
-        description: Data belongs to this registry
-      permissions:
-        $ref: '#/definitions/PermissionsObject'
-      values:
-        type: object
-        description: Values for custom fields
-      archived:
-        type: boolean
-        description: Field is archived
-    required:
-      - id
-      - title
-      - registry-id
+    allOf:
+    - $ref: '#/definitions/DefaultEntityFields'
+    - properties: 
+        title:
+          type: string
+          description: Human-readable title
+        registry-id:
+          type: string
+          format: ObjectId
+          description: Data belongs to this registry
+        permissions:
+          $ref: '#/definitions/PermissionsObject'
+        values:
+          type: object
+          description: Values for custom fields
+        archived:
+          type: boolean
+          description: Field is archived
+      required:
+        - id
+        - title
+        - registry-id
 
   PermissionsObject:
     type: object

@@ -40,20 +40,31 @@ tags:
   - name: Fields
     description: The fields are used to specify the format for a specific registry instance.
   - name: Orders
-    description: Calls for fetching and creating orders.
+    description: Endpoint for fetching, creating, and updating orders.
   - name: Order Forms
     description: Calls for fetching and order forms.
   - name: Order Clients
     description: Calls for fetching order clients.
+  - name: Order Suppliers
+    description: Calls for fetching order suppliers.
   - name: Experimental
     description: These APIs are experimental and and may be changed at any time without warning.
 
 paths:
-  /orders:
+  /orders/v2/orders:
     get:
-      summary: List orders
+      summary: Index orders
       description: |
-        The Orders endpoint returns a list of all created orders.
+        The Orders endpoint returns an array of all created orders.
+      parameters:
+        - name: filter
+          description: |
+            Filter orders by incoming (current company is the supplier) or outgoing (current company is the client)
+
+            Example: `/orders/v2/orders/incoming`
+          in: path
+          type: string
+          enum: [incoming, outgoing]
       tags:
         - Orders
       responses:
@@ -69,7 +80,10 @@ paths:
             $ref: '#/definitions/Error'
     post:
       summary: Create order
-      description: Create a new order
+      description: |
+        Endpoint for creating a new order
+  
+        To create an order you first need to fetch an Order Form. You should then use `id`, `vid`, `supplier-id`, and `fields` to build your Order object.
       parameters:
         - in: body
           name: body
@@ -91,7 +105,7 @@ paths:
           description: Newly added order object
           schema:
             $ref: '#/definitions/Order'
-  /orders/{orderId}:
+  /orders/v2/orders/{orderId}:
     get:
       summary: Fetch single order
       description: Endpoint for fetching a single user
@@ -111,7 +125,32 @@ paths:
         404:
           description: Order not found
 
-  /order-forms:              
+  /orders/v2/orders/{orderId}/{status}:
+    put:
+      summary: Update order status
+      description: Endpoint for updating a single order's status.
+      tags:
+        - Orders
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          type: string
+          format: ObjectId
+        - name: status
+          in: path
+          required: true
+          type: string
+          enum: [new, seen, accepted, approved, client-approved, done, rejected]
+      responses:
+        200:
+          description: A single order object
+          schema:
+            $ref: '#/definitions/Order'
+        404:
+          description: Order not found
+
+  /order/v2/forms:              
     get:
       summary: List order forms
       description: |
@@ -130,7 +169,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  /order-forms/{orderFormId}:              
+  /orders/v2/forms/{orderFormId}:              
     get:
       summary: Fetch single order form
       description: Endpoint for fetching a single order form
@@ -154,7 +193,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  /order-clients:              
+  /orders/v2/clients:              
     get:
       summary: List order clients
       description: |
@@ -172,8 +211,34 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+    post:
+      summary: Create order clients
+      description: |
+        Endpoint for creating an order client. When the order client is created, an email invitation will be sent to the entered email.
+      tags:
+        - Order Clients
+      parameters:
+        - in: body
+          name: body
+          description: Order client to be created.
+          required: true
+          schema:
+            $ref: '#/definitions/OrderClient'
 
-  /order-forms/{orderClientId}:              
+      responses:
+        200:
+          description: An array of order clients
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/OrderClient'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+
+  /orders/v2/clients/{orderClientId}:              
     get:
       summary: Fetch single order client
       description: Endpoint for fetching a single order client
@@ -196,6 +261,116 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+            
+  /orders/v2/suppliers:              
+    get:
+      summary: List available suppliers
+      description: |
+        The Order Suppliers endpoint returns a list of all available to place orders from.
+      tags:
+        - Order Suppliers
+
+      responses:
+        200:
+          description: An array of order suppliers
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/OrderClient'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /orders/v2/suppliers/confirm/{supplierCode}:
+    put:
+      summary: Confirm supplier
+      description: |
+        The Confirm Supplier endpoint allows a user to confirm a client invitation from a supplier.
+      tags:
+        - Order Suppliers
+      parameters:
+        - name: supplierCode
+          in: path
+          required: true
+          type: string
+          format: ObjectId
+      responses:
+        200:
+          description: OK
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+            
+  /orders/v2/client-forms:
+    get:
+      summary: >
+        [Client] Fetch forms
+      description: Endpoint for fetching order forms for a client.
+      tags:
+        - Order Forms
+      parameters:
+        - name: orderFormId
+          in: path
+          required: true
+          type: string
+          format: ObjectId
+      responses:
+        200:
+          description: Single order client form item
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/OrderForm'
+        404:
+          description: Order client not found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+            
+  /orders/v2/client-forms/{orderFormId}:
+    get:
+      summary: >
+        [Client] Fetch single form
+      description: Endpoint for fetching a signel order form for a client.
+      tags:
+        - Order Forms
+      responses:
+        200:
+          description: Array of order client forms
+          schema:
+            $ref: '#/definitions/OrderForm'
+        404:
+          description: Order client not found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /orders/v2/clients/{clientId}/send-invite:
+    post:
+      summary: Send invite email
+      description: Endpoint for sending an invitation email to a created order client.
+      tags:
+        - Order Clients
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          type: string
+          format: ObjectId
+      responses:
+        200:
+          description: Array of order client forms
+          schema:
+            $ref: '#/definitions/OrderForm'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      
 
   /users:
     get:
@@ -788,12 +963,10 @@ definitions:
       valid-from:
         type: number
         format: timestamp
-        description: Specifies if and item is archived. If set, the timestamp represents when the item was set as archived.
         readOnly: true
       valid-to:
         type: number
         format: timestamp
-        description: Specifies if and item is archived. If set, the timestamp represents when the item was set as archived.
         readOnly: true
       created:
         type: number
@@ -815,7 +988,7 @@ definitions:
         description: Id of the company who owns this item.
         format: ObjectId
         readOnly: true
-      
+
   Order:
     allOf:
     - $ref: '#/definitions/DefaultEntityFields'
@@ -826,7 +999,7 @@ definitions:
           readOnly: true
         order-ref-id:
           type: string
-          description: [SHOULD WE INCLUDE THIS?]
+          description: Id referncing supplier- and client-orders. Only for internal use.
           format: ObjectId
           readOnly: true
         order-no:
@@ -850,18 +1023,28 @@ definitions:
           description: Name and contact defails of the client requesting the order.
         client-id:
           type: string
-          description: Id of the company requesting the order
+          description: |
+            Id of the company requesting the order
+            Should almost always be set to the current user's company-id.
           format: ObjectId
         supplier-id:
           type: string
-          description: Id of the company supplying the order
+          description: |
+            Id of the company supplying the order.
+
+            When creating an order, the `supplier-id` is found in the order form associated with the order to be created.
+
+            For interal orders set `supplier-id` to the same value as `client-id`
           format: ObjectId
         message:
           type: string
           description: Message entered by the client when creating the order.
         values:
           type: object
-          description: Values for custom fields defined in the order form associated with the order.
+          description: |
+            Key-value store for custom fields defined in the order form associated with the order.
+
+            The key should be set to the `field-template-id`. See `fields` property in Order Form.
           default: {}
         shift-dates:
           type: array
@@ -917,7 +1100,8 @@ definitions:
     - $ref: '#/definitions/OrderFormField'
     - properties: 
         field-template-id:
-          type: ObjectId
+          type: string
+          format: ObjectId
           description: Id of the registry field type used
       required:
        - field-template-id
@@ -953,7 +1137,7 @@ definitions:
     - properties: 
         email:
           type: string
-          description: The order client's email
+          description: The order client's email.
         client-company-id:
           type: string
           format: ObjectId

@@ -56,15 +56,6 @@ paths:
       summary: Index orders
       description: |
         The Orders endpoint returns an array of all created orders.
-      parameters:
-        - name: filter
-          description: |
-            Filter orders by incoming (current company is the supplier) or outgoing (current company is the client)
-
-            Example: `/orders/v2/orders/incoming`
-          in: path
-          type: string
-          enum: [incoming, outgoing]
       tags:
         - Orders
       responses:
@@ -105,6 +96,35 @@ paths:
           description: Newly added order object
           schema:
             $ref: '#/definitions/Order'
+  /orders/v2/orders/{filter}:
+    get:
+      summary: Index filtered orders
+      description: |
+        The Orders endpoint returns an array of all incoming or outoing orders.
+      parameters:
+        - name: filter
+          description: |
+            Filter orders by incoming (current company is the supplier) or outgoing (current company is the client)
+
+            Example: `/orders/v2/orders/incoming`
+          in: path
+          type: string
+          enum: [incoming, outgoing]
+          required: true
+      tags:
+        - Orders
+      responses:
+        200:
+          description: An array of orders
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Order'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
   /orders/v2/orders/{orderId}:
     get:
       summary: Fetch single order
@@ -276,7 +296,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/OrderClient'
+              $ref: '#/definitions/OrderSupplier'
         default:
           description: Unexpected error
           schema:
@@ -310,12 +330,6 @@ paths:
       description: Endpoint for fetching order forms for a client.
       tags:
         - Order Forms
-      parameters:
-        - name: orderFormId
-          in: path
-          required: true
-          type: string
-          format: ObjectId
       responses:
         200:
           description: Single order client form item
@@ -337,6 +351,12 @@ paths:
       description: Endpoint for fetching a signel order form for a client.
       tags:
         - Order Forms
+      parameters:
+        - name: orderFormId
+          in: path
+          required: true
+          type: string
+          format: ObjectId
       responses:
         200:
           description: Array of order client forms
@@ -1110,7 +1130,8 @@ definitions:
     - $ref: '#/definitions/OrderFormField'
     - properties: 
         field-id:
-          type: ObjectId
+          type: string
+          format: ObjectId
           description: Id of the field instance
       required:
        - field-id
@@ -1118,6 +1139,18 @@ definitions:
     allOf:
     - $ref: '#/definitions/DefaultEntityFields'
     - properties: 
+        id:
+          type: string
+          description: Unique identifier representing a specific order form
+          format: ObjectId
+          readOnly: true
+        supplier-id:
+          type: string
+          description: |
+            Id of the company supplying the order form.
+            Should be used to set `order.supplier-id` when creating a new order.
+          format: ObjectId
+          readOnly: true
         title: 
             type: string
             description: Name of the order form
@@ -1131,6 +1164,32 @@ definitions:
           description: List of additional custom fields related to the order.
           items:
             $ref: '#/definitions/OrderFormCustomField'
+  OrderSupplier:
+    type: object
+    properties: 
+      id:
+        type: string
+        description: Unique identifier representing a specific Supplier.
+        format: ObjectId
+        readOnly: true
+      contact-name:
+        type: string
+        description: The suppliers's contact name.
+      contact-phone:
+        type: string
+        description: The suppliers's contact phone.
+      contact-email:
+        type: string
+        description: The suppliers's contact email.
+      supplier-title:
+        type: string
+        description: Title of the supplier.
+      order-forms:
+        type: array
+        description: List of order form ids which the client has access to view.
+        items:
+          type: string
+          format: ObjectId
   OrderClient:
     allOf:
     - $ref: '#/definitions/DefaultEntityFields'
@@ -1275,7 +1334,6 @@ definitions:
         type: number
         description: first login timestamp (milliseconds since unix epoch)
     required:
-      - id
       - username
       - role
       - email
@@ -1412,7 +1470,6 @@ definitions:
         type: number
         description: Maximum length of value stored in this field
     required:
-      - id
       - type
 
   Field:
@@ -1469,7 +1526,6 @@ definitions:
         type: boolean
         description: Field is archived
     required:
-      - id
       - title
       - registry-id
       - field-id

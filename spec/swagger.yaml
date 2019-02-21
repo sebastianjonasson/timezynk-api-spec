@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
-  title: TimeZynk API
-  description: API for TimeZynk scheduling system
+  title: Timezynk API
+  description: API for Timezynk scheduling system
   version: "2.3.0"
 host: api.timezynk.com
 schemes:

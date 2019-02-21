@@ -1,0 +1,1164 @@
+swagger: '2.0'
+info:
+  title: Timezynk API
+  description: API for Timezynk scheduling system
+  version: 2.3.0
+host: api.timezynk.com
+schemes:
+  - https
+basePath: /api
+consumes:
+  - application/json
+produces:
+  - application/json
+security:
+  - TZApiAuth: []
+securityDefinitions:
+  TZApiAuth:
+    type: oauth2
+    description: OAuth2 API authentication
+    authorizationUrl: 'https://api.timezynk.com/api/oauth2/v1/auth'
+    tokenUrl: 'https://api.timezynk.com/api/oauth2/v1/token'
+    flow: accessCode
+    scopes:
+      'read:company': Read all company information
+      'write:company': Write all company information
+      'read:user': Read all user information
+      'write:user': Write all user information
+tags:
+  - name: Auth
+    description: Endpoints for authentication and configuration
+  - name: User
+    description: Calls for fetching and updating the system users.
+  - name: Shift
+    description: Calls for fetching and updating scheduled shifts.
+  - name: Time Reports
+    description: Time reports are the actual worked time as reported by the user.
+  - name: Registry
+    description: The registry handles custom data lists and their definitions.
+  - name: Registry Data
+    description: Data contained in a registry.
+  - name: Fields
+    description: The fields are used to specify the format for a specific registry instance.
+  - name: Experimental
+    description: These APIs are experimental and and may be changed at any time without warning.
+paths:
+  /oath2/v1/tokeninfo:
+    get:
+      summary: Token info
+      description: Decode your authentication token and check current roles and user.
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: Authentication token information
+          schema:
+            $ref: '#/definitions/TokenInfo'
+        default:
+          description: Invalid token
+          schema:
+            $ref: '#/definitions/Error'
+  /users:
+    get:
+      summary: Users
+      description: |
+        The Users endpoint returns information about all the registered users for this company.
+      parameters:
+        - name: role
+          in: query
+          description: Search by user role
+          required: false
+          type: string
+      tags:
+        - User
+      responses:
+        '200':
+          description: An array of users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create user
+      description: Add a new user to the company
+      parameters:
+        - in: body
+          name: body
+          description: User object to be added to the company
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+        - User
+      responses:
+        '200':
+          description: Newly added user object
+          schema:
+            $ref: '#/definitions/User'
+  '/users/{userId}':
+    get:
+      summary: Fetch single user
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          format: ObjectId
+      responses:
+        '200':
+          description: A single user object
+          schema:
+            $ref: '#/definitions/User'
+        '404':
+          description: User not found
+    put:
+      summary: Update user
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          format: ObjectId
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: The updated user object
+          schema:
+            $ref: '#/definitions/User'
+        '404':
+          description: User not found
+  /shifts:
+    get:
+      summary: Fetch planned shifts
+      parameters:
+        - $ref: '#/parameters/startParam'
+        - $ref: '#/parameters/endParam'
+        - $ref: '#/parameters/criteriaParam'
+        - in: query
+          name: booked-users
+          type: string
+          format: ObjectId
+          description: Find shifts where the given user id is booked
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: Array of shifts
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Shift'
+    post:
+      summary: Create planned shift
+      parameters:
+        - name: body
+          in: body
+          description: Shift to be added
+          required: true
+          schema:
+            $ref: '#/definitions/Shift'
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: Newly added shift object
+          schema:
+            $ref: '#/definitions/Shift'
+        '400':
+          description: Validation failed
+  '/shifts/{shiftId}':
+    get:
+      summary: Fetch planned shift
+      parameters:
+        - name: shiftId
+          in: path
+          type: string
+          format: ObjectId
+          required: true
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: Shift object
+          schema:
+            $ref: '#/definitions/Shift'
+        '404':
+          description: Shift not found
+    put:
+      summary: Update planned shift
+      parameters:
+        - name: shiftId
+          in: path
+          type: string
+          format: ObjectId
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Shift'
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: Updated shift object
+          schema:
+            $ref: '#/definitions/Shift'
+        '400':
+          description: Validation failed
+        '404':
+          description: Shift not found
+    delete:
+      summary: Delete planned shift
+      parameters:
+        - name: shiftId
+          in: path
+          type: string
+          format: ObjectId
+          required: true
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: Delete successful
+  /booked-shifts:
+    put:
+      summary: Book and unbook users on shifts
+      tags:
+        - Shift
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ShiftBookingRequest'
+      responses:
+        '200':
+          description: Bookings completed
+          schema:
+            $ref: '#/definitions/ShiftBookingResponse'
+  /published-shifts:
+    put:
+      summary: Publish shifts
+      tags:
+        - Shift
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ShiftPublishRequest'
+      responses:
+        '200':
+          description: Bookings completed
+          schema:
+            $ref: '#/definitions/ShiftPublishResponse'
+    delete:
+      summary: Unpublish shifts
+      tags:
+        - Shift
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ShiftUnpublishRequest'
+      responses:
+        '200':
+          description: Bookings completed
+          schema:
+            $ref: '#/definitions/ShiftPublishResponse'
+  /timereports:
+    get:
+      summary: Fetch time reports
+      tags:
+        - Time Reports
+      parameters:
+        - $ref: '#/parameters/startParam'
+        - $ref: '#/parameters/endParam'
+        - $ref: '#/parameters/criteriaParam'
+        - in: query
+          name: user-id
+          type: string
+          format: ObjectId
+          description: Find time reports for the given user id
+      responses:
+        '200':
+          description: Array of time reports
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Timereport'
+    post:
+      summary: Create new time report
+      tags:
+        - Time Reports
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Timereport'
+      responses:
+        '200':
+          description: Created time report
+          schema:
+            $ref: '#/definitions/Timereport'
+        '400':
+          description: Validation failed
+  '/timereports/{reportId}':
+    get:
+      summary: Fetch time report
+      tags:
+        - Time Reports
+      parameters:
+        - in: path
+          name: reportId
+          type: string
+          description: Time report id
+          required: true
+      responses:
+        '200':
+          description: Time report
+          schema:
+            $ref: '#/definitions/Timereport'
+        '404':
+          description: Not found
+    put:
+      summary: Update time report
+      tags:
+        - Time Reports
+      parameters:
+        - in: path
+          name: reportId
+          type: string
+          description: Time report id
+          required: true
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Timereport'
+      responses:
+        '200':
+          description: Updated time report
+          schema:
+            $ref: '#/definitions/Timereport'
+        '400':
+          description: Validation failed
+        '404':
+          description: Not found
+  /experimental/blocked-inquiries:
+    get:
+      summary: Find blocked inquiries
+      description: Find open inquiries that are blocked by overlapping or adjacent shifts.
+      tags:
+        - Experimental
+      responses:
+        '200':
+          description: List blocked inquiries with blocking info
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: ObjectId
+                  description: Inquiry ID
+                shift-id:
+                  type: string
+                  format: ObjectId
+                user-id:
+                  type: string
+                  format: ObjectId
+                duplicity:
+                  type: number
+                  description: Maximum (and desired) number of booked users
+                booked-users:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+                overlapping-shift-ids:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+                adjacent-shift-ids:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+                overlapping-availability:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: ObjectId
+                      available:
+                        type: boolean
+                        description: 'True if user is available, false if not available.'
+                      start:
+                        type: string
+                        format: date-time
+                        description: Start of shift
+                      end:
+                        type: string
+                        format: date-time
+                        description: End of shift
+        '404':
+          description: No blocked inquiries found
+  /registry:
+    get:
+      summary: Index available registers
+      tags:
+        - Registry
+      responses:
+        '200':
+          description: List of all custom registers
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Registry'
+    post:
+      summary: Create new custom registry
+      tags:
+        - Registry
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Registry'
+      responses:
+        '200':
+          description: Newly created registry
+          schema:
+            $ref: '#/definitions/Registry'
+        '400':
+          description: Validation failed
+  '/registry/{registryId}':
+    get:
+      summary: Get single custom registry
+      tags:
+        - Registry
+      parameters:
+        - in: path
+          name: registryId
+          required: true
+          type: string
+          format: ObjectId
+      responses:
+        '200':
+          description: Requested registry
+          schema:
+            $ref: '#/definitions/Registry'
+        '404':
+          description: Registry not found
+    put:
+      summary: Update custom registry
+      tags:
+        - Registry
+      parameters:
+        - in: path
+          name: registryId
+          required: true
+          type: string
+          format: ObjectId
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Registry'
+      responses:
+        '200':
+          description: Updated registry
+          schema:
+            $ref: '#/definitions/Registry'
+        '404':
+          description: Registry not found
+  /registry-data:
+    get:
+      summary: List all registry data
+      tags:
+        - Registry Data
+      parameters:
+        - in: query
+          name: registry-id
+          type: string
+          format: ObjectId
+          description: Only return data for registry with this ID.
+      responses:
+        '200':
+          description: List of registry data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RegistryData'
+    post:
+      summary: Create new registry data
+      tags:
+        - Registry Data
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/RegistryData'
+      responses:
+        '200':
+          description: Created registry data
+          schema:
+            $ref: '#/definitions/RegistryData'
+        '400':
+          description: Validation failed
+  '/registry-data/{registryDataId}':
+    get:
+      summary: Get single registry data
+      tags:
+        - Registry Data
+      parameters:
+        - in: path
+          name: registryDataId
+          required: true
+          type: string
+          format: ObjectId
+      responses:
+        '200':
+          description: Registry data
+          schema:
+            $ref: '#/definitions/RegistryData'
+        '404':
+          description: Not found
+    put:
+      summary: Update registry data
+      tags:
+        - Registry Data
+      parameters:
+        - in: path
+          name: registryDataId
+          required: true
+          type: string
+          format: ObjectId
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/RegistryData'
+      responses:
+        '200':
+          description: Updated registry data
+          schema:
+            $ref: '#/definitions/RegistryData'
+        '400':
+          description: Validation failed
+        '404':
+          description: Not found
+  /fields:
+    get:
+      summary: Index available registry field types
+      tags:
+        - Fields
+      responses:
+        '200':
+          description: |
+            A list of all valid registry field types. One of these must be the basis
+            for creating a new custom registry field.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/FieldType'
+  /registry-fields:
+    get:
+      summary: List custom registry fields
+      tags:
+        - Fields
+      responses:
+        '200':
+          description: A list of all custom registry fields
+          schema:
+            $ref: '#/definitions/Field'
+    post:
+      summary: Create a new custom registry field
+      tags:
+        - Fields
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Field'
+      responses:
+        '200':
+          description: Newly created registry field
+          schema:
+            $ref: '#/definitions/Field'
+        '400':
+          description: Validation failed
+definitions:
+  TokenInfo:
+    type: object
+    properties:
+      user-id:
+        type: string
+        description: ID of currently logged in user
+      role:
+        type: string
+        description: Role of currently logged in user
+      permissions:
+        type: string
+        description: Active set of permissions
+      modules:
+        type: string
+        description: Enabled Timezynk modules
+      company-id:
+        type: string
+        description: ID of current company
+      created:
+        type: number
+        description: Timestamp in milliseconds for when the token was created
+      expires:
+        type: number
+        description: Timestamp in milliseconds for when the token will expire
+      issued-by:
+        type: string
+        description: ID if issuing server
+      audience:
+        type: string
+        description: ID of intended audience for the token
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier representing a specific user
+        format: ObjectId
+        readOnly: true
+      username:
+        type: string
+        description: Unique username used for logging in
+      role:
+        type: string
+        description: The role for this user
+      email:
+        type: string
+        description: User email address
+        format: email
+      employee-no:
+        type: string
+        description: User employee number
+      id-no:
+        type: string
+        description: |
+          Users [National Indentification Number](https://en.wikipedia.org/wiki/National_identification_number)
+      bank-account:
+        type: string
+        description: Users bank account for salary payments
+      department:
+        type: string
+        description: department
+      company:
+        type: string
+        description: company for salary export
+      country-code:
+        type: number
+        description: country code for mobile number
+      mobile:
+        type: string
+        description: mobile number
+      work-phone:
+        type: string
+        description: work phone number
+      home-phone:
+        type: string
+        description: home phone number
+      lang:
+        type: string
+        description: 'users preferred language (en,sv,da or nb currently supported)'
+      address:
+        type: string
+        description: users street address
+      address2:
+        type: string
+        description: users second address line
+      zip:
+        type: string
+        description: users zip code
+      city:
+        type: string
+        description: users city
+      country:
+        type: string
+        description: users country code
+      int-mobile:
+        type: string
+        readOnly: true
+        description: users full mobile with country code applied
+      relative-name:
+        type: string
+        description: name of relative
+      relative-phone:
+        type: string
+        description: phone number of relative
+      notes:
+        type: string
+        description: notes for this user
+      start:
+        type: string
+        format: date
+        description: start date for users employment
+      end:
+        type: string
+        format: date
+        description: end date for users employment
+      permissions:
+        type: array
+        description: List of tags
+        items:
+          type: string
+      combinations:
+        type: array
+        description: List of users tag combinations
+        readOnly: true
+        items:
+          type: string
+      values:
+        type: object
+        description: Values for custom registry fields
+      created:
+        type: number
+        description: creation timestamp (milliseconds since unix epoch)
+      changed:
+        type: number
+        description: last changed timestamp (milliseconds since unix epoch)
+      last-login:
+        type: number
+        description: last login timestamp (milliseconds since unix epoch)
+      last-access:
+        type: number
+        description: last access timestamp (milliseconds since unix epoch)
+      first-login:
+        type: number
+        description: first login timestamp (milliseconds since unix epoch)
+    required:
+      - id
+      - username
+      - role
+      - email
+  Shift:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique shift ID
+        format: ObjectId
+        readOnly: true
+      start:
+        type: string
+        format: date-time
+        description: Start of shift
+      end:
+        type: string
+        format: date-time
+        description: End of shift
+      breaks:
+        type: array
+        description: List of breaks
+        items:
+          $ref: '#/definitions/Break'
+      booked-users:
+        type: array
+        description: List of booked users
+        readOnly: true
+        items:
+          type: string
+          format: ObjectId
+      booked:
+        type: number
+        readOnly: true
+        description: Number of booked users
+      duplicity:
+        type: number
+        description: Maximum (and desired) number of booked users
+      values:
+        type: object
+        description: Values for custom registry fields
+      withhold:
+        type: boolean
+        description: Hide shift from users making it visible for managers only
+        readOnly: true
+    required:
+      - id
+      - start
+      - end
+  Timereport:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique time report ID
+        format: ObjectId
+        readOnly: true
+      start:
+        type: string
+        format: date-time
+        description: Start of time report
+      end:
+        type: string
+        format: date-time
+        description: End of time report
+      breaks:
+        type: array
+        description: List of breaks
+        items:
+          $ref: '#/definitions/Break'
+      user-id:
+        type: string
+        description: User ID
+        format: ObjectId
+      shift-id:
+        type: string
+        description: Reported against shift with this id.
+        format: ObjectId
+      values:
+        type: object
+        description: Values for custom registry fields
+    required:
+      - id
+      - start
+      - end
+      - user-id
+  Break:
+    type: object
+    properties:
+      start:
+        type: string
+        format: date-time
+        description: Start of shift
+      end:
+        type: string
+        format: date-time
+        description: End of shift
+    required:
+      - start
+      - end
+  Registry:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique registry ID
+        readOnly: true
+      title:
+        type: string
+        description: Localized registry title
+      description:
+        type: string
+        description: Human-readable registry description
+      archived:
+        type: number
+        description: UNIX Epoch in milliseconds when this registry was archived.
+    required:
+      - id
+      - title
+  FieldType:
+    type: object
+    description: FieldType describes the different interpretations a custom field can have.
+    properties:
+      id:
+        type: string
+        description: Unique field type ID
+        readOnly: true
+      type:
+        type: string
+        description: Field storage type
+      section:
+        type: string
+        description: Field section ID
+      title:
+        type: string
+        description: Localized field type title
+      default:
+        description: Default value
+      max-length:
+        type: number
+        description: Maximum length of value stored in this field
+    required:
+      - id
+      - type
+  Field:
+    type: object
+    properties:
+      id:
+        type: string
+        format: ObjectId
+        description: Unique field ID
+        readOnly: true
+      title:
+        type: string
+        description: Human-readable field title
+      registry-id:
+        type: string
+        format: ObjectId
+        description: Field belongs to this registry
+      field-id:
+        type: string
+        description: Reference to Field Type ID
+      field-type:
+        type: string
+        description: Field storage type
+      field-section:
+        type: string
+        description: Field section ID
+      weight:
+        type: number
+        description: 'Sort order for this field. Lower weight floats on top, higher weight sinks.'
+      required:
+        type: boolean
+        description: Is this field required?
+      public:
+        type: boolean
+        description: |
+          Allow everyone to see this field value and also show it in deeply linked
+          presentations.
+      protected:
+        type: boolean
+        description: Field should only the editable by and visible for managers.
+      readonly:
+        type: boolean
+        description: Field is read-only
+      override:
+        type: string
+        description: This field definition overrides a field with this ID.
+      values:
+        type: object
+        description: Type specific values
+      settings:
+        type: object
+        description: Type specific settings
+      archived:
+        type: boolean
+        description: Field is archived
+    required:
+      - id
+      - title
+      - registry-id
+      - field-id
+      - field-type
+      - weight
+  RegistryData:
+    type: object
+    properties:
+      id:
+        type: string
+        format: ObjectId
+        description: Unique ID
+        readOnly: true
+      title:
+        type: string
+        description: Human-readable title
+      registry-id:
+        type: string
+        format: ObjectId
+        description: Data belongs to this registry
+      permissions:
+        $ref: '#/definitions/PermissionsObject'
+      values:
+        type: object
+        description: Values for custom fields
+      archived:
+        type: boolean
+        description: Field is archived
+    required:
+      - id
+      - title
+      - registry-id
+  PermissionsObject:
+    type: object
+    properties:
+      schedule:
+        type: string
+        format: CombinationID
+        description: Tag combination required for being scheduled
+      report:
+        type: string
+        format: CombinationID
+        description: Tag combination required for creating independent time reports
+  ShiftBookingRequest:
+    type: object
+    properties:
+      shift-selector:
+        type: object
+        properties:
+          ids:
+            type: array
+            description: Shift IDs
+            items:
+              type: string
+              format: ObjectId
+          interval:
+            $ref: '#/definitions/DateSelector'
+          rolling-id:
+            type: string
+            format: ObjectId
+          rolling-shift-id:
+            type: string
+            format: ObjectId
+      not-booked-user-ids:
+        type: array
+        description: User IDs that should not be booked on these shifts
+        items:
+          type: string
+          format: ObjectId
+      booked-user-ids:
+        type: array
+        description: 'User IDs that should be booked on these shift, sorted in the order they should be booked'
+        items:
+          type: string
+          format: ObjectId
+      conflict-policy:
+        type: string
+        description: How to proceed if a user is already booked on an overlapping shift.
+        enum:
+          - skip
+          - move
+          - double-book
+        default: skip
+    required:
+      - shift-selector
+  ShiftBookingResponse:
+    type: object
+    properties:
+      updated-shifts:
+        type: array
+        items:
+          $ref: '#/definitions/Shift'
+      unresolved-conflicts:
+        type: array
+        items:
+          type: object
+          properties:
+            user-id:
+              type: string
+              format: ObjectId
+            requested-shift-id:
+              type: string
+              format: ObjectId
+            conflict-shift-ids:
+              type: array
+              items:
+                type: string
+                format: ObjectId
+  ShiftPublishRequest:
+    type: object
+    properties:
+      shift-selector:
+        type: object
+        description: Shifts matching selector will be ensured to be published.
+        properties:
+          ids:
+            type: array
+            description: Shift IDs
+            items:
+              type: string
+              format: ObjectId
+          interval:
+            $ref: '#/definitions/DateSelector'
+          rolling-id:
+            type: string
+            format: ObjectId
+          rolling-shift-id:
+            type: string
+            format: ObjectId
+  ShiftUnpublishRequest:
+    type: object
+    properties:
+      shift-selector:
+        type: object
+        description: Shifts matching selector will be ensured to be unpublished.
+        properties:
+          ids:
+            type: array
+            description: Shift IDs
+            items:
+              type: string
+              format: ObjectId
+          interval:
+            $ref: '#/definitions/DateSelector'
+          rolling-id:
+            type: string
+            format: ObjectId
+          rolling-shift-id:
+            type: string
+            format: ObjectId
+  ShiftPublishResponse:
+    type: object
+    properties:
+      updated-shifts:
+        type: array
+        items:
+          $ref: '#/definitions/Shift'
+  DateSelector:
+    type: object
+    properties:
+      start:
+        type: string
+        format: date
+        description: Start of matching interval
+      end:
+        type: string
+        format: date
+        description: End of matching interval
+      criteria:
+        type: string
+        description: Define how to match the interval
+        enum:
+          - intersects
+          - start-in
+        default: start-in
+  Error:
+    type: object
+    properties:
+      error:
+        type: string
+      trace:
+        type: string
+parameters:
+  startParam:
+    in: query
+    name: 'interval[start]'
+    type: string
+    format: date
+    description: Start of matching interval
+    required: true
+  endParam:
+    in: query
+    name: 'interval[end]'
+    type: string
+    format: date
+    description: End of matching interval
+    required: true
+  criteriaParam:
+    in: query
+    name: 'interval[match]'
+    type: string
+    description: Define how to match the interval
+    enum:
+      - intersects
+      - start-in
+    default: start-in

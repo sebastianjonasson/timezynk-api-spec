@@ -2,8 +2,8 @@ swagger: '2.0'
 info:
   title: TimeZynk API
   description: API for TimeZynk scheduling system
-  version: "2.2.0"
-host: pro.timezynk.com
+  version: "2.3.0"
+host: api.timezynk.com
 schemes:
   - https
 basePath: /api
@@ -17,8 +17,8 @@ securityDefinitions:
   TZApiAuth:
     type: oauth2
     description: OAuth2 API authentication
-    authorizationUrl: https://pro.timezynk.com/api/oauth2/v1/auth
-    tokenUrl: https://pro.timezynk.com/api/oauth2/v1/token
+    authorizationUrl: https://api.timezynk.com/api/oauth2/v1/auth
+    tokenUrl: https://api.timezynk.com/api/oauth2/v1/token
     flow: accessCode
     scopes:
       "read:company": Read all company information
@@ -27,6 +27,8 @@ securityDefinitions:
       "write:user": Write all user information
 
 tags:
+  - name: Auth
+    description: Endpoints for authentication and configuration
   - name: User
     description: Calls for fetching and updating the system users.
   - name: Shift
@@ -43,6 +45,21 @@ tags:
     description: These APIs are experimental and and may be changed at any time without warning.
 
 paths:
+  /oath2/v1/tokeninfo:
+    get:
+      summary: Token info
+      description: Decode your authentication token and check current roles and user.
+      tags:
+        - Auth
+      responses:
+        200:
+          description: Authentication token information
+          schema:
+            $ref: '#/definitions/TokenInfo'
+        default:
+          description: Invalid token
+          schema:
+            $ref: '#/definitions/Error'
   /users:
     get:
       summary: Users
@@ -613,6 +630,37 @@ paths:
           description: Validation failed
 
 definitions:
+  TokenInfo:
+    type: object
+    properties:
+      user-id:
+        type: string
+        description: ID of currently logged in user
+      role:
+        type: string
+        description: Role of currently logged in user
+      permissions:
+        type: string
+        description: Active set of permissions
+      modules:
+        type: string
+        description: Enabled Timezynk modules
+      company-id:
+        type: string
+        description: ID of current company
+      created:
+        type: number
+        description: Timestamp in milliseconds for when the token was created
+      expires:
+        type: number
+        description: Timestamp in milliseconds for when the token will expire
+      issued-by:
+        type: string
+        description: ID if issuing server
+      audience:
+        type: string
+        description: ID of intended audience for the token
+
   User:
     type: object
     properties:

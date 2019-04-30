@@ -425,12 +425,14 @@ paths:
                         description: True if user is available, false if not available.
                       start:
                         type: string
-                        format: date-time
-                        description: Start of shift
+                        format: local-date-time
+                        pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+                        description: Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)
                       end:
                         type: string
-                        format: date-time
-                        description: End of shift
+                        format: local-date-time
+                        pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+                        description: End of shift without time zone (i.e. 2019-04-30T15:41:00.000)
 
         404:
           description: No blocked inquiries found
@@ -791,12 +793,14 @@ definitions:
         readOnly: true
       start:
         type: string
-        format: date-time
-        description: Start of shift
+        format: local-date-time
+        pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+        description: Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)
       end:
         type: string
-        format: date-time
-        description: End of shift
+        format: local-date-time
+        pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+        description: End of shift without time zone (i.e. 2019-04-30T15:41:00.000)
       breaks:
         type: array
         description: List of breaks
@@ -838,12 +842,14 @@ definitions:
         readOnly: true
       start:
         type: string
-        format: date-time
-        description: Start of time report
+        format: local-date-time
+        pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+        description: Start of time report without time zone (i.e. 2019-04-30T15:41:00.000)
       end:
         type: string
-        format: date-time
-        description: End of time report
+        format: local-date-time
+        pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+        description: End of time report without time zone (i.e. 2019-04-30T15:41:00.000)
       breaks:
         type: array
         description: List of breaks
@@ -871,12 +877,14 @@ definitions:
     properties:
       start:
         type: string
-        format: date-time
-        description: Start of shift
+        format: local-date-time
+        pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+        description: Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)
       end:
         type: string
-        format: date-time
-        description: End of shift
+        format: local-date-time
+        pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+        description: End of shift without time zone (i.e. 2019-04-30T15:41:00.000)
     required:
       - start
       - end

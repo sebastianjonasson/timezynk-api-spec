@@ -1,0 +1,22 @@
+type: object
+properties:
+  updated-shifts:
+    type: array
+    items:
+      $ref: "#/components/schemas/Shift"
+  unresolved-conflicts:
+    type: array
+    items:
+      type: object
+      properties:
+        user-id:
+          type: string
+          format: ObjectId
+        requested-shift-id:
+          type: string
+          format: ObjectId
+        conflict-shift-ids:
+          type: array
+          items:
+            type: string
+            format: ObjectId

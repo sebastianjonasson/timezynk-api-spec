@@ -1,0 +1,10 @@
+type: object
+properties:
+  schedule:
+    type: string
+    format: CombinationID
+    description: Tag combination required for being scheduled
+  report:
+    type: string
+    format: CombinationID
+    description: Tag combination required for creating independent time reports

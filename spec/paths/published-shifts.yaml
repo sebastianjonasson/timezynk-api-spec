@@ -1,0 +1,34 @@
+put:
+  summary: Publish shifts
+  tags:
+    - Shift
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ShiftPublishRequest"
+    required: true
+  responses:
+    "200":
+      description: Bookings completed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ShiftPublishResponse"
+delete:
+  summary: Unpublish shifts
+  tags:
+    - Shift
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ShiftUnpublishRequest"
+    required: true
+  responses:
+    "200":
+      description: Bookings completed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ShiftPublishResponse"

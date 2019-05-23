@@ -1,0 +1,17 @@
+put:
+  summary: Book and unbook users on shifts
+  tags:
+    - Shift
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ShiftBookingRequest"
+    required: true
+  responses:
+    "200":
+      description: Bookings completed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ShiftBookingResponse"

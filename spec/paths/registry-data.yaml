@@ -1,0 +1,35 @@
+get:
+  summary: List all registry data
+  tags:
+    - Registry Data
+  parameters:
+    - in: query
+      name: registry-id
+      description: Only return data for registry with this ID.
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: List of registry data
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/RegistryData"
+post:
+  summary: Create new registry data
+  tags:
+    - Registry Data
+  requestBody:
+    $ref: "#/components/requestBodies/RegistryData"
+  responses:
+    "200":
+      description: Created registry data
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RegistryData"
+    "400":
+      description: Validation failed

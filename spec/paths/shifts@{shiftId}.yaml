@@ -1,0 +1,62 @@
+get:
+  summary: Fetch planned shift
+  parameters:
+    - name: shiftId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Shift
+  responses:
+    "200":
+      description: Shift object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Shift"
+    "404":
+      description: Shift not found
+put:
+  summary: Update planned shift
+  parameters:
+    - name: shiftId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Shift"
+    required: true
+  tags:
+    - Shift
+  responses:
+    "200":
+      description: Updated shift object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Shift"
+    "400":
+      description: Validation failed
+    "404":
+      description: Shift not found
+delete:
+  summary: Delete planned shift
+  parameters:
+    - name: shiftId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Shift
+  responses:
+    "200":
+      description: Delete successful

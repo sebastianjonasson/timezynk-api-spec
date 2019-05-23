@@ -1,0 +1,7 @@
+in: query
+name: interval[start]
+description: Start of matching interval
+required: true
+schema:
+  type: string
+  format: date

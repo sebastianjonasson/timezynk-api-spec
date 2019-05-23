@@ -1,0 +1,9 @@
+in: query
+name: interval[match]
+description: Define how to match the interval
+schema:
+  type: string
+  enum:
+    - intersects
+    - start-in
+  default: start-in

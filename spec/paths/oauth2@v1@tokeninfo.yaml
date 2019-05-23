@@ -1,0 +1,18 @@
+get:
+  summary: Token info
+  description: Decode your authentication token and check current roles and user.
+  tags:
+    - Auth
+  responses:
+    "200":
+      description: Authentication token information
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TokenInfo"
+    default:
+      description: Invalid token
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

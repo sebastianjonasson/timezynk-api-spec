@@ -1,0 +1,44 @@
+get:
+  summary: Get single registry data
+  tags:
+    - Registry Data
+  parameters:
+    - in: path
+      name: registryDataId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: Registry data
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RegistryData"
+    "404":
+      description: Not found
+put:
+  summary: Update registry data
+  tags:
+    - Registry Data
+  parameters:
+    - in: path
+      name: registryDataId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    $ref: "#/components/requestBodies/RegistryData"
+  responses:
+    "200":
+      description: Updated registry data
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RegistryData"
+    "400":
+      description: Validation failed
+    "404":
+      description: Not found

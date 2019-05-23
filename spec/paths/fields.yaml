@@ -1,0 +1,16 @@
+get:
+  summary: Index available registry field types
+  tags:
+    - Fields
+  responses:
+    "200":
+      description: >
+        A list of all valid registry field types. One of these must be the
+        basis
+        for creating a new custom registry field.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/FieldType"

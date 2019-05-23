@@ -1,0 +1,26 @@
+type: object
+properties:
+  id:
+    type: string
+    format: ObjectId
+    description: Unique ID
+    readOnly: true
+  title:
+    type: string
+    description: Human-readable title
+  registry-id:
+    type: string
+    format: ObjectId
+    description: Data belongs to this registry
+  permissions:
+    $ref: "#/components/schemas/PermissionsObject"
+  values:
+    type: object
+    description: Values for custom fields
+  archived:
+    type: boolean
+    description: Field is archived
+required:
+  - id
+  - title
+  - registry-id

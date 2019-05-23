@@ -1,0 +1,20 @@
+type: object
+properties:
+  shift-selector:
+    type: object
+    description: Shifts matching selector will be ensured to be unpublished.
+    properties:
+      ids:
+        type: array
+        description: Shift IDs
+        items:
+          type: string
+          format: ObjectId
+      interval:
+        $ref: "#/components/schemas/DateSelector"
+      rolling-id:
+        type: string
+        format: ObjectId
+      rolling-shift-id:
+        type: string
+        format: ObjectId

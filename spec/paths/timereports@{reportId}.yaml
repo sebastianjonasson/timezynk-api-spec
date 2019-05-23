@@ -1,0 +1,44 @@
+get:
+  summary: Fetch time report
+  tags:
+    - Time Reports
+  parameters:
+    - in: path
+      name: reportId
+      description: Time report id
+      required: true
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Time report
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Timereport"
+    "404":
+      description: Not found
+put:
+  summary: Update time report
+  tags:
+    - Time Reports
+  parameters:
+    - in: path
+      name: reportId
+      description: Time report id
+      required: true
+      schema:
+        type: string
+  requestBody:
+    $ref: "#/components/requestBodies/Timereport"
+  responses:
+    "200":
+      description: Updated time report
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Timereport"
+    "400":
+      description: Validation failed
+    "404":
+      description: Not found

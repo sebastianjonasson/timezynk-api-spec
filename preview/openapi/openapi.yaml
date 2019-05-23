@@ -10,6 +10,8 @@ tags:
     description: Endpoints for authentication and configuration
   - name: Availability
     description: Fetching and updating availability
+  - name: Invoice
+    description: 'Fetching, updating and creating invoices'
   - name: User
     description: Calls for fetching and updating the system users.
   - name: Shift
@@ -234,6 +236,40 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/FieldType'
+  /invoices:
+    get:
+      summary: Fetch invoices
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Array of invoices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+    post:
+      summary: Create invoices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+        description: Invoice to be added
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Newly added invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '400':
+          description: Validation failed
   /oauth2/v1/tokeninfo:
     get:
       summary: Token info
@@ -765,11 +801,6 @@ components:
         - $ref: '#/components/schemas/BasicObject'
         - type: object
           properties:
-            id:
-              type: string
-              description: Unique shift ID
-              format: ObjectId
-              readOnly: true
             title:
               type: string
               description: Title describing this availability
@@ -954,6 +985,85 @@ components:
       required:
         - id
         - type
+    Invoice:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            start-date:
+              type: string
+              format: local-date
+              pattern: '^\d{4}-\d{2}-\d{2}$'
+              description: First day of invoiced interval
+            end-date:
+              type: string
+              format: local-date
+              pattern: '^\d{4}-\d{2}-\d{2}$'
+              description: Last day of invoiced interval
+            invoice-date:
+              type: string
+              format: local-date
+              pattern: '^\d{4}-\d{2}-\d{2}$'
+              description: 'The invoice date (date invoice was created, sent or booked).'
+            due-date:
+              type: string
+              format: local-date
+              pattern: '^\d{4}-\d{2}-\d{2}$'
+              description: Date when invoice is due for payment
+            currency:
+              type: string
+              description: Currency in ISO 4217 format
+              example: USD
+            total:
+              type: number
+              description: Total invoice amount
+            invoice-text:
+              type: string
+              description: Longer multi-line message to the invoice receiver
+            order-no:
+              type: string
+              description: Order number or code
+            canceled:
+              type: boolean
+              description: True if the invoice is canceled
+            export-data:
+              type: object
+              description: Structed invoice head data. Exact content dependent on target invoicing software.
+              properties:
+                generic:
+                  type: object
+                  description: invoice head data applicable to most target systems
+                  properties:
+                    customer-no:
+                      type: string
+                      description: Customer number or ID
+                    customer-name:
+                      type: string
+                      description: Customer name
+                    your-reference:
+                      type: string
+                      description: Your reference
+                    our-reference:
+                      type: string
+                      description: Our reference
+                    address-1:
+                      type: string
+                      description: Address line 1
+                    address-2:
+                      type: string
+                      description: Address line 2
+                    zip-code:
+                      type: string
+                      description: Address zip code
+                    city:
+                      type: string
+                      description: Address city
+                    country:
+                      type: string
+                      description: Address country
+          required:
+            - invoice-date
+            - export-data
     PermissionsObject:
       type: object
       properties:

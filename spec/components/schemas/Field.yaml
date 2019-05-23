@@ -1,61 +1,54 @@
-type: object
-properties:
-  id:
-    type: string
-    format: ObjectId
-    description: Unique field ID
-    readOnly: true
-  title:
-    type: string
-    description: Human-readable field title
-  registry-id:
-    type: string
-    format: ObjectId
-    description: Field belongs to this registry
-  field-id:
-    type: string
-    description: Reference to Field Type ID
-  field-type:
-    type: string
-    description: Field storage type
-  field-section:
-    type: string
-    description: Field section ID
-  weight:
-    type: number
-    description: Sort order for this field. Lower weight floats on top, higher weight
-      sinks.
-  required:
-    type: boolean
-    description: Is this field required?
-  public:
-    type: boolean
-    description: >
-      Allow everyone to see this field value and also show it in deeply
-      linked
-      presentations.
-  protected:
-    type: boolean
-    description: Field should only the editable by and visible for managers.
-  readonly:
-    type: boolean
-    description: Field is read-only
-  override:
-    type: string
-    description: This field definition overrides a field with this ID.
-  values:
-    type: object
-    description: Type specific values
-  settings:
-    type: object
-    description: Type specific settings
-  archived:
-    type: boolean
-    description: Field is archived
-required:
-  - id
-  - title
-  - registry-id
-  - field-id
-  - field-type
-  - weight
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      title:
+        type: string
+        description: Human-readable field title
+      registry-id:
+        type: string
+        format: ObjectId
+        description: Field belongs to this registry
+      field-id:
+        type: string
+        description: Reference to Field Type ID
+      field-type:
+        type: string
+        description: Field storage type
+      field-section:
+        type: string
+        description: Field section ID
+      weight:
+        type: number
+        description: Sort order for this field. Lower weight floats on top, higher weight
+          sinks.
+      required:
+        type: boolean
+        description: Is this field required?
+      public:
+        type: boolean
+        description: >
+          Allow everyone to see this field value and also show it in deeply
+          linked
+          presentations.
+      protected:
+        type: boolean
+        description: Field should only the editable by and visible for managers.
+      readonly:
+        type: boolean
+        description: Field is read-only
+      override:
+        type: string
+        description: This field definition overrides a field with this ID.
+      values:
+        type: object
+        description: Type specific values
+      settings:
+        type: object
+        description: Type specific settings
+    required:
+      - title
+      - registry-id
+      - field-id
+      - field-type
+      - weight

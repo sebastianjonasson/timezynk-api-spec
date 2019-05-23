@@ -2,14 +2,14 @@ openapi: 3.0.0
 info:
   title: Timezynk API
   description: API for Timezynk scheduling system
-  version: 2.3.1
+  version: 2.4.0
 security:
   - TZApiAuth: []
 tags:
   - name: Auth
     description: Endpoints for authentication and configuration
   - name: Availability
-    description: Endpoints for authentication and configuration
+    description: Fetching and updating availability
   - name: User
     description: Calls for fetching and updating the system users.
   - name: Shift

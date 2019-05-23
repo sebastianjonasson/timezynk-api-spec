@@ -1,0 +1,41 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      id:
+        type: string
+        description: Unique shift ID
+        format: ObjectId
+        readOnly: true
+      title:
+        type: string
+        description: Title describing this availability
+      start:
+        type: string
+        format: local-date-time
+        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$
+        description: Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)
+      end:
+        type: string
+        format: local-date-time
+        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$
+        description: End of shift without time zone (i.e. 2019-04-30T15:41:00.000)
+      user-id:
+        type: string
+        description: User ID
+        format: ObjectId
+      available:
+        type: boolean
+        description: Does this mark the user as available or not available.
+      read-only:
+        type: boolean
+        description: True if this availability is created via an integration and should not be changed.
+        readOnly: true
+      meta:
+        type: object
+        description: Field that an integration might use to store meta-data about the availability
+    required:
+      - start
+      - end
+      - user-id
+      - available

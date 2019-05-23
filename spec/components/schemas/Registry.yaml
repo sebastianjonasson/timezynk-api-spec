@@ -1,18 +1,12 @@
-type: object
-properties:
-  id:
-    type: string
-    description: Unique registry ID
-    readOnly: true
-  title:
-    type: string
-    description: Localized registry title
-  description:
-    type: string
-    description: Human-readable registry description
-  archived:
-    type: number
-    description: UNIX Epoch in milliseconds when this registry was archived.
-required:
-  - id
-  - title
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      title:
+        type: string
+        description: Localized registry title
+      description:
+        type: string
+        description: Human-readable registry description
+    required:
+      - title

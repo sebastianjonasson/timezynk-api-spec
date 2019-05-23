@@ -1,47 +1,44 @@
-type: object
-properties:
-  id:
-    type: string
-    description: Unique shift ID
-    format: ObjectId
-    readOnly: true
-  start:
-    type: string
-    format: local-date-time
-    pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$
-    description: Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)
-  end:
-    type: string
-    format: local-date-time
-    pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$
-    description: End of shift without time zone (i.e. 2019-04-30T15:41:00.000)
-  breaks:
-    type: array
-    description: List of breaks
-    items:
-      $ref: "#/components/schemas/Break"
-  booked-users:
-    type: array
-    description: List of booked users
-    readOnly: true
-    items:
-      type: string
-      format: ObjectId
-  booked:
-    type: number
-    readOnly: true
-    description: Number of booked users
-  duplicity:
-    type: number
-    description: Maximum (and desired) number of booked users
-  values:
-    type: object
-    description: Values for custom registry fields
-  withhold:
-    type: boolean
-    description: Hide shift from users making it visible for managers only
-    readOnly: true
-required:
-  - id
-  - start
-  - end
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      start:
+        type: string
+        format: local-date-time
+        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$
+        description: Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)
+      end:
+        type: string
+        format: local-date-time
+        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$
+        description: End of shift without time zone (i.e. 2019-04-30T15:41:00.000)
+      breaks:
+        type: array
+        description: List of breaks
+        items:
+          $ref: "#/components/schemas/Break"
+      booked-users:
+        type: array
+        description: List of booked users
+        readOnly: true
+        items:
+          type: string
+          format: ObjectId
+      booked:
+        type: number
+        readOnly: true
+        description: Number of booked users
+      duplicity:
+        type: number
+        description: Maximum (and desired) number of booked users
+      values:
+        type: object
+        description: Values for custom registry fields
+      withhold:
+        type: boolean
+        description: Hide shift from users making it visible for managers only
+        readOnly: true
+    required:
+      - id
+      - start
+      - end

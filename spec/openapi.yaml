@@ -10,6 +10,8 @@ tags:
     description: Endpoints for authentication and configuration
   - name: Availability
     description: Fetching and updating availability
+  - name: Invoice
+    description: Fetching, updating and creating invoices
   - name: User
     description: Calls for fetching and updating the system users.
   - name: Shift

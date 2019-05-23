@@ -2,11 +2,6 @@ allOf:
   - $ref: '#/components/schemas/BasicObject'
   - type: object
     properties:
-      id:
-        type: string
-        description: Unique shift ID
-        format: ObjectId
-        readOnly: true
       title:
         type: string
         description: Title describing this availability

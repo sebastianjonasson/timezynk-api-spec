@@ -154,6 +154,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ShiftBookingResponse'
+  /bulk/invoice-rows:
+    post:
+      summary: Create multiple invoice rows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/InvoiceRow'
+        description: Invoice rows to be added
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Newly added invoice rows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceRow'
+        '400':
+          description: Validation failed
+    delete:
+      summary: Delete multiple invoice rows
+      parameters:
+        - name: invoice-id
+          in: query
+          required: true
+          description: Invoice ID to delete rows for
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Delete successful
   /experimental/blocked-inquiries:
     get:
       summary: Find blocked inquiries
@@ -236,6 +276,167 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/FieldType'
+  /invoices-export:
+    get:
+      summary: Fetch invoice exports
+      tags:
+        - Invoice
+      parameters:
+        - name: target
+          in: query
+          description: Target to search for
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: State to search for
+          schema:
+            type: string
+            enum:
+              - pending
+              - failed
+              - completed
+              - download
+        - name: invoice-id
+          in: query
+          description: Invoice ID to search for
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of invoice exports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceExport'
+    post:
+      summary: Create single invoice export
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceExport'
+        description: Invoice to be added
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Newly added invoice export
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceExport'
+        '400':
+          description: Validation failed
+  /invoices-rows:
+    get:
+      summary: Fetch invoice rows
+      tags:
+        - Invoice
+      parameters:
+        - name: invoice-id
+          in: query
+          required: true
+          description: Invoice to fetch the rows for
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of invoice rows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceRow'
+    post:
+      summary: Create single invoice row
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceRow'
+        description: Invoice to be added
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Newly added invoice row
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceRow'
+        '400':
+          description: Validation failed
+  '/invoices-rows/{rowId}':
+    get:
+      summary: Fetch invoice row
+      parameters:
+        - name: rowId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceRow'
+        '404':
+          description: Invoice not found
+    put:
+      summary: Update invoice row
+      parameters:
+        - name: rowId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceRow'
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Updated invoice row object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceRow'
+        '400':
+          description: Validation failed
+        '404':
+          description: Invoice not found
+    delete:
+      summary: Delete invoice row
+      parameters:
+        - name: rowId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Delete successful
   /invoices:
     get:
       summary: Fetch invoices
@@ -270,6 +471,69 @@ paths:
                 $ref: '#/components/schemas/Invoice'
         '400':
           description: Validation failed
+  '/invoices/{invoiceId}':
+    get:
+      summary: Fetch invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Invoice not found
+    put:
+      summary: Update invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Updated invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '400':
+          description: Validation failed
+        '404':
+          description: Invoice not found
+    delete:
+      summary: Delete invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Delete successful
   /oauth2/v1/tokeninfo:
     get:
       summary: Token info
@@ -1063,6 +1327,115 @@ components:
                       description: Address country
           required:
             - invoice-date
+            - export-data
+    InvoiceExport:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            invoice-id:
+              type: string
+              description: Unique shift ID
+              format: ObjectId
+            target:
+              type: string
+              description: Target system for export
+              example: eAccounting
+            target-version:
+              type: string
+              description: Version of target system
+            target-invoice-id:
+              type: string
+              description: Invoice ID assigned by target system
+              example: 42
+            state:
+              type: string
+              description: State of export
+              enum:
+                - pending
+                - failed
+                - completed
+                - download
+            error-code:
+              type: string
+              description: 'Error code, if state equals "failed"'
+            error-message:
+              type: string
+              description: 'Error message, if state equals "failed"'
+          required:
+            - invoice-id
+            - target
+            - state
+    InvoiceRow:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            invoice-id:
+              type: string
+              description: Unique shift ID
+              format: ObjectId
+            weight:
+              type: number
+              description: 'Lighter rows float to the top of the invoice, heavier rows sink.'
+            sku:
+              type: string
+              description: SKU (article number)
+            description:
+              type: string
+              description: Date when invoice is due for payment
+            count:
+              type: number
+              description: Count
+            unit:
+              type: string
+              description: Unit of measurement
+              example: hours
+            price:
+              type: number
+              description: Price per item
+            currency:
+              type: string
+              description: 'Currency in ISO 4217 format, must match invoice head'
+              example: USD
+            discount:
+              type: number
+              description: 'Discount, in fraction. 0.05 == 5%.'
+              example: 0.05
+            house-work:
+              type: boolean
+              description: True if the invoice row concerns tax deductible house work
+              example: false
+            duration:
+              type: number
+              description: Duration in hours of underlying time report. Used for statistics only.
+              example: 2.5
+            report-ids:
+              type: array
+              description: IDs of underlying time reports that generated this row.
+              items:
+                type: string
+                format: ObjectId
+                example: 5bf6d703571d013b348713cb
+            export-data:
+              type: object
+              description: Structed invoice row data. Exact content dependent on target invoicing software.
+              properties:
+                generic:
+                  type: object
+                  description: invoice row data applicable to most target systems
+                  properties:
+                    cost-center:
+                      type: string
+                      description: Cost center for book-keeping this row
+                      example: 28
+                    project-code:
+                      type: string
+                      description: Project code for book-keeping this row
+                      example: PL/I
+          required:
+            - invoice-id
+            - weight
             - export-data
     PermissionsObject:
       type: object

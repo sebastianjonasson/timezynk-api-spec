@@ -1,4 +1,4 @@
-# TimeZynk OpenAPI Specification
+# Timezynk OpenAPI Specification
 [![Build Status](https://travis-ci.org/TimeZynk/timezynk-api-spec.svg?branch=master)](https://travis-ci.org/TimeZynk/timezynk-api-spec)
 
 ## Links

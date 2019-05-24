@@ -1,0 +1,33 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      invoice-id:
+        type: string
+        description: Unique shift ID
+        format: ObjectId
+      target:
+        type: string
+        description: Target system for export
+        example: eAccounting
+      target-version:
+        type: string
+        description: Version of target system
+      target-invoice-id:
+        type: string
+        description: Invoice ID assigned by target system
+        example: 42
+      state:
+        type: string
+        description: State of export
+        enum: ["pending", "failed", "completed", "download"]
+      error-code:
+        type: string
+        description: Error code, if state equals "failed"
+      error-message:
+        type: string
+        description: Error message, if state equals "failed"
+    required:
+      - invoice-id
+      - target
+      - state

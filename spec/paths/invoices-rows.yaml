@@ -1,0 +1,41 @@
+get:
+  summary: Fetch invoice rows
+  tags:
+    - Invoice
+  parameters:
+    - name: invoice-id
+      in: query
+      required: true
+      description: Invoice to fetch the rows for
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: Array of invoice rows
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/InvoiceRow"
+post:
+  summary: Create single invoice row
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/InvoiceRow"
+    description: Invoice to be added
+    required: true
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Newly added invoice row
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InvoiceRow"
+    "400":
+      description: Validation failed

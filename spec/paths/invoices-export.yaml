@@ -1,0 +1,51 @@
+get:
+  summary: Fetch invoice exports
+  tags:
+    - Invoice
+  parameters:
+    - name: target
+      in: query
+      description: Target to search for
+      schema:
+        type: string
+    - name: state
+      in: query
+      description: State to search for
+      schema:
+        type: string
+        enum: ["pending", "failed", "completed", "download"]
+    - name: invoice-id
+      in: query
+      description: Invoice ID to search for
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: Array of invoice exports
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/InvoiceExport"
+post:
+  summary: Create single invoice export
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/InvoiceExport"
+    description: Invoice to be added
+    required: true
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Newly added invoice export
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InvoiceExport"
+    "400":
+      description: Validation failed

@@ -1,0 +1,17 @@
+type: oauth2
+description: OAuth2 API authentication
+flows:
+  authorizationCode:
+    authorizationUrl: https://api.timezynk.com/api/oauth2/v1/auth
+    tokenUrl: https://api.timezynk.com/api/oauth2/v1/token
+    scopes:
+      read:company: Read all company information
+      write:company: Write all company information
+      read:user: Read all user information
+      write:user: Write all user information
+      write:availability: Create, update and delete availability for logged in user
+  clientCredentials:
+    tokenUrl: https://api.timezynk.com/api/oauth2/v1/token
+    scopes:
+      read:company: Read all company information
+      write:company: Write all company information

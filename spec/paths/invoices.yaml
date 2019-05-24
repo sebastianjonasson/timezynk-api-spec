@@ -1,0 +1,33 @@
+get:
+  summary: Fetch invoices
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Array of invoices
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Invoice"
+post:
+  summary: Create invoices
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Invoice"
+    description: Invoice to be added
+    required: true
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Newly added invoice object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Invoice"
+    "400":
+      description: Validation failed

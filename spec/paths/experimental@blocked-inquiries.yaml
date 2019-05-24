@@ -1,0 +1,68 @@
+get:
+  summary: Find blocked inquiries
+  description: Find open inquiries that are blocked by overlapping or adjacent shifts.
+  tags:
+    - Experimental
+  responses:
+    "200":
+      description: List blocked inquiries with blocking info
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: ObjectId
+                  description: Inquiry ID
+                shift-id:
+                  type: string
+                  format: ObjectId
+                user-id:
+                  type: string
+                  format: ObjectId
+                duplicity:
+                  type: number
+                  description: Maximum (and desired) number of booked users
+                booked-users:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+                overlapping-shift-ids:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+                adjacent-shift-ids:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+                overlapping-availability:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: ObjectId
+                      available:
+                        type: boolean
+                        description: True if user is available, false if not available.
+                      start:
+                        type: string
+                        format: local-date-time
+                        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$
+                        description: Start of shift without time zone (i.e.
+                          2019-04-30T15:41:00.000)
+                      end:
+                        type: string
+                        format: local-date-time
+                        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$
+                        description: End of shift without time zone (i.e.
+                          2019-04-30T15:41:00.000)
+    "404":
+      description: No blocked inquiries found

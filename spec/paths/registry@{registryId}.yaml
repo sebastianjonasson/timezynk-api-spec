@@ -1,0 +1,42 @@
+get:
+  summary: Get single custom registry
+  tags:
+    - Registry
+  parameters:
+    - in: path
+      name: registryId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: Requested registry
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Registry"
+    "404":
+      description: Registry not found
+put:
+  summary: Update custom registry
+  tags:
+    - Registry
+  parameters:
+    - in: path
+      name: registryId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    $ref: "#/components/requestBodies/Registry"
+  responses:
+    "200":
+      description: Updated registry
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Registry"
+    "404":
+      description: Registry not found

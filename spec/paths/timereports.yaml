@@ -1,0 +1,38 @@
+get:
+  summary: Fetch time reports
+  tags:
+    - Time Reports
+  parameters:
+    - $ref: "#/components/parameters/startParam"
+    - $ref: "#/components/parameters/endParam"
+    - $ref: "#/components/parameters/criteriaParam"
+    - in: query
+      name: user-id
+      description: Find time reports for the given user id
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: Array of time reports
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Timereport"
+post:
+  summary: Create new time report
+  tags:
+    - Time Reports
+  requestBody:
+    $ref: "#/components/requestBodies/Timereport"
+  responses:
+    "200":
+      description: Created time report
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Timereport"
+    "400":
+      description: Validation failed

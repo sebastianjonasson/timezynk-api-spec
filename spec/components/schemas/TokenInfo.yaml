@@ -1,0 +1,29 @@
+type: object
+properties:
+  user-id:
+    type: string
+    description: ID of currently logged in user
+  role:
+    type: string
+    description: Role of currently logged in user
+  permissions:
+    type: string
+    description: Active set of permissions
+  modules:
+    type: string
+    description: Enabled Timezynk modules
+  company-id:
+    type: string
+    description: ID of current company
+  created:
+    type: number
+    description: Timestamp in milliseconds for when the token was created
+  expires:
+    type: number
+    description: Timestamp in milliseconds for when the token will expire
+  issued-by:
+    type: string
+    description: ID if issuing server
+  audience:
+    type: string
+    description: ID of intended audience for the token

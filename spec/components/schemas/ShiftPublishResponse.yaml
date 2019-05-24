@@ -1,0 +1,6 @@
+type: object
+properties:
+  updated-shifts:
+    type: array
+    items:
+      $ref: "#/components/schemas/Shift"

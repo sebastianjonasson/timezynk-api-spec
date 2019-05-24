@@ -1,0 +1,39 @@
+post:
+  summary: Create multiple invoice rows
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/InvoiceRow"
+    description: Invoice rows to be added
+    required: true
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Newly added invoice rows
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/InvoiceRow"
+    "400":
+      description: Validation failed
+delete:
+  summary: Delete multiple invoice rows
+  parameters:
+    - name: invoice-id
+      in: query
+      required: true
+      description: Invoice ID to delete rows for
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Delete successful

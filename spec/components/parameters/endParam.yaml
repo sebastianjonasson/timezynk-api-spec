@@ -1,0 +1,7 @@
+in: query
+name: interval[end]
+description: End of matching interval
+required: true
+schema:
+  type: string
+  format: date

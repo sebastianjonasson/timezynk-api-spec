@@ -1,0 +1,31 @@
+openapi: 3.0.0
+info:
+  title: Timezynk API
+  description: API for Timezynk scheduling system
+  version: 2.4.0
+security:
+  - TZApiAuth: []
+tags:
+  - name: Auth
+    description: Endpoints for authentication and configuration
+  - name: Availability
+    description: Fetching and updating availability
+  - name: Invoice
+    description: Fetching, updating and creating invoices
+  - name: User
+    description: Calls for fetching and updating the system users.
+  - name: Shift
+    description: Calls for fetching and updating scheduled shifts.
+  - name: Time Reports
+    description: Time reports are the actual worked time as reported by the user.
+  - name: Registry
+    description: The registry handles custom data lists and their definitions.
+  - name: Registry Data
+    description: Data contained in a registry.
+  - name: Fields
+    description: The fields are used to specify the format for a specific registry instance.
+  - name: Experimental
+    description: These APIs are experimental and and may be changed at any time without
+      warning.
+servers:
+  - url: https://api.timezynk.com/api

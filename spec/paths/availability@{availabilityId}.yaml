@@ -1,0 +1,62 @@
+get:
+  summary: Fetch planned availability
+  parameters:
+    - name: availabilityId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Availability
+  responses:
+    "200":
+      description: Availability object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Availability"
+    "404":
+      description: Availability not found
+put:
+  summary: Update planned availability
+  parameters:
+    - name: availabilityId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Availability"
+    required: true
+  tags:
+    - Availability
+  responses:
+    "200":
+      description: Updated availability object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Availability"
+    "400":
+      description: Validation failed
+    "404":
+      description: Availability not found
+delete:
+  summary: Delete planned availability
+  parameters:
+    - name: availabilityId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Availability
+  responses:
+    "200":
+      description: Delete successful

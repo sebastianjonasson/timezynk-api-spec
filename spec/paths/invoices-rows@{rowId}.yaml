@@ -1,0 +1,62 @@
+get:
+  summary: Fetch invoice row
+  parameters:
+    - name: rowId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Invoice object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InvoiceRow"
+    "404":
+      description: Invoice not found
+put:
+  summary: Update invoice row
+  parameters:
+    - name: rowId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/InvoiceRow"
+    required: true
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Updated invoice row object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InvoiceRow"
+    "400":
+      description: Validation failed
+    "404":
+      description: Invoice not found
+delete:
+  summary: Delete invoice row
+  parameters:
+    - name: rowId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Delete successful

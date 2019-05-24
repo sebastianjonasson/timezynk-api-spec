@@ -1,0 +1,12 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      title:
+        type: string
+        description: Localized registry title
+      description:
+        type: string
+        description: Human-readable registry description
+    required:
+      - title

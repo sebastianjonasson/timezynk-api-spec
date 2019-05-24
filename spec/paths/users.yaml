@@ -1,0 +1,48 @@
+get:
+  summary: Users
+  description: >
+    The Users endpoint returns information about all the registered users
+    for this company.
+  parameters:
+    - name: role
+      in: query
+      description: Search by user role
+      required: false
+      schema:
+        type: string
+  tags:
+    - User
+  responses:
+    "200":
+      description: An array of users
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/User"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+post:
+  summary: Create user
+  description: Add a new user to the company
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/User"
+    description: User object to be added to the company
+    required: true
+  tags:
+    - User
+  responses:
+    "200":
+      description: Newly added user object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"

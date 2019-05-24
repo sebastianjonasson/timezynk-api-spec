@@ -1,0 +1,43 @@
+get:
+  summary: Fetch planned shifts
+  parameters:
+    - $ref: "#/components/parameters/startParam"
+    - $ref: "#/components/parameters/endParam"
+    - $ref: "#/components/parameters/criteriaParam"
+    - in: query
+      name: booked-users
+      description: Find shifts where the given user id is booked
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Shift
+  responses:
+    "200":
+      description: Array of shifts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Shift"
+post:
+  summary: Create planned shift
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Shift"
+    description: Shift to be added
+    required: true
+  tags:
+    - Shift
+  responses:
+    "200":
+      description: Newly added shift object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Shift"
+    "400":
+      description: Validation failed

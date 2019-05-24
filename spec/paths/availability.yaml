@@ -1,0 +1,43 @@
+get:
+  summary: Fetch availability
+  tags:
+    - Availability
+  parameters:
+    - $ref: "#/components/parameters/startParam"
+    - $ref: "#/components/parameters/endParam"
+    - $ref: "#/components/parameters/criteriaParam"
+    - in: query
+      name: user-id
+      description: Find availability for the given user id
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: Array of availabilities
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Availability"
+post:
+  summary: Create availability
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Availability"
+    description: Availability to be added
+    required: true
+  tags:
+    - Availability
+  responses:
+    "200":
+      description: Newly added availability object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Availability"
+    "400":
+      description: Validation failed

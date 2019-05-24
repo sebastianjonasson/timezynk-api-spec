@@ -1,0 +1,17 @@
+type: object
+properties:
+  start:
+    type: string
+    format: date
+    description: Start of matching interval
+  end:
+    type: string
+    format: date
+    description: End of matching interval
+  criteria:
+    type: string
+    description: Define how to match the interval
+    enum:
+      - intersects
+      - start-in
+    default: start-in

@@ -1,0 +1,19 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      title:
+        type: string
+        description: Human-readable title
+      registry-id:
+        type: string
+        format: ObjectId
+        description: Data belongs to this registry
+      permissions:
+        $ref: "#/components/schemas/PermissionsObject"
+      values:
+        type: object
+        description: Values for custom fields
+    required:
+      - title
+      - registry-id

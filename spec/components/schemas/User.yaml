@@ -1,0 +1,109 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      username:
+        type: string
+        description: Unique username used for logging in
+      role:
+        type: string
+        description: The role for this user
+      email:
+        type: string
+        description: User email address
+        format: email
+      employee-no:
+        type: string
+        description: User employee number
+      id-no:
+        type: string
+        description: >
+          Users [National Indentification
+          Number](https://en.wikipedia.org/wiki/National_identification_number)
+      bank-account:
+        type: string
+        description: Users bank account for salary payments
+      department:
+        type: string
+        description: department
+      company:
+        type: string
+        description: company for salary export
+      country-code:
+        type: number
+        description: country code for mobile number
+      mobile:
+        type: string
+        description: mobile number
+      work-phone:
+        type: string
+        description: work phone number
+      home-phone:
+        type: string
+        description: home phone number
+      lang:
+        type: string
+        description: users preferred language (en,sv,da or nb currently supported)
+      address:
+        type: string
+        description: users street address
+      address2:
+        type: string
+        description: users second address line
+      zip:
+        type: string
+        description: users zip code
+      city:
+        type: string
+        description: users city
+      country:
+        type: string
+        description: users country code
+      int-mobile:
+        type: string
+        readOnly: true
+        description: users full mobile with country code applied
+      relative-name:
+        type: string
+        description: name of relative
+      relative-phone:
+        type: string
+        description: phone number of relative
+      notes:
+        type: string
+        description: notes for this user
+      start:
+        type: string
+        format: date
+        description: start date for users employment
+      end:
+        type: string
+        format: date
+        description: end date for users employment
+      permissions:
+        type: array
+        description: List of tags
+        items:
+          type: string
+      combinations:
+        type: array
+        description: List of users tag combinations
+        readOnly: true
+        items:
+          type: string
+      values:
+        type: object
+        description: Values for custom registry fields
+      last-login:
+        type: number
+        description: last login timestamp (milliseconds since unix epoch)
+      last-access:
+        type: number
+        description: last access timestamp (milliseconds since unix epoch)
+      first-login:
+        type: number
+        description: first login timestamp (milliseconds since unix epoch)
+    required:
+      - username
+      - role
+      - email

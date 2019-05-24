@@ -1,0 +1,62 @@
+get:
+  summary: Fetch invoice
+  parameters:
+    - name: invoiceId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Invoice object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Invoice"
+    "404":
+      description: Invoice not found
+put:
+  summary: Update invoice
+  parameters:
+    - name: invoiceId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Invoice"
+    required: true
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Updated invoice object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Invoice"
+    "400":
+      description: Validation failed
+    "404":
+      description: Invoice not found
+delete:
+  summary: Delete invoice
+  parameters:
+    - name: invoiceId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Delete successful

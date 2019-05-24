@@ -1,0 +1,46 @@
+get:
+  summary: Fetch single user
+  tags:
+    - User
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: A single user object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+    "404":
+      description: User not found
+put:
+  summary: Update user
+  tags:
+    - User
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/User"
+    required: true
+  responses:
+    "200":
+      description: The updated user object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+    "404":
+      description: User not found

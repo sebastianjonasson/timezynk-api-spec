@@ -1,0 +1,25 @@
+type: object
+description: FieldType describes the different interpretations a custom field can
+  have.
+properties:
+  id:
+    type: string
+    description: Unique field type ID
+    readOnly: true
+  type:
+    type: string
+    description: Field storage type
+  section:
+    type: string
+    description: Field section ID
+  title:
+    type: string
+    description: Localized field type title
+  default:
+    description: Default value
+  max-length:
+    type: number
+    description: Maximum length of value stored in this field
+required:
+  - id
+  - type

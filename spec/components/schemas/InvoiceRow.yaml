@@ -1,0 +1,70 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      invoice-id:
+        type: string
+        description: Unique shift ID
+        format: ObjectId
+      weight:
+        type: number
+        description: Lighter rows float to the top of the invoice, heavier rows sink.
+      sku:
+        type: string
+        description: SKU (article number)
+      description:
+        type: string
+        description: Date when invoice is due for payment
+      count:
+        type: number
+        description: Count
+      unit:
+        type: string
+        description: Unit of measurement
+        example: hours
+      price:
+        type: number
+        description: Price per item
+      currency:
+        type: string
+        description: Currency in ISO 4217 format, must match invoice head
+        example: USD
+      discount:
+        type: number
+        description: Discount, in fraction. 0.05 == 5%.
+        example: 0.05
+      house-work:
+        type: boolean
+        description: True if the invoice row concerns tax deductible house work
+        example: false
+      duration:
+        type: number
+        description: Duration in hours of underlying time report. Used for statistics only.
+        example: 2.5
+      report-ids:
+        type: array
+        description: IDs of underlying time reports that generated this row.
+        items:
+          type: string
+          format: ObjectId
+          example: 5bf6d703571d013b348713cb
+      export-data:
+        type: object
+        description: Structed invoice row data. Exact content dependent on target invoicing software.
+        properties:
+          generic:
+            type: object
+            description: invoice row data applicable to most target systems
+            properties:
+              cost-center:
+                type: string
+                description: Cost center for book-keeping this row
+                example: 034
+              project-code:
+                type: string
+                description: Project code for book-keeping this row
+                example: PL/I
+    required:
+      - invoice-id
+      - weight
+      - export-data

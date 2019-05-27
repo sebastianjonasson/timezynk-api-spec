@@ -1459,6 +1459,9 @@ components:
             description:
               type: string
               description: Human-readable registry description
+            read-only:
+              type: boolean
+              description: 'Mark this registry as read-only, to prevent changes from the front-end'
           required:
             - title
     RegistryData:

@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Timezynk API
   description: API for Timezynk scheduling system
-  version: 2.4.0
+  version: 2.5.0
 security:
   - TZApiAuth: []
 tags:
@@ -24,6 +24,8 @@ tags:
     description: Data contained in a registry.
   - name: Fields
     description: The fields are used to specify the format for a specific registry instance.
+  - name: Settings
+    description: Settings are used to store and retreive configuration parameters.
   - name: Experimental
     description: These APIs are experimental and and may be changed at any time without warning.
 servers:
@@ -547,7 +549,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenInfo'
-        default:
+        '401':
           description: Invalid token
           content:
             application/json:
@@ -772,6 +774,93 @@ paths:
                 $ref: '#/components/schemas/Registry'
         '404':
           description: Registry not found
+  /settings/v1/company:
+    get:
+      summary: Get company settings
+      description: Fetch all stored settings for the users company.
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: Setting values
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
+  '/settings/v1/company/{settingId}':
+    get:
+      summary: Get company setting
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stored value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
+    put:
+      summary: Update company setting
+      description: 'Requires `manager` role or `write:company` scope.'
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Preference'
+      responses:
+        '200':
+          description: Updated setting value
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Validation failed
+        '404':
+          description: Not found
+    delete:
+      summary: Delete company setting
+      description: 'Requires `manager` role or `write:company` scope.'
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Preference object with setting id as key and value null
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
   /shifts:
     get:
       summary: Fetch planned shifts
@@ -1168,10 +1257,17 @@ components:
     Error:
       type: object
       properties:
+        code:
+          type: string
+          description: Error code
         error:
           type: string
+          description: Error message
         trace:
           type: string
+          description: Optional stack trace
+      required:
+        - code
     Field:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
@@ -1448,6 +1544,17 @@ components:
           type: string
           format: CombinationID
           description: Tag combination required for creating independent time reports. See User/combinations.
+    Preference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Setting ID
+        value:
+          type: object
+          description: 'Value can be anything, both primitive types and arrays and objects.'
+      required:
+        - id
     Registry:
       allOf:
         - $ref: '#/components/schemas/BasicObject'

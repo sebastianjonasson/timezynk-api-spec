@@ -1,5 +1,5 @@
 get:
-  summary: Get company setting
+  summary: Get personal setting
   tags:
     - Settings
   parameters:
@@ -19,8 +19,7 @@ get:
     "404":
       description: Not found
 put:
-  summary: Update company setting
-  description: Requires `manager` role or `write:company` scope.
+  summary: Update personal setting
   tags:
     - Settings
   parameters:
@@ -45,8 +44,7 @@ put:
     "404":
       description: Not found
 delete:
-  summary: Delete company setting
-  description: Requires `manager` role or `write:company` scope.
+  summary: Delete personal setting
   tags:
     - Settings
   parameters:

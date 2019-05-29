@@ -1,11 +1,11 @@
 get:
-  summary: Get company settings
-  description: Fetch all stored settings for the users company.
+  summary: Get personal settings
+  description: Fetch all stored settings for the user.
   tags:
     - Settings
   responses:
     "200":
-      description: Setting values
+      description: Settings
       content:
         application/json:
           schema:
@@ -15,8 +15,7 @@ get:
     "404":
       description: Not found
 post:
-  summary: Create company setting
-  description: Requires `manager` role or `write:company` scope.
+  summary: Create personal setting
   tags:
     - Settings
   requestBody:

@@ -1,0 +1,10 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Setting ID
+  value:
+    type: object
+    description: Value can be anything, both primitive types and arrays and objects.
+required:
+  - id

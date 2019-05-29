@@ -1,0 +1,69 @@
+get:
+  summary: Get company setting
+  tags:
+    - Settings
+  parameters:
+    - in: path
+      name: settingId
+      description: Setting ID
+      required: true
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Stored value
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Preference"
+    "404":
+      description: Not found
+put:
+  summary: Update company setting
+  description: Requires `manager` role or `write:company` scope.
+  tags:
+    - Settings
+  parameters:
+    - in: path
+      name: settingId
+      description: Setting ID
+      required: true
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Preference"
+  responses:
+    "200":
+      description: Updated setting value
+      content:
+        application/json:
+          schema:
+            type: object
+    "400":
+      description: Validation failed
+    "404":
+      description: Not found
+delete:
+  summary: Delete company setting
+  description: Requires `manager` role or `write:company` scope.
+  tags:
+    - Settings
+  parameters:
+    - in: path
+      name: settingId
+      description: Setting ID
+      required: true
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Preference object with setting id as key and value null
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Preference"
+    "404":
+      description: Not found

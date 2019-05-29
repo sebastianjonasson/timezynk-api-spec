@@ -791,6 +791,27 @@ paths:
                   $ref: '#/components/schemas/Preference'
         '404':
           description: Not found
+    post:
+      summary: Create company setting
+      description: 'Requires `manager` role or `write:company` scope.'
+      tags:
+        - Settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Preference'
+        description: Preference to add
+        required: true
+      responses:
+        '200':
+          description: Newly added preference object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '400':
+          description: Validation failed
   '/settings/v1/company/{settingId}':
     get:
       summary: Get company setting
@@ -836,13 +857,114 @@ paths:
             application/json:
               schema:
                 type: object
-        '400':
-          description: Validation failed
         '404':
           description: Not found
     delete:
       summary: Delete company setting
       description: 'Requires `manager` role or `write:company` scope.'
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Preference object with setting id as key and value null
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
+  /settings/v1/personal:
+    get:
+      summary: Get personal settings
+      description: Fetch all stored settings for the user.
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: Settings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
+    post:
+      summary: Create personal setting
+      tags:
+        - Settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Preference'
+        description: Preference to add
+        required: true
+      responses:
+        '200':
+          description: Newly added preference object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '400':
+          description: Validation failed
+  '/settings/v1/personal/{settingId}':
+    get:
+      summary: Get personal setting
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stored value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
+    put:
+      summary: Update personal setting
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Preference'
+      responses:
+        '200':
+          description: Updated setting value
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Not found
+    delete:
+      summary: Delete personal setting
       tags:
         - Settings
       parameters:

@@ -35,6 +35,12 @@ allOf:
       order-no:
         type: string
         description: Order number or code
+      invoice-no:
+        type: string
+        description: Invoice number or code. Upon successful transfer Timezynk sets the invoice-no to the invoice number provided by third-party service.
+      read-only:
+        type: boolean
+        description: When read-only is set to true, the invoice can no longer be edited. Only cancel and delete action can be performed. Timezynk sets read-only as true upon successful transfer to third-party service.
       canceled:
         type: boolean
         description: True if the invoice is canceled

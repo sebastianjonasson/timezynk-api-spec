@@ -2,6 +2,13 @@ get:
   summary: List custom registry fields
   tags:
     - Fields
+  parameters:
+    - in: query
+      name: registry-id
+      description: Only return data for registry with this ID.
+      schema:
+        type: string
+        format: ObjectId
   responses:
     "200":
       description: A list of all custom registry fields

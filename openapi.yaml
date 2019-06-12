@@ -615,6 +615,14 @@ paths:
       summary: Create new registry data
       tags:
         - Registry Data
+      parameters:
+        - in: query
+          name: preprocess
+          description: 'Preprocess data before saving, setting any calculated fields.'
+          schema:
+            type: string
+            enum:
+              - 'true'
       requestBody:
         $ref: '#/components/requestBodies/RegistryData'
       responses:

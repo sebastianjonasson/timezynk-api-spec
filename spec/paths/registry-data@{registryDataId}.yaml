@@ -29,6 +29,12 @@ put:
       schema:
         type: string
         format: ObjectId
+    - in: query
+      name: preprocess
+      description: Preprocess data before saving, setting any calculated fields.
+      schema:
+        type: string
+        enum: ["true"]
   requestBody:
     $ref: "#/components/requestBodies/RegistryData"
   responses:

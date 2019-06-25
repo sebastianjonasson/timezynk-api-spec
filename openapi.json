@@ -2159,7 +2159,7 @@
             "readOnly": true,
             "format": "ObjectId"
           },
-          "changed": {
+          "valid-from": {
             "type": "number",
             "description": "Timestamp in milliseconds for when the object was last changed",
             "example": 1558604030403,

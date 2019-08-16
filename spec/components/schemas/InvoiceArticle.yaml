@@ -1,0 +1,16 @@
+allOf:
+  - $ref: '#/components/schemas/BaseArticle'
+  - type: object
+    properties:
+      sku:
+        type: string
+        description: Invoice article SKU (article code)
+        example: 001-21
+      discount:
+        type: number
+        description: Discount in fractions to apply  (0.1 means 10% discount)
+        example: 0.1
+      house-work:
+        type: boolean
+        description: Set to true if article is tax-deductible as house work
+        example: false

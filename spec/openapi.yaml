@@ -12,6 +12,8 @@ tags:
     description: Fetching and updating availability
   - name: Invoice
     description: Fetching, updating and creating invoices
+  - name: Invoice articles
+    description: Fetching, updating and creating invoices articles
   - name: User
     description: Calls for fetching and updating the system users.
   - name: Shift
@@ -24,6 +26,8 @@ tags:
     description: Data contained in a registry.
   - name: Fields
     description: The fields are used to specify the format for a specific registry instance.
+  - name: Salary articles
+    description: Fetching, updating and creating salary articles
   - name: Settings
     description: Settings are used to store and retreive configuration parameters.
   - name: Experimental

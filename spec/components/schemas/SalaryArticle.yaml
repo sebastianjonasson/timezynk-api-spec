@@ -1,0 +1,12 @@
+allOf:
+  - $ref: '#/components/schemas/BaseArticle'
+  - type: object
+    properties:
+      code:
+        type: string
+        description: Salary article code
+        example: OB1
+      average-cost:
+        type: number
+        description: Average cost in article currency
+        example: 12.50

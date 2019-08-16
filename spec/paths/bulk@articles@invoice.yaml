@@ -1,0 +1,24 @@
+post:
+  summary: Create multiple invoice articles
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/InvoiceArticle"
+    description: Invoice articles to be added
+    required: true
+  tags:
+    - Invoice articles
+  responses:
+    "200":
+      description: Newly added invoice article objects
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/InvoiceArticle"
+    "400":
+      description: Validation failed

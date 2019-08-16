@@ -1,0 +1,56 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Unique ID
+    format: ObjectId
+    readOnly: true
+  title:
+    type: string
+    description: Title describing the article
+    example: Qualified overtime
+  currency:
+    type: string
+    description: Article currency in ISO 4217 format
+    example: USD
+  price:
+    type: number
+    description: Price in specified currency
+    example: 19.99
+  price-settings:
+    type: object
+    description: Settings for calculation and interpretation of price
+  unit:
+    type: string
+    description: Article unit. Hours, pieces, kilometers, etc.
+    example: h
+  factor:
+    type: number
+    description: Factor to multiply the article with after its nominal value has been calculated
+    example: 0.5
+  calculation:
+    type: string
+    enum:
+      - shifts
+      - shifts_no_users
+      - dates
+      - days
+      - field
+    description: >
+      Controls how the article value is calculated by the agreement engine.
+       * `null` or `undefined` - Use reported hours
+       * `shifts` - Count the number of shifts that generated the article and divide the value over all applicable users
+       * `shifts_no_users` - Count the number of shifts that generated the article and give each user the full count
+       * `dates` - Count the number of distinct dates spanned by the reports
+       * `days` - Find the minumum number of 24-hours periods required to fill the reported time spanned
+       * `field` - Fetch the value from a numeric field
+  calculation-settings:
+    type: object
+    description: Settings for calculation and interpretation of article count
+  archived:
+    type: number
+    description: Timestamp in milliseconds for when the object was archived, or null if it is still active
+    example: null
+required:
+  - id
+  - title

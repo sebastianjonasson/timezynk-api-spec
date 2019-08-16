@@ -1,0 +1,24 @@
+post:
+  summary: Create multiple salary articles
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/SalaryArticle"
+    description: Salary articles to be added
+    required: true
+  tags:
+    - Salary articles
+  responses:
+    "200":
+      description: Newly added salary article objects
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/SalaryArticle"
+    "400":
+      description: Validation failed

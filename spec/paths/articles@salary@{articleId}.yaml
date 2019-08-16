@@ -1,0 +1,45 @@
+get:
+  summary: Fetch salary article
+  parameters:
+    - name: articleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Salary articles
+  responses:
+    "200":
+      description: Salary article
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SalaryArticle"
+put:
+  summary: Update salary article
+  parameters:
+    - name: articleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/SalaryArticle"
+    description: Salary article changes
+    required: true
+  tags:
+    - Salary articles
+  responses:
+    "200":
+      description: Updated salary article object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SalaryArticle"
+    "400":
+      description: Validation failed

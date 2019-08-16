@@ -1,0 +1,33 @@
+get:
+  summary: Fetch invoice articles
+  tags:
+    - Invoice articles
+  responses:
+    "200":
+      description: Array of invoice articles
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/InvoiceArticle"
+post:
+  summary: Create invoice article
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/InvoiceArticle"
+    description: Invoice article to be added
+    required: true
+  tags:
+    - Invoice articles
+  responses:
+    "200":
+      description: Newly added invoice article object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InvoiceArticle"
+    "400":
+      description: Validation failed

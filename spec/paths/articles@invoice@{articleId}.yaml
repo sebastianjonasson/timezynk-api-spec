@@ -1,0 +1,45 @@
+get:
+  summary: Fetch invoice article
+  parameters:
+    - name: articleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Invoice articles
+  responses:
+    "200":
+      description: Invoice article
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InvoiceArticle"
+put:
+  summary: Update invoice article
+  parameters:
+    - name: articleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/InvoiceArticle"
+    description: Invoice article changes
+    required: true
+  tags:
+    - Invoice articles
+  responses:
+    "200":
+      description: Updated invoice article object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InvoiceArticle"
+    "400":
+      description: Validation failed

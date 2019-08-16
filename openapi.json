@@ -24,6 +24,10 @@
       "description": "Fetching, updating and creating invoices"
     },
     {
+      "name": "Invoice articles",
+      "description": "Fetching, updating and creating invoices articles"
+    },
+    {
       "name": "User",
       "description": "Calls for fetching and updating the system users."
     },
@@ -48,6 +52,10 @@
       "description": "The fields are used to specify the format for a specific registry instance."
     },
     {
+      "name": "Salary articles",
+      "description": "Fetching, updating and creating salary articles"
+    },
+    {
       "name": "Settings",
       "description": "Settings are used to store and retreive configuration parameters."
     },
@@ -62,6 +70,264 @@
     }
   ],
   "paths": {
+    "/articles/invoice": {
+      "get": {
+        "summary": "Fetch invoice articles",
+        "tags": [
+          "Invoice articles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of invoice articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceArticle"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create invoice article",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceArticle"
+              }
+            }
+          },
+          "description": "Invoice article to be added",
+          "required": true
+        },
+        "tags": [
+          "Invoice articles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added invoice article object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceArticle"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          }
+        }
+      }
+    },
+    "/articles/invoice/{articleId}": {
+      "get": {
+        "summary": "Fetch invoice article",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "tags": [
+          "Invoice articles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice article",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceArticle"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update invoice article",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceArticle"
+              }
+            }
+          },
+          "description": "Invoice article changes",
+          "required": true
+        },
+        "tags": [
+          "Invoice articles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated invoice article object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceArticle"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          }
+        }
+      }
+    },
+    "/articles/salary": {
+      "get": {
+        "summary": "Fetch salary articles",
+        "tags": [
+          "Salary articles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of salary articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SalaryArticle"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create salary article",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SalaryArticle"
+              }
+            }
+          },
+          "description": "Salary article to be added",
+          "required": true
+        },
+        "tags": [
+          "Salary articles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added salary article object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalaryArticle"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          }
+        }
+      }
+    },
+    "/articles/salary/{articleId}": {
+      "get": {
+        "summary": "Fetch salary article",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "tags": [
+          "Salary articles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Salary article",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalaryArticle"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update salary article",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SalaryArticle"
+              }
+            }
+          },
+          "description": "Salary article changes",
+          "required": true
+        },
+        "tags": [
+          "Salary articles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated salary article object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalaryArticle"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          }
+        }
+      }
+    },
     "/availability": {
       "get": {
         "summary": "Fetch availability",
@@ -264,6 +530,86 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/bulk/articles/invoice": {
+      "post": {
+        "summary": "Create multiple invoice articles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/InvoiceArticle"
+                }
+              }
+            }
+          },
+          "description": "Invoice articles to be added",
+          "required": true
+        },
+        "tags": [
+          "Invoice articles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added invoice article objects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceArticle"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          }
+        }
+      }
+    },
+    "/bulk/articles/salary": {
+      "post": {
+        "summary": "Create multiple salary articles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SalaryArticle"
+                }
+              }
+            }
+          },
+          "description": "Salary articles to be added",
+          "required": true
+        },
+        "tags": [
+          "Salary articles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added salary article objects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SalaryArticle"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
           }
         }
       }
@@ -2138,12 +2484,76 @@
           }
         ]
       },
+      "BaseArticle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique ID",
+            "format": "ObjectId",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "description": "Title describing the article",
+            "example": "Qualified overtime"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Article currency in ISO 4217 format",
+            "example": "USD"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price in specified currency",
+            "example": 19.99
+          },
+          "price-settings": {
+            "type": "object",
+            "description": "Settings for calculation and interpretation of price"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Article unit. Hours, pieces, kilometers, etc.",
+            "example": "h"
+          },
+          "factor": {
+            "type": "number",
+            "description": "Factor to multiply the article with after its nominal value has been calculated",
+            "example": 0.5
+          },
+          "calculation": {
+            "type": "string",
+            "enum": [
+              "shifts",
+              "shifts_no_users",
+              "dates",
+              "days",
+              "field"
+            ],
+            "description": "Controls how the article value is calculated by the agreement engine.\n * `null` or `undefined` - Use reported hours\n * `shifts` - Count the number of shifts that generated the article and divide the value over all applicable users\n * `shifts_no_users` - Count the number of shifts that generated the article and give each user the full count\n * `dates` - Count the number of distinct dates spanned by the reports\n * `days` - Find the minumum number of 24-hours periods required to fill the reported time spanned\n * `field` - Fetch the value from a numeric field\n"
+          },
+          "calculation-settings": {
+            "type": "object",
+            "description": "Settings for calculation and interpretation of article count"
+          },
+          "archived": {
+            "type": "number",
+            "description": "Timestamp in milliseconds for when the object was archived, or null if it is still active",
+            "example": null
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ]
+      },
       "BasicObject": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "description": "Unique shift ID",
+            "description": "Unique ID",
             "format": "ObjectId",
             "readOnly": true
           },
@@ -2461,6 +2871,33 @@
           }
         ]
       },
+      "InvoiceArticle": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseArticle"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "sku": {
+                "type": "string",
+                "description": "Invoice article SKU (article code)",
+                "example": "001-21"
+              },
+              "discount": {
+                "type": "number",
+                "description": "Discount in fractions to apply  (0.1 means 10% discount)",
+                "example": 0.1
+              },
+              "house-work": {
+                "type": "boolean",
+                "description": "Set to true if article is tax-deductible as house work",
+                "example": false
+              }
+            }
+          }
+        ]
+      },
       "InvoiceExport": {
         "allOf": [
           {
@@ -2700,6 +3137,28 @@
               "title",
               "registry-id"
             ]
+          }
+        ]
+      },
+      "SalaryArticle": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseArticle"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Salary article code",
+                "example": "OB1"
+              },
+              "average-cost": {
+                "type": "number",
+                "description": "Average cost in article currency",
+                "example": 12.5
+              }
+            }
           }
         ]
       },

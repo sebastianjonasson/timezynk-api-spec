@@ -1,0 +1,18 @@
+get:
+  summary: User info
+  description: OpenID Connect User Info endpoint. Returns decoded standardized claims.
+  tags:
+    - Auth
+  responses:
+    "200":
+      description: User claims
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UserInfo"
+    "401":
+      description: Invalid token
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

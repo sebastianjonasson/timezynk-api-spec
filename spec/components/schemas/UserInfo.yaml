@@ -1,0 +1,26 @@
+type: object
+properties:
+  sub:
+    type: string
+    description: User ID
+  name:
+    type: string
+    description: Full name
+  email:
+    type: email
+    description: User email
+  email_verified:
+    type: boolean
+    description: Is email email verified
+  locale:
+    type: string
+    description: User preferred language
+  phone_number:
+    type: string
+    description: Full user phone number with international prefix
+  updated_at:
+    type: timestamp
+    description: Timestamp in seconds for when the user was last changed
+  picture:
+    type: url
+    description: URL to users profile picture

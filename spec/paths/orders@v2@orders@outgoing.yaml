@@ -1,0 +1,21 @@
+get:
+  summary: Index outgoing orders
+  description: |
+    The Orders endpoint returns an array of all outoing orders.
+  tags:
+    - Orders
+  responses:
+    200:
+      description: An array of orders
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Order'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

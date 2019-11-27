@@ -5,6 +5,16 @@ properties:
     description: Unique ID
     format: ObjectId
     readOnly: true
+  vid:
+    type: string
+    description: Unique identifier representing a specific version of an item
+    format: ObjectId
+    readOnly: true
+  company-id:
+    type: string
+    description: Id of the company who owns this item.
+    format: ObjectId
+    readOnly: true
   created:
     type: number
     description: Timestamp in milliseconds for when the object was created
@@ -19,6 +29,10 @@ properties:
     type: number
     description: Timestamp in milliseconds for when the object was last changed
     example: 1558604030403
+    readOnly: true
+  valid-to:
+    type: number
+    format: timestamp
     readOnly: true
   changed-by:
     type: string

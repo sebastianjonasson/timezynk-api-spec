@@ -7,8 +7,9 @@ properties:
     type: string
     description: Full name
   email:
-    type: email
+    type: string
     description: User email
+    format: email
   email_verified:
     type: boolean
     description: Is email email verified
@@ -19,8 +20,8 @@ properties:
     type: string
     description: Full user phone number with international prefix
   updated_at:
-    type: timestamp
+    type: integer
     description: Timestamp in seconds for when the user was last changed
   picture:
-    type: url
+    type: string
     description: URL to users profile picture

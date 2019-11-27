@@ -32,8 +32,6 @@ post:
           $ref: '#/components/schemas/OrderClient'
     description: Order client to be created.
     required: true
-      
-
   responses:
     200:
       description: An array of order clients

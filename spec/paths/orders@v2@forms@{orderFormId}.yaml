@@ -7,8 +7,9 @@ get:
     - name: orderFormId
       in: path
       required: true
-      type: string
-      format: ObjectId
+      schema:
+        type: string
+        format: ObjectId
   responses:
     200:
       description: Single order form

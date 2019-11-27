@@ -1,6 +1,6 @@
 allOf:
   - $ref: '#/components/schemas/DefaultEntityFields'
-  - properties: 
+  - properties:
       id:
         type: string
         description: Unique identifier representing a specific order form
@@ -13,9 +13,9 @@ allOf:
           Should be used to set `order.supplier-id` when creating a new order.
         format: ObjectId
         readOnly: true
-      title: 
-          type: string
-          description: Name of the order form
+      title:
+        type: string
+        description: Name of the order form
       shift-fields:
         type: array
         description: List of shifts fields related to the order.

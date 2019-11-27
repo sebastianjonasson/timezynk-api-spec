@@ -1,6 +1,6 @@
 allOf:
   - $ref: '#/components/schemas/OrderFormField'
-  - properties: 
+  - properties:
       field-id:
         type: string
         format: ObjectId

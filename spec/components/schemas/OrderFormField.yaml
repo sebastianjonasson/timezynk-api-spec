@@ -1,34 +1,34 @@
 type: object
-  properties:
-    id:
-      type: string
-      description: Unique identifier representing a specific custom field
-      format: ObjectId
-      readOnly: true
-    field-type:
-      type: string
-      description: Field storage type
-    required:
-      type: boolean
-      description: Is this field required?
-    public:
-      type: boolean
-      description: |
-        Allow the client to see this field.
-    protected:
-      type: boolean
-      description: Field should only the editable by and visible for the supplier.
-    readonly:
-      type: boolean
-      description: Field is read-only
-    values:
-      type: object
-      description: Type specific values
-    settings:
-      type: object
-      description: Type specific settings
-    title:
-      type: string
-      description: Human-readable field title
+properties:
+  id:
+    type: string
+    description: Unique identifier representing a specific custom field
+    format: ObjectId
+    readOnly: true
+  field-type:
+    type: string
+    description: Field storage type
   required:
-    - title
+    type: boolean
+    description: Is this field required?
+  public:
+    type: boolean
+    description: |
+      Allow the client to see this field.
+  protected:
+    type: boolean
+    description: Field should only the editable by and visible for the supplier.
+  readonly:
+    type: boolean
+    description: Field is read-only
+  values:
+    type: object
+    description: Type specific values
+  settings:
+    type: object
+    description: Type specific settings
+  title:
+    type: string
+    description: Human-readable field title
+required:
+  - title

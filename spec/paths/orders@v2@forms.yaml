@@ -7,11 +7,15 @@ get:
   responses:
     200:
       description: An array of order froms
-      schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/OrderForm'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OrderForm'
     default:
       description: Unexpected error
-      schema:
-        $ref: '#/components/schemas/Error'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

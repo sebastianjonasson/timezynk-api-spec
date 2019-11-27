@@ -12,9 +12,13 @@ post:
   responses:
     200:
       description: Array of order client forms
-      schema:
-        $ref: '#/components/schemas/OrderForm'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderForm'
     default:
       description: Unexpected error
-      schema:
-        $ref: '#/components/schemas/Error'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

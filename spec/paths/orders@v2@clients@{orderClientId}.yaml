@@ -12,11 +12,15 @@ get:
   responses:
     200:
       description: Single order client
-      schema:
-        $ref: '#/components/schemas/OrderClient'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrderClient'
     404:
       description: Order client not found
     default:
       description: Unexpected error
-      schema:
-        $ref: '#/components/schemas/Error'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

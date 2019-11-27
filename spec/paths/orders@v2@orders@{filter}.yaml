@@ -16,11 +16,15 @@ get:
   responses:
     200:
       description: An array of orders
-      schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/Order'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Order'
     default:
       description: Unexpected error
-      schema:
-        $ref: '#/components/schemas/Error'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

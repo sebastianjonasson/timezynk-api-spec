@@ -8,11 +8,15 @@ get:
   responses:
     200:
       description: An array of order suppliers
-      schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/OrderSupplier'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OrderSupplier'
     default:
       description: Unexpected error
-      schema:
-        $ref: '#/components/schemas/Error'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

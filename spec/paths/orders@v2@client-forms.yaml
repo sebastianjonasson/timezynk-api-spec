@@ -7,13 +7,17 @@ get:
   responses:
     200:
       description: Single order client form item
-      schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/OrderForm'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OrderForm'
     404:
       description: Order client not found
     default:
       description: Unexpected error
-      schema:
-        $ref: '#/components/schemas/Error'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

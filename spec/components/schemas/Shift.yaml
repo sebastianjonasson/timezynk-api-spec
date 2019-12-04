@@ -31,12 +31,38 @@ allOf:
       duplicity:
         type: number
         description: Maximum (and desired) number of booked users
+        default: 1
       values:
         type: object
         description: Values for custom registry fields
       withhold:
         type: boolean
         description: Hide shift from users making it visible for managers only
+        readOnly: true
+      status:
+        type: string
+        description: Shift status
+        enum:
+          - active
+          - inactive
+          - duplicate
+          - order-outgoing
+        default: active
+        readOnly: true
+      group-id:
+        type: string
+        format: ObjectId
+        description: Common group ID for grouping several shifts together
+        default: null
+      order-id:
+        type: string
+        format: ObjectId
+        description: ID of order that created the shift
+        readOnly: true
+      mirror-shift-id:
+        type: string
+        format: ObjectId
+        description: The corresponding shift-id for the client or supplier when this shift is part of an order
         readOnly: true
     required:
       - id

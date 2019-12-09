@@ -1,0 +1,14 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - $ref: '#/components/schemas/BaseShift'
+  - type: object
+    properties:
+      order-shift-id:
+        type: string
+        format: ObjectId
+        description: The corresponding shift-id when this shift is part of an order.
+        readOnly: true
+    required:
+      - id
+      - start
+      - end

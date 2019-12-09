@@ -1,0 +1,71 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - properties: 
+      status:
+        type: string
+        description: Status of the order
+        readOnly: true
+      rfq-no:
+        type: string
+        description: Vid of the order form used to create the order.
+        format: ObjectId
+      form-id:
+        type: string
+        description: Id of the order form used to create the order.
+        format: ObjectId
+      form-vid:
+        type: string
+        description: Vid of the order form used to create the order.
+        format: ObjectId
+      rfq-parent-id:
+        type: string
+        description: Id referncing to the rfq parent. Only for internal use.
+        format: ObjectId
+        readOnly: true
+      rfq-parent-vid:
+        type: string
+        description: Vid of the order form used to create the order.
+        format: ObjectId
+      original-duplicity:
+        type: number
+        description: Amount of people to be booked for the this order.
+        readOnly: true
+      scheduler:
+        type: object
+        description: Name and contact defails of the scheduler requesting the quotes.
+      scheduler-id:
+        type: string
+        description: |
+          Id of the company requesting the quotes
+          Should almost always be set to the current user's company-id.
+        format: ObjectId
+      supplier-id:
+        type: string
+        description: |
+          Id of the company supplying quotes.
+          When creating an order, the `supplier-id` is found in the order form associated with the order to be created.
+          For interal orders set `supplier-id` to the same value as `client-id`
+        format: ObjectId
+      message:
+        type: string
+        description: Message entered by the scheduler when creating the RFQ.
+      values:
+        type: object
+        description: |
+          Key-value store for custom fields defined in the order form associated with the rfq.
+          The key should be set to the `field-template-id`. See `fields` property in Order Form.
+        default: {}
+      shift-dates:
+        type: array
+        description: All dates which where shifts are occuring during the order
+        items:
+          type: string
+        readOnly: true
+    required:
+      - form-id
+      - form-vid
+      - rfq-id
+      - rfq-vid
+      - scheduler-id
+      - supplier-id
+      - values

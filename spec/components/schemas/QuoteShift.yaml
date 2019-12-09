@@ -5,7 +5,7 @@ allOf:
     properties:
       booked-users:
         type: array
-        description: List of booked users
+        description: List of suggested users
         readOnly: true
         items:
           type: string
@@ -14,22 +14,24 @@ allOf:
         type: number
         readOnly: true
         description: Number of booked users
-      status:
-        type: string
-        description: Shift status
-        enum:
-          - active
-          - inactive
-          - duplicate
-          - order-outgoing
-        default: active
-        readOnly: true
-      mirror-shift-id:
+      rfq-id:
         type: string
         format: ObjectId
-        description: The corresponding shift-id for the client or supplier when this shift is part of an order
+        description: ID of RfQ parent that created this quote
+        readOnly: true
+      rfq-shift-id:
+        type: string
+        format: ObjectId
+        description: The corresponding shift-id from the RfQ.
+        readOnly: true
+      order-shift-id:
+        type: string
+        format: ObjectId
+        description: The corresponding shift-id when this shift is part of an order.
         readOnly: true
     required:
       - id
+      - rfq-id
+      - rfq-shift-id
       - start
       - end

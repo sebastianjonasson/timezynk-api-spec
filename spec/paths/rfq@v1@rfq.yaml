@@ -1,0 +1,31 @@
+post:
+  summary: Create RfQs
+  description: |
+    Endpoint for creating a new RfQs.
+
+    To create RfQ you first need to create an RfQ parent. You should then use `id`, `vid`, `rfq-no`, `fields`, `form-id` and `form-vid` to build your RFQ object.
+  requestBody:
+    description: RFQ child object to be created.
+    required: true
+    content:
+      application/json:
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/Rfq'
+          - properties:
+              suppliers:
+                type: array
+                description: List of quote suppliers to create an RfQ child for.
+                items:
+                  $ref: '#/components/schemas/OrderSupplier'
+  tags:
+    - RfQ
+  responses:
+    200:
+      description: Newly added RfQ´s
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Rfq'

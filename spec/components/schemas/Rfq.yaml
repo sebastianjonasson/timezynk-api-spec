@@ -3,25 +3,27 @@ allOf:
   - properties: 
       status:
         type: string
-        description: Status of the order
+        description: Status of the RfQ
         readOnly: true
       rfq-no:
         type: string
-        description: Vid of the order form used to create the order.
+        description: The RfQ number.
         format: ObjectId
+        readOnly: true
       form-id:
         type: string
         description: Id of the order form used to create the order.
         format: ObjectId
+        readOnly: true
       form-vid:
         type: string
         description: Vid of the order form used to create the order.
         format: ObjectId
+        readOnly: true
       rfq-parent-id:
         type: string
         description: Id referncing to the rfq parent. Only for internal use.
         format: ObjectId
-        readOnly: true
       rfq-parent-vid:
         type: string
         description: Vid of the order form used to create the order.
@@ -30,42 +32,45 @@ allOf:
         type: number
         description: Amount of people to be booked for the this order.
         readOnly: true
-      scheduler:
+      client:
         type: object
         description: Name and contact defails of the scheduler requesting the quotes.
-      scheduler-id:
+        readOnly: true
+      client-id:
         type: string
         description: |
           Id of the company requesting the quotes
           Should almost always be set to the current user's company-id.
         format: ObjectId
+        readOnly: true
       supplier-id:
         type: string
         description: |
           Id of the company supplying quotes.
           When creating an order, the `supplier-id` is found in the order form associated with the order to be created.
-          For interal orders set `supplier-id` to the same value as `client-id`
         format: ObjectId
+        readOnly: true
       message:
         type: string
-        description: Message entered by the scheduler when creating the RFQ.
+        description: Message entered by the client when creating the RfQ.
+        readOnly: true
       values:
         type: object
         description: |
           Key-value store for custom fields defined in the order form associated with the rfq.
           The key should be set to the `field-template-id`. See `fields` property in Order Form.
         default: {}
+        readOnly: true
       shift-dates:
         type: array
-        description: All dates which where shifts are occuring during the order
+        description: All dates which where shifts are occuring during the RfQ
         items:
           type: string
         readOnly: true
     required:
       - form-id
       - form-vid
-      - rfq-id
-      - rfq-vid
-      - scheduler-id
-      - supplier-id
+      - rfq-parent-id
+      - rfq-parent-vid
+      - client-id
       - values

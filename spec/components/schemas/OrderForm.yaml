@@ -1,11 +1,6 @@
 allOf:
   - $ref: '#/components/schemas/BasicObject'
   - properties:
-      id:
-        type: string
-        description: Unique identifier representing a specific order form
-        format: ObjectId
-        readOnly: true
       supplier-id:
         type: string
         description: |
@@ -38,13 +33,7 @@ example:
   changed-by: "5dde6e21c9e77c0001a1e3b0"
 
   # specific
-  status: "no status"
-  form-id: "5dde7024eded8872705a1ff7"
-  form-vid: "5dde71e4c9e77c000173dd03"
-  original-duplicity: 3
-  client: {}
-  client-id: "5dde6e21c9e77c0001a1e3a7"
-  message: "hejhej"
-  values: {}
-  shift-dates: ["2019-11-29", "2019-11-30", "2019-11-28"]
-  rfq-no: "13"
+  supplier-id: ""
+  title: "test form"
+  shift-fields: []
+  fields: []

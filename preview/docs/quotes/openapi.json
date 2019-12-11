@@ -1535,7 +1535,12 @@
                   "items": {
                     "$ref": "#/components/schemas/OrderForm"
                   }
-                }
+                },
+                "example": [
+                  {
+                    "$ref": "#/components/examples/formExample"
+                  }
+                ]
               }
             }
           },
@@ -2380,6 +2385,11 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RfqParent"
+                },
+                "examples": {
+                  "formExample": {
+                    "$ref": "#/components/examples/rfqParentExample"
+                  }
                 }
               }
             }
@@ -3366,9 +3376,7 @@
               "form-vid",
               "client-id",
               "supplier-id",
-              "shifts",
-              "values",
-              "email"
+              "values"
             ]
           }
         ]
@@ -3489,10 +3497,7 @@
             "description": "Timestamp in milliseconds for when the object was archived, or null if it is still active",
             "readOnly": true
           }
-        },
-        "required": [
-          "id"
-        ]
+        }
       },
       "Break": {
         "type": "object",
@@ -4483,7 +4488,6 @@
               }
             },
             "required": [
-              "id",
               "start",
               "end"
             ]
@@ -4557,7 +4561,6 @@
               }
             },
             "required": [
-              "id",
               "start",
               "end"
             ]
@@ -5037,6 +5040,53 @@
         "schema": {
           "type": "string",
           "format": "date"
+        }
+      }
+    },
+    "examples": {
+      "formExample": {
+        "value": {
+          "id": "5dde7024eded8872705a1ff7",
+          "vid": "5dde71e4c9e77c000173dd03",
+          "company-id": "5dde6e21c9e77c0001a1e3a7",
+          "created": 1574858788000,
+          "created-by": "5dde6e21c9e77c0001a1e3b0",
+          "valid-from": 1574859236203,
+          "changed-by": "5dde6e21c9e77c0001a1e3b0",
+          "supplier-id": "5dde6e21c9e77c0001a1e3a7",
+          "title": "Testform1",
+          "shift-fields": [],
+          "fields": [],
+          "$ref": "#/components/examples/rfqParentExample"
+        }
+      },
+      "rfqParentExample": {
+        "value": {
+          "id": "5dde7024eded8872705a1ff7",
+          "vid": "5dde71e4c9e77c000173dd03",
+          "company-id": "5dde6e21c9e77c0001a1e3a7",
+          "created": 1574858788000,
+          "created-by": "5dde6e21c9e77c0001a1e3b0",
+          "valid-from": 1574859236203,
+          "changed-by": "5dde6e21c9e77c0001a1e3b0",
+          "supplier-id": "5dde6e21c9e77c0001a1e3a7",
+          "title": "Testform1",
+          "shift-fields": [],
+          "fields": [],
+          "status": "no status",
+          "form-id": "5dde7024eded8872705a1ff7",
+          "form-vid": "5dde71e4c9e77c000173dd03",
+          "original-duplicity": 3,
+          "client": {},
+          "client-id": "5dde6e21c9e77c0001a1e3a7",
+          "message": "hejhej",
+          "values": {},
+          "shift-dates": [
+            "2019-11-29",
+            "2019-11-30",
+            "2019-11-28"
+          ],
+          "rfq-no": "13"
         }
       }
     },

@@ -27,6 +27,3 @@ post:
         application/json:
           schema:
             $ref: '#/components/schemas/RfqParent'
-          examples:
-            formExample:
-              $ref: '#/components/examples/RfqParent'

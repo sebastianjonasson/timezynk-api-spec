@@ -38,6 +38,5 @@ allOf:
         description: ID of order that created the shift
         readOnly: true
     required:
-      - id
       - start
       - end

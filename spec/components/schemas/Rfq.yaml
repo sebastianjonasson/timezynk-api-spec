@@ -14,12 +14,10 @@ allOf:
         type: string
         description: Id of the order form used to create the order.
         format: ObjectId
-        readOnly: true
       form-vid:
         type: string
         description: Vid of the order form used to create the order.
         format: ObjectId
-        readOnly: true
       rfq-parent-id:
         type: string
         description: Id referncing to the rfq parent. Only for internal use.
@@ -74,3 +72,28 @@ allOf:
       - rfq-parent-vid
       - client-id
       - values
+
+example:
+  # basic
+  id: "5dde7024eded8872705a0002"
+  vid: "5dde71e4c9e77c0001730002"
+  company-id: "5dde6e21c9e77c0001a1e3a7"
+  created: 1574858788000
+  created-by: "5dde6e21c9e77c0001a1e3b0"
+  valid-from: 1574859236203
+  changed-by: "5dde6e21c9e77c0001a1e3b0"
+
+  # specific
+  status: "active"
+  rfq-no: "43"
+  form-id: "5dde7024eded8872705a0000"
+  form-vid: "5dde71e4c9e77c0001730000"
+  rfq-parent-id: "5dde7024eded8872705a0001"
+  rfq-parent-vid: "5dde71e4c9e77c0001730001"
+  original-duplicity: 3
+  client: {}
+  client-id: "5dde6e21c9e77c0001a1e3a7"
+  supplier-id: "5dde6e21c9e77c0001a1e3a8"
+  message: "My message"
+  values: {}
+  shift-dates: ["2019-01-01"]

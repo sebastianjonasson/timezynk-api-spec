@@ -1,0 +1,14 @@
+# basic
+id: "5dde7024eded8872705a0000"
+vid: "5dde71e4c9e77c0001730000"
+company-id: "5dde6e21c9e77c0001a1e3a7"
+created: 1574858788000
+created-by: "5dde6e21c9e77c0001a1e3b0"
+valid-from: 1574859236203
+changed-by: "5dde6e21c9e77c0001a1e3b0"
+
+# specific
+supplier-id: "5dde6e21c9e77c0001a1e3a7"
+title: "Testform1"
+shift-fields: []
+fields: []

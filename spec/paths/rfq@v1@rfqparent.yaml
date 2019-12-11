@@ -29,4 +29,4 @@ post:
             $ref: '#/components/schemas/RfqParent'
           examples:
             formExample:
-              $ref: '#/components/examples/rfqParentExample'
+              $ref: '#/components/examples/RfqParent'

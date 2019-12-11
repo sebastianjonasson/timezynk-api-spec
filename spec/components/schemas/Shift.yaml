@@ -30,6 +30,5 @@ allOf:
         description: The corresponding shift-id for the client or supplier when this shift is part of an order
         readOnly: true
     required:
-      - id
       - start
       - end

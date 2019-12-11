@@ -1,0 +1,14 @@
+
+value:
+  id: "5dde7024eded8872705a1ff7"
+  vid: "5dde71e4c9e77c000173dd03"
+  company-id: "5dde6e21c9e77c0001a1e3a7"
+  created: 1574858788000
+  created-by: "5dde6e21c9e77c0001a1e3b0"
+  valid-from: 1574859236203
+  changed-by: "5dde6e21c9e77c0001a1e3b0"
+  supplier-id: "5dde6e21c9e77c0001a1e3a7"
+  title: "Testform1"
+  shift-fields: []
+  fields: []
+  $ref: '#/components/examples/rfqParentExample'

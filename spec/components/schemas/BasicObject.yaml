@@ -43,5 +43,3 @@ properties:
     type: number
     description: Timestamp in milliseconds for when the object was archived, or null if it is still active
     readOnly: true
-required:
-  - id

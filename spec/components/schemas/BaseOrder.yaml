@@ -46,6 +46,4 @@ allOf:
       - form-vid
       - client-id
       - supplier-id
-      - shifts
       - values
-      - email

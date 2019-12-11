@@ -8,7 +8,11 @@
   "scripts": {
     "start": "swagger-repo serve",
     "build": "swagger-repo build -o web_deploy",
+    "watch": "nodemon -w spec -e yaml --exec \"swagger-repo bundle -b spec -y -o web_deploy/openapi.yaml\"",
     "test": "swagger-repo validate",
     "gh-pages": "swagger-repo gh-pages"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.1"
   }
 }

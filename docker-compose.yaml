@@ -1,0 +1,20 @@
+version: "2"
+volumes: 
+  web_deploy:
+services:
+  watch:
+    image: "node:12-alpine"
+    volumes:
+      - ".:/workspace"
+      - "web_deploy:/tmp"
+    working_dir: "/workspace"
+    command: "npm run watch"
+  mock:
+    image: "stoplight/prism:3"
+    volumes:
+      - "web_deploy:/tmp"
+    command: "mock -h 0.0.0.0 /tmp/openapi.yaml"
+    ports:
+      - "4010:4010"
+    depends_on: 
+      - "watch"

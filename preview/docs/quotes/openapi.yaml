@@ -2173,11 +2173,6 @@ components:
               type: string
               format: ObjectId
               description: Common group ID for grouping several shifts together
-            order-id:
-              type: string
-              format: ObjectId
-              description: ID of order that created the shift
-              readOnly: true
           required:
             - start
             - end
@@ -2737,6 +2732,14 @@ components:
           items:
             type: string
             format: ObjectId
+      example:
+        id: 5dde7024eded8872705aabcd
+        contact-name: Supplier Suppliersson
+        contact-phone: 0123-12343
+        contact-email: supplier@suppliers.com
+        supplier-title: SupplierTitle
+        order-forms:
+          - 5dde7024eded8872705a0123
     PermissionsObject:
       type: object
       properties:
@@ -2759,6 +2762,53 @@ components:
           description: 'Value can be anything, both primitive types and arrays and objects.'
       required:
         - id
+    Quote:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - $ref: '#/components/schemas/BaseOrder'
+        - $ref: '#/components/schemas/Rfq'
+        - properties:
+            rfq-id:
+              type: string
+              description: |
+                Id of the RfQ.
+              format: ObjectId
+            quote-no:
+              type: string
+              description: |
+                Human readable quote identification number.
+          required:
+            - form-id
+            - form-vid
+            - rfq-id
+            - rfq-parent-id
+            - rfq-parent-vid
+            - client-id
+            - values
+      example:
+        id: 5dde7024eded8872705a0002
+        vid: 5dde71e4c9e77c0001730002
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788000
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        status: active
+        form-id: 5dde7024eded8872705a0000
+        form-vid: 5dde71e4c9e77c0001730000
+        original-duplicity: 3
+        client: {}
+        client-id: 5dde6e21c9e77c0001a1e3a7
+        message: My message
+        values: {}
+        shift-dates:
+          - '2019-01-01'
+        rfq-no: '12'
+        rfq-parent-id: 5dde7024eded8872705a0001
+        rfq-parent-vid: 5dde71e4c9e77c0001730001
+        supplier-id: 5dde7024eded8872705a0043
+        rfq-id: 5dde7024eded8872705a0001
+        quote-no: '34'
     QuoteShift:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
@@ -2776,20 +2826,15 @@ components:
               type: number
               readOnly: true
               description: Number of booked users
-            rfq-id:
+            quote-id:
               type: string
               format: ObjectId
-              description: ID of RfQ parent that created this quote
+              description: Id of the quote this shift belongs to.
               readOnly: true
             rfq-shift-id:
               type: string
               format: ObjectId
               description: The corresponding shift-id from the RfQ.
-              readOnly: true
-            order-shift-id:
-              type: string
-              format: ObjectId
-              description: The corresponding shift-id when this shift is part of an order.
               readOnly: true
           required:
             - id
@@ -2836,70 +2881,25 @@ components:
     Rfq:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
+        - $ref: '#/components/schemas/BaseOrder'
+        - $ref: '#/components/schemas/RfqParent'
         - properties:
-            status:
-              type: string
-              description: Status of the RfQ
-              readOnly: true
-            rfq-no:
-              type: string
-              description: The RfQ number.
-              format: ObjectId
-              readOnly: true
-            form-id:
-              type: string
-              description: Id of the order form used to create the order.
-              format: ObjectId
-            form-vid:
-              type: string
-              description: Vid of the order form used to create the order.
-              format: ObjectId
             rfq-parent-id:
               type: string
-              description: Id referncing to the rfq parent. Only for internal use.
+              description: |
+                Id of the rfq parent this rfq was created from.
               format: ObjectId
             rfq-parent-vid:
               type: string
-              description: Vid of the order form used to create the order.
-              format: ObjectId
-            original-duplicity:
-              type: number
-              description: Amount of people to be booked for the this order.
-              readOnly: true
-            client:
-              type: object
-              description: Name and contact defails of the scheduler requesting the quotes.
-              readOnly: true
-            client-id:
-              type: string
               description: |
-                Id of the company requesting the quotes
-                Should almost always be set to the current user's company-id.
+                vid of the rfq parent this rfq was created from.
               format: ObjectId
-              readOnly: true
             supplier-id:
               type: string
               description: |
                 Id of the company supplying quotes.
                 When creating an order, the `supplier-id` is found in the order form associated with the order to be created.
               format: ObjectId
-              readOnly: true
-            message:
-              type: string
-              description: Message entered by the client when creating the RfQ.
-              readOnly: true
-            values:
-              type: object
-              description: |
-                Key-value store for custom fields defined in the order form associated with the rfq.
-                The key should be set to the `field-template-id`. See `fields` property in Order Form.
-              default: {}
-              readOnly: true
-            shift-dates:
-              type: array
-              description: All dates which where shifts are occuring during the RfQ
-              items:
-                type: string
               readOnly: true
           required:
             - form-id
@@ -2917,19 +2917,19 @@ components:
         valid-from: 1574859236203
         changed-by: 5dde6e21c9e77c0001a1e3b0
         status: active
-        rfq-no: '43'
         form-id: 5dde7024eded8872705a0000
         form-vid: 5dde71e4c9e77c0001730000
-        rfq-parent-id: 5dde7024eded8872705a0001
-        rfq-parent-vid: 5dde71e4c9e77c0001730001
         original-duplicity: 3
         client: {}
         client-id: 5dde6e21c9e77c0001a1e3a7
-        supplier-id: 5dde6e21c9e77c0001a1e3a8
         message: My message
         values: {}
         shift-dates:
           - '2019-01-01'
+        rfq-no: '12'
+        rfq-parent-id: 5dde7024eded8872705a0001
+        rfq-parent-vid: 5dde71e4c9e77c0001730001
+        supplier-id: 5dde7024eded8872705a0043
     RfqParent:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
@@ -2972,6 +2972,11 @@ components:
               format: ObjectId
               description: The corresponding shift-id when this shift is part of an order.
               readOnly: true
+            rfq-parent-id:
+              type: string
+              format: ObjectId
+              description: ID of order that created the shift
+              readOnly: true
       example:
         id: 5dde7024eded8872705a0000
         vid: 5dde71e4c9e77c0001730000
@@ -2986,8 +2991,8 @@ components:
         duplicity: 2
         values: {}
         group-id: ''
-        order-id: ''
-        order-shift-id: ''
+        order-shift-id: 5dde7024eded8872705a0012
+        rfq-parent-id: 5dde7024eded8872705a0013
     SalaryArticle:
       allOf:
         - $ref: '#/components/schemas/BaseArticle'
@@ -3007,6 +3012,11 @@ components:
         - $ref: '#/components/schemas/BaseShift'
         - type: object
           properties:
+            order-id:
+              type: string
+              format: ObjectId
+              description: ID of order that created the shift
+              readOnly: true
             booked-users:
               type: array
               description: List of booked users

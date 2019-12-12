@@ -14,20 +14,15 @@ allOf:
         type: number
         readOnly: true
         description: Number of booked users
-      rfq-id:
+      quote-id:
         type: string
         format: ObjectId
-        description: ID of RfQ parent that created this quote
+        description: Id of the quote this shift belongs to.
         readOnly: true
       rfq-shift-id:
         type: string
         format: ObjectId
         description: The corresponding shift-id from the RfQ.
-        readOnly: true
-      order-shift-id:
-        type: string
-        format: ObjectId
-        description: The corresponding shift-id when this shift is part of an order.
         readOnly: true
     required:
       - id

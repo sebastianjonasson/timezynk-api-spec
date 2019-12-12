@@ -32,11 +32,6 @@ allOf:
         type: string
         format: ObjectId
         description: Common group ID for grouping several shifts together
-      order-id:
-        type: string
-        format: ObjectId
-        description: ID of order that created the shift
-        readOnly: true
     required:
       - start
       - end

@@ -1,28 +1,21 @@
 allOf:
   - $ref: '#/components/schemas/BasicObject'
   - $ref: '#/components/schemas/BaseOrder'
-  - $ref: '#/components/schemas/RfqParent'
+  - $ref: '#/components/schemas/Rfq'
   - properties: 
-      rfq-parent-id:
+      rfq-id:
         type: string
         description: |
-          Id of the rfq parent this rfq was created from.
+          Id of the RfQ.
         format: ObjectId
-      rfq-parent-vid:
+      quote-no:
         type: string
         description: |
-          vid of the rfq parent this rfq was created from.
-        format: ObjectId
-      supplier-id:
-        type: string
-        description: |
-          Id of the company supplying quotes.
-          When creating an order, the `supplier-id` is found in the order form associated with the order to be created.
-        format: ObjectId
-        readOnly: true
+          Human readable quote identification number.
     required:
       - form-id
       - form-vid
+      - rfq-id
       - rfq-parent-id
       - rfq-parent-vid
       - client-id
@@ -52,7 +45,11 @@ example:
   # rfq parent
   rfq-no: "12"
 
-  # specific
+  # rfq
   rfq-parent-id: "5dde7024eded8872705a0001"
   rfq-parent-vid: "5dde71e4c9e77c0001730001"
   supplier-id: "5dde7024eded8872705a0043"
+
+  # specific
+  rfq-id: "5dde7024eded8872705a0001"
+  quote-no: "34"

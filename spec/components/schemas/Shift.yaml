@@ -3,6 +3,11 @@ allOf:
   - $ref: '#/components/schemas/BaseShift'
   - type: object
     properties:
+      order-id:
+        type: string
+        format: ObjectId
+        description: ID of order that created the shift
+        readOnly: true
       booked-users:
         type: array
         description: List of booked users
@@ -32,3 +37,4 @@ allOf:
     required:
       - start
       - end
+

@@ -1541,6 +1541,28 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Rfq'
+  '/rfqs/v1/rfqs/{rfqId}':
+    get:
+      summary: Fetch single RfQ
+      description: Endpoint for fetching a single RfQ
+      tags:
+        - RfQs
+      parameters:
+        - name: rfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single RfQ object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rfq'
+        '404':
+          description: RfQ not found
   /rfqs/v1/rfqshifts:
     get:
       summary: List rfq shifts

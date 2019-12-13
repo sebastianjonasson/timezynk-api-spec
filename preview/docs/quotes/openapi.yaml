@@ -1435,7 +1435,7 @@ paths:
                 $ref: '#/components/schemas/Registry'
         '404':
           description: Registry not found
-  /rfq/v1/rfqparents:
+  /rfqs/v1/rfqparents:
     post:
       summary: Create RfQ parent
       description: |
@@ -1465,7 +1465,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RfqParent'
-  /rfq/v1/rfqs:
+  /rfqs/v1/rfqs:
     post:
       summary: Create RfQs
       description: |
@@ -1497,7 +1497,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Rfq'
-  /rfq/v1/rfqshifts:
+  /rfqs/v1/rfqshifts:
     get:
       summary: List rfq shifts
       description: |

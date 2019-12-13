@@ -1435,7 +1435,37 @@ paths:
                 $ref: '#/components/schemas/Registry'
         '404':
           description: Registry not found
-  /rfq/v1/rfq:
+  /rfq/v1/rfqparents:
+    post:
+      summary: Create RfQ parent
+      description: |
+        Endpoint for creating a new request for quotes parent
+
+        To create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your RFQ parent object.
+      requestBody:
+        description: RfQ parent object to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/RfqParent'
+                - properties:
+                    shifts:
+                      type: array
+                      description: List of RfQ shifts to be created for this RfQ parent.
+                      items:
+                        $ref: '#/components/schemas/RfqShift'
+      tags:
+        - RfQ
+      responses:
+        '200':
+          description: Newly added RfQ parent object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqParent'
+  /rfq/v1/rfqs:
     post:
       summary: Create RfQs
       description: |
@@ -1467,36 +1497,28 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Rfq'
-  /rfq/v1/rfqparent:
-    post:
-      summary: Create RfQ parent
+  /rfq/v1/rfqshifts:
+    get:
+      summary: List rfq shifts
       description: |
-        Endpoint for creating a new request for quotes parent
-
-        To create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your RFQ parent object.
-      requestBody:
-        description: RfQ parent object to be created.
-        required: true
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/RfqParent'
-                - properties:
-                    shifts:
-                      type: array
-                      description: List of RfQ shifts to be created for this RfQ parent.
-                      items:
-                        $ref: '#/components/schemas/RfqShift'
+        The rfq shifts endpoint returns a list of all created rfq shifts.
       tags:
-        - RfQ
+        - RfQ shifts
       responses:
         '200':
-          description: Newly added RfQ parent object
+          description: An array of RfQ shifts
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RfqParent'
+                type: array
+                items:
+                  $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /settings/v1/company:
     get:
       summary: Get company settings

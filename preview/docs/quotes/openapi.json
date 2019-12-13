@@ -2290,7 +2290,54 @@
         }
       }
     },
-    "/rfq/v1/rfq": {
+    "/rfq/v1/rfqparents": {
+      "post": {
+        "summary": "Create RfQ parent",
+        "description": "Endpoint for creating a new request for quotes parent\n\nTo create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your RFQ parent object.\n",
+        "requestBody": {
+          "description": "RfQ parent object to be created.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RfqParent"
+                  },
+                  {
+                    "properties": {
+                      "shifts": {
+                        "type": "array",
+                        "description": "List of RfQ shifts to be created for this RfQ parent.",
+                        "items": {
+                          "$ref": "#/components/schemas/RfqShift"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "RfQ"
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added RfQ parent object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RfqParent"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfq/v1/rfqs": {
       "post": {
         "summary": "Create RfQs",
         "description": "Endpoint for creating a new RfQs.\n\nTo create RfQs you first need to create an RfQ parent. You should then use `id` and `vid` to build your RfQ objects.\n",
@@ -2340,46 +2387,33 @@
         }
       }
     },
-    "/rfq/v1/rfqparent": {
-      "post": {
-        "summary": "Create RfQ parent",
-        "description": "Endpoint for creating a new request for quotes parent\n\nTo create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your RFQ parent object.\n",
-        "requestBody": {
-          "description": "RfQ parent object to be created.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/RfqParent"
-                  },
-                  {
-                    "properties": {
-                      "shifts": {
-                        "type": "array",
-                        "description": "List of RfQ shifts to be created for this RfQ parent.",
-                        "items": {
-                          "$ref": "#/components/schemas/RfqShift"
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
+    "/rfq/v1/rfqshifts": {
+      "get": {
+        "summary": "List rfq shifts",
+        "description": "The rfq shifts endpoint returns a list of all created rfq shifts.\n",
         "tags": [
-          "RfQ"
+          "RfQ shifts"
         ],
         "responses": {
           "200": {
-            "description": "Newly added RfQ parent object",
+            "description": "An array of RfQ shifts",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RfqParent"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RfqShift"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }

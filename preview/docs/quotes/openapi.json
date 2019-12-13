@@ -2291,6 +2291,38 @@
       }
     },
     "/rfqs/v1/rfqparents": {
+      "get": {
+        "summary": "Fetch RfQ parents",
+        "description": "The RfQ parents endpoint returns an array of all created rfq parents.\nThe RfQ parent is the client's counterpart of the RfQs.\n",
+        "tags": [
+          "RfQs"
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of rfq parents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RfqParent"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "summary": "Create RfQ parent",
         "description": "Endpoint for creating a new request for quotes parent\n\nTo create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your RFQ parent object.\n",
@@ -2321,7 +2353,7 @@
           }
         },
         "tags": [
-          "RfQ"
+          "RfQs"
         ],
         "responses": {
           "200": {
@@ -2338,6 +2370,38 @@
       }
     },
     "/rfqs/v1/rfqs": {
+      "get": {
+        "summary": "Fetch RfQs",
+        "description": "The RfQs endpoint returns an array of all received RfQs.\nThe RfQ is the supplier's counterpart of the RfQ parent.\n",
+        "tags": [
+          "RfQs"
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of RfQs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Rfq"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "summary": "Create RfQs",
         "description": "Endpoint for creating a new RfQs.\n\nTo create RfQs you first need to create an RfQ parent. You should then use `id` and `vid` to build your RfQ objects.\n",
@@ -2368,7 +2432,7 @@
           }
         },
         "tags": [
-          "RfQ"
+          "RfQs"
         ],
         "responses": {
           "200": {

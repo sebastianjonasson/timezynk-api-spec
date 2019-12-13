@@ -1,3 +1,26 @@
+get:
+  summary: Fetch RfQ parents
+  description: |
+    The RfQ parents endpoint returns an array of all created rfq parents.
+    The RfQ parent is the client's counterpart of the RfQs.
+  tags:
+    - RfQs
+  responses:
+    200:
+      description: An array of rfq parents
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RfqParent'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
 post:
   summary: Create RfQ parent
   description: |
@@ -19,7 +42,7 @@ post:
                items:
                  $ref: '#/components/schemas/RfqShift'
   tags:
-    - RfQ
+    - RfQs
   responses:
     200:
       description: Newly added RfQ parent object

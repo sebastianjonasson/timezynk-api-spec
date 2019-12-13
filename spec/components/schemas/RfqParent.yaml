@@ -18,7 +18,7 @@ example:
   valid-from: 1574859236203
   changed-by: "5dde6e21c9e77c0001a1e3b0"
 
-  # specific
+  # base order
   status: "no status"
   form-id: "5dde7024eded8872705a1ff7"
   form-vid: "5dde71e4c9e77c000173dd03"
@@ -28,4 +28,6 @@ example:
   message: "hejhej"
   values: {}
   shift-dates: ["2019-11-29", "2019-11-30", "2019-11-28"]
+
+  # specific
   rfq-no: "13"

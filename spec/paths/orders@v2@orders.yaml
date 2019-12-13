@@ -19,6 +19,7 @@ get:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+            
 post:
   summary: Create order
   description: |

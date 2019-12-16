@@ -5,8 +5,8 @@ get:
   tags:
     - RfQ shifts
   parameters:
-      - name: RfqParentId
-        in: path
+      - in: query
+        name: RfqParentId
         schema:
           type: string
           format: ObjectId

@@ -4,6 +4,12 @@ get:
     The rfq shifts endpoint returns a list of all created rfq shifts.
   tags:
     - RfQ shifts
+  parameters:
+      - name: RfqParentId
+        in: path
+        schema:
+          type: string
+          format: ObjectId
   responses:
     200:
       description: An array of RfQ shifts

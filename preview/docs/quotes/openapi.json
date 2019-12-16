@@ -2493,6 +2493,16 @@
         "tags": [
           "RfQ shifts"
         ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "RfqParentId",
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "An array of RfQ shifts",

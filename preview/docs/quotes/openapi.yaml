@@ -2180,10 +2180,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
         - properties:
-            status:
-              type: string
-              description: Status of the order
-              readOnly: true
             form-id:
               type: string
               description: Id of the order form used to create the order.
@@ -2650,6 +2646,10 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseOrder'
         - properties:
+            status:
+              type: string
+              description: Status of the order
+              readOnly: true
             order-ref-id:
               type: string
               description: Id referncing supplier- and client-orders. Only for internal use.

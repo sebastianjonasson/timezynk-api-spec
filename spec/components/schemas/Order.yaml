@@ -1,6 +1,10 @@
 allOf:
   - $ref: '#/components/schemas/BaseOrder'
   - properties: 
+      status:
+        type: string
+        description: Status of the order
+        readOnly: true
       order-ref-id:
         type: string
         description: Id referncing supplier- and client-orders. Only for internal use.

@@ -7,12 +7,12 @@ allOf:
         type: string
         format: ObjectId
         description: The corresponding shift-id from which this RfQshift was created.
-        readOnly: true
       rfq-parent-id:
         type: string
         format: ObjectId
         description: ID of order that created the shift
-        readOnly: true
+    required:
+      - rfq-parent-id
  
 example:
   # basic

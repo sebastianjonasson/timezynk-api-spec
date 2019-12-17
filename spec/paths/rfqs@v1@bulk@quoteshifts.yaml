@@ -21,9 +21,6 @@ post:
                 items:
                   type: string
                   format: ObjectId
-              booked:
-                type: number
-                description: Number of booked users
             required:
               - quote-id
               - rfq-shift-id

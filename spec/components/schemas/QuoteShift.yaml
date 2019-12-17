@@ -12,6 +12,7 @@ allOf:
       booked:
         type: number
         description: Number of booked users
+        readOnly: true
       quote-id:
         type: string
         format: ObjectId

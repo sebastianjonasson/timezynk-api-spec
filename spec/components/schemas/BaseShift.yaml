@@ -24,14 +24,7 @@ allOf:
       values:
         type: object
         description: Values for custom registry fields
-      withhold:
-        type: boolean
-        description: Hide shift from users making it visible for managers only
-        readOnly: true
       group-id:
         type: string
         format: ObjectId
         description: Common group ID for grouping several shifts together
-    required:
-      - start
-      - end

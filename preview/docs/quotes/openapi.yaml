@@ -1471,7 +1471,7 @@ paths:
         The RfQ parents endpoint returns an array of all created rfq parents.
         The RfQ parent is the client's counterpart of the RfQs.
       tags:
-        - RfQs
+        - RfQ parents
       responses:
         '200':
           description: An array of rfq parents
@@ -1508,7 +1508,7 @@ paths:
                       items:
                         $ref: '#/components/schemas/RfqShift'
       tags:
-        - RfQs
+        - RfQ parents
       responses:
         '200':
           description: Newly added RfQ parent object
@@ -1516,6 +1516,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RfqParent'
+  '/rfqs/v1/rfqparents/{rfqParentId}':
+    get:
+      summary: Fetch single RfQ parent
+      description: |
+        Endpoint for fetching a single RfQ parent.
+      tags:
+        - RfQ parents
+      parameters:
+        - name: rfqParentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: RfQ parent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqParent'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update RfQ parent
+      parameters:
+        - name: rfqParentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RfqParent'
+        required: true
+      tags:
+        - RfQ parents
+      responses:
+        '200':
+          description: Updated RfQ parent object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqParent'
+        '404':
+          description: RfQ parent not found
+        '405':
+          description: This RfQ parent already has existing RfQs.
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /rfqs/v1/rfqs:
     get:
       summary: Fetch RfQs
@@ -1592,6 +1653,12 @@ paths:
                 $ref: '#/components/schemas/Rfq'
         '404':
           description: RfQ not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /rfqs/v1/rfqshifts:
     get:
       summary: List rfq shifts

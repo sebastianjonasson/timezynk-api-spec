@@ -1435,6 +1435,35 @@ paths:
                 $ref: '#/components/schemas/Registry'
         '404':
           description: Registry not found
+  /rfqs/v1/bulk/rfqshifts:
+    post:
+      summary: Create multiple RfQ shifts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RfqShift'
+        description: RfQ shifts to be added
+        required: true
+      tags:
+        - RfQ shifts
+      responses:
+        '200':
+          description: Newly added RfQ shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /rfqs/v1/rfqparents:
     get:
       summary: Fetch RfQ parents

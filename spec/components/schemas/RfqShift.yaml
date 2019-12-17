@@ -3,10 +3,10 @@ allOf:
   - $ref: '#/components/schemas/BaseShift'
   - type: object
     properties:
-      order-shift-id:
+      shift-id:
         type: string
         format: ObjectId
-        description: The corresponding shift-id when this shift is part of an order.
+        description: The corresponding shift-id from which this RfQshift was created.
         readOnly: true
       rfq-parent-id:
         type: string
@@ -33,5 +33,5 @@ example:
   group-id: ""
 
   # specific
-  order-shift-id: "5dde7024eded8872705a0012"
+  shift-id: "5dde7024eded8872705a0012"
   rfq-parent-id: "5dde7024eded8872705a0013"

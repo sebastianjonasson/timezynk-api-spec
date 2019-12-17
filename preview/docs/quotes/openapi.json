@@ -2290,6 +2290,80 @@
         }
       }
     },
+    "/rfqs/v1/bulk/quoteshifts": {
+      "post": {
+        "summary": "Create multiple quote shifts",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "properties": {
+                    "quote-id": {
+                      "type": "string",
+                      "format": "ObjectId",
+                      "description": "Id of the quote this shift belongs to."
+                    },
+                    "rfq-shift-id": {
+                      "type": "string",
+                      "format": "ObjectId",
+                      "description": "The corresponding shift-id from the RfQ."
+                    },
+                    "booked-users": {
+                      "type": "array",
+                      "description": "List of suggested users",
+                      "items": {
+                        "type": "string",
+                        "format": "ObjectId"
+                      }
+                    },
+                    "booked": {
+                      "type": "number",
+                      "description": "Number of booked users"
+                    }
+                  },
+                  "required": [
+                    "quote-id",
+                    "rfq-shift-id"
+                  ]
+                }
+              }
+            }
+          },
+          "description": "Quote shifts to be added",
+          "required": true
+        },
+        "tags": [
+          "Quote shifts"
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added quote shifts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuoteShift"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/rfqs/v1/bulk/rfqshifts": {
       "post": {
         "summary": "Create multiple RfQ shifts",
@@ -2320,6 +2394,149 @@
                   "items": {
                     "$ref": "#/components/schemas/RfqShift"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshifts": {
+      "get": {
+        "summary": "List quote shifts",
+        "description": "The quote shifts endpoint returns a list of all quote shifts.\n",
+        "tags": [
+          "Quote shifts"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "quote-id",
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of quote shifts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuoteShift"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create quote shift",
+        "description": "Endpoint for creating a new quote shift\n\nTo create an RfQ shift you first need to create an RfQ shift and a quote. You should then use the `ids` build your quote shift object.\n",
+        "requestBody": {
+          "description": "Quote shift to be created.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "quote-id": {
+                    "type": "string",
+                    "format": "ObjectId",
+                    "description": "Id of the quote this shift belongs to."
+                  },
+                  "rfq-shift-id": {
+                    "type": "string",
+                    "format": "ObjectId",
+                    "description": "The corresponding shift-id from the RfQ."
+                  },
+                  "booked-users": {
+                    "type": "array",
+                    "description": "List of suggested users",
+                    "items": {
+                      "type": "string",
+                      "format": "ObjectId"
+                    }
+                  },
+                  "booked": {
+                    "type": "number",
+                    "description": "Number of booked users"
+                  }
+                },
+                "required": [
+                  "quote-id",
+                  "rfq-shift-id"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quote shifts"
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added quote shift",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShift"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshifts/{quoteShiftId}": {
+      "get": {
+        "summary": "Fetch single quote shift",
+        "description": "Endpoint for fetching a single quote shift.\n",
+        "tags": [
+          "Quote shifts"
+        ],
+        "parameters": [
+          {
+            "name": "quoteShiftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of quote shifts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShift"
                 }
               }
             }
@@ -4713,7 +4930,6 @@
               "booked-users": {
                 "type": "array",
                 "description": "List of suggested users",
-                "readOnly": true,
                 "items": {
                   "type": "string",
                   "format": "ObjectId"
@@ -4721,28 +4937,22 @@
               },
               "booked": {
                 "type": "number",
-                "readOnly": true,
                 "description": "Number of booked users"
               },
               "quote-id": {
                 "type": "string",
                 "format": "ObjectId",
-                "description": "Id of the quote this shift belongs to.",
-                "readOnly": true
+                "description": "Id of the quote this shift belongs to."
               },
               "rfq-shift-id": {
                 "type": "string",
                 "format": "ObjectId",
-                "description": "The corresponding shift-id from the RfQ.",
-                "readOnly": true
+                "description": "The corresponding shift-id from the RfQ."
               }
             },
             "required": [
-              "id",
-              "rfq-id",
               "rfq-shift-id",
-              "start",
-              "end"
+              "quote-id"
             ]
           }
         ]
@@ -4932,7 +5142,9 @@
               }
             },
             "required": [
-              "rfq-parent-id"
+              "rfq-parent-id",
+              "start",
+              "end"
             ]
           }
         ],

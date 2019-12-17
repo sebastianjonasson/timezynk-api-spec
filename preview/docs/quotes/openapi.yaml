@@ -2998,6 +2998,12 @@ components:
         - $ref: '#/components/schemas/BaseOrder'
         - $ref: '#/components/schemas/RfqParent'
         - properties:
+            client-id:
+              type: string
+              description: |
+                Id of the company owning the request
+                Should almost always be set to the current user's company-id.
+              format: ObjectId
             rfq-parent-id:
               type: string
               description: |
@@ -3008,13 +3014,6 @@ components:
               description: |
                 vid of the rfq parent this rfq was created from.
               format: ObjectId
-            supplier-id:
-              type: string
-              description: |
-                Id of the company supplying quotes.
-                When creating an order, the `supplier-id` is found in the order form associated with the order to be created.
-              format: ObjectId
-              readOnly: true
           required:
             - form-id
             - form-vid
@@ -3030,7 +3029,7 @@ components:
         created-by: 5dde6e21c9e77c0001a1e3b0
         valid-from: 1574859236203
         changed-by: 5dde6e21c9e77c0001a1e3b0
-        status: active
+        status: open for quotes
         form-id: 5dde7024eded8872705a0000
         form-vid: 5dde71e4c9e77c0001730000
         original-duplicity: 3
@@ -3043,7 +3042,6 @@ components:
         rfq-no: '12'
         rfq-parent-id: 5dde7024eded8872705a0001
         rfq-parent-vid: 5dde71e4c9e77c0001730001
-        supplier-id: 5dde7024eded8872705a0043
     RfqParent:
       allOf:
         - $ref: '#/components/schemas/BasicObject'

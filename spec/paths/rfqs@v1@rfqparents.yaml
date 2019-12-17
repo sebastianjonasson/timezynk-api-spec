@@ -4,7 +4,7 @@ get:
     The RfQ parents endpoint returns an array of all created rfq parents.
     The RfQ parent is the client's counterpart of the RfQs.
   tags:
-    - RfQs
+    - RfQ parents
   responses:
     200:
       description: An array of rfq parents
@@ -42,7 +42,7 @@ post:
                items:
                  $ref: '#/components/schemas/RfqShift'
   tags:
-    - RfQs
+    - RfQ parents
   responses:
     200:
       description: Newly added RfQ parent object

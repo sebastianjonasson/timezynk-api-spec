@@ -19,3 +19,9 @@ get:
             $ref: '#/components/schemas/Rfq'
     404:
       description: RfQ not found
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

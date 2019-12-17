@@ -1572,7 +1572,7 @@ paths:
         - RfQ shifts
       parameters:
         - in: query
-          name: RfqParentId
+          name: rfq-parent-id
           schema:
             type: string
             format: ObjectId
@@ -1585,6 +1585,56 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create RfQ shift
+      description: |
+        Endpoint for creating a new RfQ shift
+
+        To create an RfQ shift you first need to create an RfQ parent. You should then use `id` build your RFQ shift object.
+      requestBody:
+        description: RfQ parent object to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/RfqShift'
+      tags:
+        - RfQ shifts
+      responses:
+        '200':
+          description: Newly added RfQ shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqShift'
+  '/rfqs/v1/rfqshifts/{rfqShiftId}':
+    get:
+      summary: Fetch single RfQ shift
+      description: |
+        Endpoint for fetching a single RfQ shift.
+      tags:
+        - RfQ shifts
+      parameters:
+        - name: rfqShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of RfQ shifts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqShift'
         default:
           description: Unexpected error
           content:
@@ -3085,12 +3135,12 @@ components:
               type: string
               format: ObjectId
               description: The corresponding shift-id from which this RfQshift was created.
-              readOnly: true
             rfq-parent-id:
               type: string
               format: ObjectId
               description: ID of order that created the shift
-              readOnly: true
+          required:
+            - rfq-parent-id
       example:
         id: 5dde7024eded8872705a0000
         vid: 5dde71e4c9e77c0001730000

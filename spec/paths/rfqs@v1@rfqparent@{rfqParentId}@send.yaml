@@ -1,0 +1,32 @@
+post:
+  summary: Send RfQs
+  description: |
+    Endpoint for sending RfQs to suppliers.
+  parameters:
+    - name: rfqParentId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    description: List of suppliers.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          description: List of suppliers to create RfQs for.
+          properties:
+            supplier-ids:
+              type: array
+              items:
+                type: string
+                format: ObjectId
+          required: 
+            - supplier-ids
+  tags:
+    - RfQ parents
+  responses:
+    201:
+      description: "OK"

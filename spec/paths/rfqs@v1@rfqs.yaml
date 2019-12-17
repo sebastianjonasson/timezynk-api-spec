@@ -20,35 +20,3 @@ get:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-
-post:
-  summary: Create RfQs
-  description: |
-    Endpoint for creating a new RfQs.
-
-    To create RfQs you first need to create an RfQ parent. You should then use `id` and `vid` to build your RfQ objects.
-  requestBody:
-    description: RFQ child object to be created.
-    required: true
-    content:
-      application/json:
-        schema:
-          allOf:
-          - $ref: '#/components/schemas/Rfq'
-          - properties:
-              suppliers:
-                type: array
-                description: List of suppliers to create RfQs for.
-                items:
-                  $ref: '#/components/schemas/OrderSupplier'
-  tags:
-    - RfQs
-  responses:
-    200:
-      description: Newly added RfQ´s
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Rfq'

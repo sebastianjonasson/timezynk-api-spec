@@ -14,16 +14,10 @@ allOf:
         description: |
           Id of the rfq parent this rfq was created from.
         format: ObjectId
-      rfq-parent-vid:
-        type: string
-        description: |
-          vid of the rfq parent this rfq was created from.
-        format: ObjectId
     required:
       - form-id
       - form-vid
       - rfq-parent-id
-      - rfq-parent-vid
       - client-id
       - values
 

@@ -2186,6 +2186,10 @@ components:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
         - properties:
+            status:
+              type: string
+              description: Status of the order
+              readOnly: true
             form-id:
               type: string
               description: Id of the order form used to create the order.
@@ -2199,17 +2203,8 @@ components:
               description: Amount of people to be booked for the this order.
               readOnly: true
             client:
-              type: object
+              $ref: '#/components/schemas/Client'
               description: Name and contact defails of the client owning the request.
-            client-id:
-              type: string
-              description: |
-                Id of the company owning the request
-                Should almost always be set to the current user's company-id.
-              format: ObjectId
-            message:
-              type: string
-              description: Message entered by the client when creating the order.
             values:
               type: object
               description: |
@@ -2328,6 +2323,26 @@ components:
       required:
         - start
         - end
+    Client:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: Phone number of client
+        email:
+          type: string
+          description: Email of client
+        company:
+          type: string
+          description: Company name
+        name:
+          type: string
+          description: Name of client
+      example:
+        phone: 0123-405060
+        email: name@company.com
+        company: Company AB
+        name: Firstname Surname
     DateSelector:
       type: object
       properties:
@@ -2652,10 +2667,15 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseOrder'
         - properties:
-            status:
+            message:
               type: string
-              description: Status of the order
-              readOnly: true
+              description: Message entered by the client when creating the order.
+            client-id:
+              type: string
+              description: |
+                Id of the company owning the request
+                Should almost always be set to the current user's company-id.
+              format: ObjectId
             order-ref-id:
               type: string
               description: Id referncing supplier- and client-orders. Only for internal use.
@@ -3046,9 +3066,11 @@ components:
         form-id: 5dde7024eded8872705a1ff7
         form-vid: 5dde71e4c9e77c000173dd03
         original-duplicity: 3
-        client: {}
-        client-id: 5dde6e21c9e77c0001a1e3a7
-        message: hejhej
+        client:
+          phone: 0123-405060
+          email: name@company.com
+          company: Company AB
+          name: Firstname Surname
         values: {}
         shift-dates:
           - '2019-11-29'

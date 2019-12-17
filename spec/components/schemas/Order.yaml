@@ -1,10 +1,15 @@
 allOf:
   - $ref: '#/components/schemas/BaseOrder'
   - properties: 
-      status:
+      message:
         type: string
-        description: Status of the order
-        readOnly: true
+        description: Message entered by the client when creating the order.
+      client-id:
+        type: string
+        description: |
+          Id of the company owning the request
+          Should almost always be set to the current user's company-id.
+        format: ObjectId
       order-ref-id:
         type: string
         description: Id referncing supplier- and client-orders. Only for internal use.

@@ -1,0 +1,48 @@
+post:
+  summary: Create multiple quote shifts
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            properties:
+              quote-id:
+                type: string
+                format: ObjectId
+                description: Id of the quote this shift belongs to.
+              rfq-shift-id:
+                type: string
+                format: ObjectId
+                description: The corresponding shift-id from the RfQ.
+              booked-users:
+                type: array
+                description: List of suggested users
+                items:
+                  type: string
+                  format: ObjectId
+              booked:
+                type: number
+                description: Number of booked users
+            required:
+              - quote-id
+              - rfq-shift-id
+    description: Quote shifts to be added
+    required: true
+  tags:
+    - Quote shifts
+  responses:
+    "200":
+      description: Newly added quote shifts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/QuoteShift"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

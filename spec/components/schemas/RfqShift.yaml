@@ -13,6 +13,8 @@ allOf:
         description: ID of order that created the shift
     required:
       - rfq-parent-id
+      - start
+      - end
  
 example:
   # basic

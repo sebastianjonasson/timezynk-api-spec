@@ -6,27 +6,20 @@ allOf:
       booked-users:
         type: array
         description: List of suggested users
-        readOnly: true
         items:
           type: string
           format: ObjectId
       booked:
         type: number
-        readOnly: true
         description: Number of booked users
       quote-id:
         type: string
         format: ObjectId
         description: Id of the quote this shift belongs to.
-        readOnly: true
       rfq-shift-id:
         type: string
         format: ObjectId
         description: The corresponding shift-id from the RfQ.
-        readOnly: true
     required:
-      - id
-      - rfq-id
       - rfq-shift-id
-      - start
-      - end
+      - quote-id

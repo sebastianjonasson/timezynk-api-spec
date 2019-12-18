@@ -13,7 +13,7 @@ get:
         format: ObjectId
   responses:
     200:
-      description: RfQ parent
+      description: A single RfQ parent
       content:
         application/json:
           schema:

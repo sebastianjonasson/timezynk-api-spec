@@ -3206,6 +3206,55 @@
         }
       }
     },
+    "/rfqs/v2/quotes/{quoteId}/{status}": {
+      "put": {
+        "summary": "Update quote status",
+        "description": "Endpoint for updating a single quote's status.",
+        "tags": [
+          "Quotes"
+        ],
+        "parameters": [
+          {
+            "name": "quoteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "draft",
+                "sent",
+                "accepted",
+                "confirmed"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single order object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quote"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote not found"
+          }
+        }
+      }
+    },
     "/settings/v1/company": {
       "get": {
         "summary": "Get company settings",
@@ -5299,7 +5348,14 @@
                 "format": "ObjectId",
                 "readOnly": true
               }
-            }
+            },
+            "required": [
+              "form-id",
+              "form-vid",
+              "client-id",
+              "supplier-id",
+              "values"
+            ]
           }
         ],
         "example": {

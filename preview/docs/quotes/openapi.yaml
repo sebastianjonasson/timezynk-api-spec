@@ -1618,6 +1618,23 @@ paths:
           description: Validation failed
         '404':
           description: Quote not found
+  '/rfqs/v1/quotes/{quoteId}/send':
+    post:
+      summary: Send quote
+      description: |
+        Endpoint for sending quote to client and making the quote readOnly.
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Quotes
+      responses:
+        '201':
+          description: OK
   /rfqs/v1/quoteshifts:
     get:
       summary: List quote shifts

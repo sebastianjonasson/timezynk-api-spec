@@ -17,14 +17,6 @@ allOf:
         description: |
           Human readable quote identification number.
         readOnly: true
-    required:
-      - form-id
-      - form-vid
-      - rfq-id
-      - rfq-parent-id
-      - rfq-parent-vid
-      - client-id
-      - values
 
 example:
   # basic

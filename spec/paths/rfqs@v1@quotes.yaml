@@ -34,6 +34,14 @@ post:
         schema:
           allOf:
           - $ref: '#/components/schemas/Quote'
+          required:
+          - form-id
+          - form-vid
+          - rfq-id
+          - rfq-parent-id
+          - rfq-parent-vid
+          - client-id
+          - values
   tags:
     - Quotes
   responses:

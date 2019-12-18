@@ -1,0 +1,55 @@
+get:
+  summary: Fetch single quote
+  description: |
+    Endpoint for fetching a single quote.
+  tags:
+    - Quotes
+  parameters:
+    - name: quoteId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: A single quote
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Quote'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+put:
+  summary: Update quote
+  parameters:
+    - name: quoteId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Quote"
+    required: true
+  tags:
+    - Quotes
+  responses:
+    "200":
+      description: Updated quote
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Quote"
+    "400":
+      description: Validation failed
+    "404":
+      description: Quote not found

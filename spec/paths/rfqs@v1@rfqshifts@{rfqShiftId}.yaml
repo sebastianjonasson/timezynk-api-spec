@@ -13,7 +13,7 @@ get:
         format: ObjectId
   responses:
     200:
-      description: An array of RfQ shifts
+      description: A single RfQ shift
       content:
         application/json:
           schema:

@@ -29,9 +29,3 @@ allOf:
         items:
           type: string
         readOnly: true
-    required:
-      - form-id
-      - form-vid
-      - client-id
-      - supplier-id
-      - values

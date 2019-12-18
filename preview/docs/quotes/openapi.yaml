@@ -1510,6 +1510,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /rfqs/v1/quotes:
+    get:
+      summary: Fetch quotes
+      description: |
+        The quotes endpoint returns an array of all quotes.
+      tags:
+        - Quotes
+      responses:
+        '200':
+          description: An array of quotes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quote'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create quote
+      description: |
+        Endpoint for creating a quote.
+
+        To create a quote you first need to create an RfQ. You should then use `id` to build your quote object.
+      requestBody:
+        description: Quote object to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Quote'
+      tags:
+        - Quotes
+      responses:
+        '200':
+          description: Newly added RfQ parent object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
   /rfqs/v1/quoteshifts:
     get:
       summary: List quote shifts
@@ -1711,12 +1756,6 @@ paths:
             schema:
               allOf:
                 - $ref: '#/components/schemas/RfqParent'
-                - properties:
-                    shifts:
-                      type: array
-                      description: List of RfQ shifts to be created for this RfQ parent.
-                      items:
-                        $ref: '#/components/schemas/RfqShift'
       tags:
         - RfQ parents
       responses:
@@ -2527,9 +2566,6 @@ components:
               type: number
               description: Amount of people to be booked for the this order.
               readOnly: true
-            client:
-              $ref: '#/components/schemas/Client'
-              description: Name and contact defails of the client owning the request.
             values:
               type: object
               description: |
@@ -2993,6 +3029,9 @@ components:
                 Id of the company owning the request
                 Should almost always be set to the current user's company-id.
               format: ObjectId
+            client:
+              $ref: '#/components/schemas/Client'
+              description: Name and contact defails of the client owning the request.
             order-ref-id:
               type: string
               description: Id referncing supplier- and client-orders. Only for internal use.
@@ -3197,8 +3236,12 @@ components:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
         - $ref: '#/components/schemas/BaseOrder'
-        - $ref: '#/components/schemas/Rfq'
         - properties:
+            rfq-parent-id:
+              type: string
+              description: |
+                Id of the rfq parent this rfq was created from.
+              format: ObjectId
             rfq-id:
               type: string
               description: |
@@ -3208,6 +3251,7 @@ components:
               type: string
               description: |
                 Human readable quote identification number.
+              readOnly: true
           required:
             - form-id
             - form-vid
@@ -3312,8 +3356,7 @@ components:
             client-id:
               type: string
               description: |
-                Id of the company owning the request
-                Should almost always be set to the current user's company-id.
+                Id of the company owning the RfQ.
               format: ObjectId
             rfq-parent-id:
               type: string
@@ -3352,6 +3395,9 @@ components:
         - $ref: '#/components/schemas/BasicObject'
         - $ref: '#/components/schemas/BaseOrder'
         - properties:
+            client:
+              $ref: '#/components/schemas/Client'
+              description: Name and contact defails of the client owning the request.
             rfq-no:
               type: string
               description: The RfQ number

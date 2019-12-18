@@ -2407,6 +2407,74 @@
         }
       }
     },
+    "/rfqs/v1/quotes": {
+      "get": {
+        "summary": "Fetch quotes",
+        "description": "The quotes endpoint returns an array of all quotes.\n",
+        "tags": [
+          "Quotes"
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of quotes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Quote"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create quote",
+        "description": "Endpoint for creating a quote.\n\nTo create a quote you first need to create an RfQ. You should then use `id` to build your quote object.\n",
+        "requestBody": {
+          "description": "Quote object to be created.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Quote"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quotes"
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added RfQ parent object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quote"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/rfqs/v1/quoteshifts": {
       "get": {
         "summary": "List quote shifts",
@@ -2698,17 +2766,6 @@
                 "allOf": [
                   {
                     "$ref": "#/components/schemas/RfqParent"
-                  },
-                  {
-                    "properties": {
-                      "shifts": {
-                        "type": "array",
-                        "description": "List of RfQ shifts to be created for this RfQ parent.",
-                        "items": {
-                          "$ref": "#/components/schemas/RfqShift"
-                        }
-                      }
-                    }
                   }
                 ]
               }
@@ -3975,10 +4032,6 @@
                 "description": "Amount of people to be booked for the this order.",
                 "readOnly": true
               },
-              "client": {
-                "$ref": "#/components/schemas/Client",
-                "description": "Name and contact defails of the client owning the request."
-              },
               "values": {
                 "type": "object",
                 "description": "Key-value store for custom fields defined in the order form associated with the order.\nThe key should be set to the `field-template-id`. See `fields` property in Order Form.\n",
@@ -4614,6 +4667,10 @@
                 "description": "Id of the company owning the request\nShould almost always be set to the current user's company-id.\n",
                 "format": "ObjectId"
               },
+              "client": {
+                "$ref": "#/components/schemas/Client",
+                "description": "Name and contact defails of the client owning the request."
+              },
               "order-ref-id": {
                 "type": "string",
                 "description": "Id referncing supplier- and client-orders. Only for internal use.",
@@ -4904,10 +4961,12 @@
             "$ref": "#/components/schemas/BaseOrder"
           },
           {
-            "$ref": "#/components/schemas/Rfq"
-          },
-          {
             "properties": {
+              "rfq-parent-id": {
+                "type": "string",
+                "description": "Id of the rfq parent this rfq was created from.\n",
+                "format": "ObjectId"
+              },
               "rfq-id": {
                 "type": "string",
                 "description": "Id of the RfQ.\n",
@@ -4915,7 +4974,8 @@
               },
               "quote-no": {
                 "type": "string",
-                "description": "Human readable quote identification number.\n"
+                "description": "Human readable quote identification number.\n",
+                "readOnly": true
               }
             },
             "required": [
@@ -5072,7 +5132,7 @@
             "properties": {
               "client-id": {
                 "type": "string",
-                "description": "Id of the company owning the request\nShould almost always be set to the current user's company-id.\n",
+                "description": "Id of the company owning the RfQ.\n",
                 "format": "ObjectId"
               },
               "rfq-parent-id": {
@@ -5124,6 +5184,10 @@
           },
           {
             "properties": {
+              "client": {
+                "$ref": "#/components/schemas/Client",
+                "description": "Name and contact defails of the client owning the request."
+              },
               "rfq-no": {
                 "type": "string",
                 "description": "The RfQ number",

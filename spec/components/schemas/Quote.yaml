@@ -1,8 +1,12 @@
 allOf:
   - $ref: '#/components/schemas/BasicObject'
   - $ref: '#/components/schemas/BaseOrder'
-  - $ref: '#/components/schemas/Rfq'
   - properties: 
+      rfq-parent-id:
+        type: string
+        description: |
+          Id of the rfq parent this rfq was created from.
+        format: ObjectId
       rfq-id:
         type: string
         description: |
@@ -12,6 +16,7 @@ allOf:
         type: string
         description: |
           Human readable quote identification number.
+        readOnly: true
     required:
       - form-id
       - form-vid

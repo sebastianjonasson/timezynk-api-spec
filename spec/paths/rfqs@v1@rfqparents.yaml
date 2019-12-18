@@ -35,12 +35,6 @@ post:
         schema:
           allOf:
           - $ref: '#/components/schemas/RfqParent'
-          - properties: 
-             shifts:
-               type: array
-               description: List of RfQ shifts to be created for this RfQ parent.
-               items:
-                 $ref: '#/components/schemas/RfqShift'
   tags:
     - RfQ parents
   responses:

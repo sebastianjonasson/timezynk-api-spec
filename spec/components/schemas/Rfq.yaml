@@ -6,8 +6,7 @@ allOf:
       client-id:
         type: string
         description: |
-          Id of the company owning the request
-          Should almost always be set to the current user's company-id.
+          Id of the company owning the RfQ.
         format: ObjectId
       rfq-parent-id:
         type: string

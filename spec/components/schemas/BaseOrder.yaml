@@ -17,9 +17,6 @@ allOf:
         type: number
         description: Amount of people to be booked for the this order.
         readOnly: true
-      client:
-        $ref: '#/components/schemas/Client'
-        description: Name and contact defails of the client owning the request.
       values:
         type: object
         description: |

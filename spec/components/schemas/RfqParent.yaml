@@ -2,6 +2,9 @@ allOf:
   - $ref: '#/components/schemas/BasicObject'
   - $ref: '#/components/schemas/BaseOrder'
   - properties: 
+      client:
+        $ref: '#/components/schemas/Client'
+        description: Name and contact defails of the client owning the request.
       rfq-no:
         type: string
         description: The RfQ number

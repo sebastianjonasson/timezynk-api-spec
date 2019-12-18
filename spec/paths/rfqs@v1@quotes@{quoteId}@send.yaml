@@ -1,0 +1,16 @@
+post:
+  summary: Send quote
+  description: |
+    Endpoint for sending quote to client and making the quote readOnly.
+  parameters:
+    - name: quoteId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Quotes
+  responses:
+    201:
+      description: "OK"

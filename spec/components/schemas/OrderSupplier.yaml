@@ -26,8 +26,8 @@ properties:
 
 example:
   id: "5dde7024eded8872705aabcd"
-  contact-name: "Supplier Suppliersson"
+  contact-name: "Firstname Surname"
   contact-phone: "0123-12343"
-  contact-email: "supplier@suppliers.com"
+  contact-email: "name@example.com"
   supplier-title: "SupplierTitle"
   order-forms: [ "5dde7024eded8872705a0123" ]

@@ -28,17 +28,17 @@ example:
   changed-by: "5dde6e21c9e77c0001a1e3b0"
 
   # base order
-  status: "no status"
+  status: "open"
   form-id: "5dde7024eded8872705a1ff7"
   form-vid: "5dde71e4c9e77c000173dd03"
   original-duplicity: 3
+  values: {}
+  shift-dates: ["2019-11-29", "2019-11-30", "2019-11-28"]
+
+  # specific
   client:
     phone: "0123-405060"
     email: "name@company.com"
     company: "Company AB"
     name: "Firstname Surname"
-  values: {}
-  shift-dates: ["2019-11-29", "2019-11-30", "2019-11-28"]
-
-  # specific
   rfq-no: "13"

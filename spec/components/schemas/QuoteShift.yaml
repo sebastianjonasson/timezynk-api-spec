@@ -24,3 +24,27 @@ allOf:
     required:
       - rfq-shift-id
       - quote-id
+
+example:
+  # basic
+  id: "5dde7024eded8872705a0000"
+  vid: "5dde71e4c9e77c0001730000"
+  company-id: "5dde6e21c9e77c0001a1e3a7"
+  created: 1574858788000
+  created-by: "5dde6e21c9e77c0001a1e3b0"
+  valid-from: 1574859236203
+  changed-by: "5dde6e21c9e77c0001a1e3b0"
+
+  # base shift
+  start: "2019-04-30T15:41:00.000"
+  end: "2019-04-30T15:41:00.000"
+  breaks: []
+  duplicity: 2
+  values: {}
+  group-id: ""
+
+  # specific
+  booked_users: ["5dde7024eded8872705a0012", "5dde7024eded8872705a0013"]
+  booked: 2
+  quote-id: "5dde7024eded8872705a0015"
+  rfq-shift-id: "5dde7024eded8872705a0011"

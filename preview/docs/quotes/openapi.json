@@ -5075,9 +5075,9 @@
         },
         "example": {
           "id": "5dde7024eded8872705aabcd",
-          "contact-name": "Supplier Suppliersson",
+          "contact-name": "Firstname Surname",
           "contact-phone": "0123-12343",
-          "contact-email": "supplier@suppliers.com",
+          "contact-email": "name@example.com",
           "supplier-title": "SupplierTitle",
           "order-forms": [
             "5dde7024eded8872705a0123"
@@ -5125,6 +5125,11 @@
           },
           {
             "properties": {
+              "client-id": {
+                "type": "string",
+                "description": "Id of the company owning the RfQ.\n",
+                "format": "ObjectId"
+              },
               "rfq-parent-id": {
                 "type": "string",
                 "description": "Id of the rfq parent this rfq was created from.\n",
@@ -5151,21 +5156,16 @@
           "created-by": "5dde6e21c9e77c0001a1e3b0",
           "valid-from": 1574859236203,
           "changed-by": "5dde6e21c9e77c0001a1e3b0",
-          "status": "active",
+          "status": "sent",
           "form-id": "5dde7024eded8872705a0000",
           "form-vid": "5dde71e4c9e77c0001730000",
           "original-duplicity": 3,
-          "client": {},
-          "client-id": "5dde6e21c9e77c0001a1e3a7",
-          "message": "My message",
           "values": {},
           "shift-dates": [
             "2019-01-01"
           ],
-          "rfq-no": "12",
+          "client-id": "5dde6e21c9e77c0001a1e3a7",
           "rfq-parent-id": "5dde7024eded8872705a0001",
-          "rfq-parent-vid": "5dde71e4c9e77c0001730001",
-          "supplier-id": "5dde7024eded8872705a0043",
           "rfq-id": "5dde7024eded8872705a0001",
           "quote-no": "34"
         }
@@ -5210,7 +5210,29 @@
               "quote-id"
             ]
           }
-        ]
+        ],
+        "example": {
+          "id": "5dde7024eded8872705a0000",
+          "vid": "5dde71e4c9e77c0001730000",
+          "company-id": "5dde6e21c9e77c0001a1e3a7",
+          "created": 1574858788000,
+          "created-by": "5dde6e21c9e77c0001a1e3b0",
+          "valid-from": 1574859236203,
+          "changed-by": "5dde6e21c9e77c0001a1e3b0",
+          "start": "2019-04-30T15:41:00.000",
+          "end": "2019-04-30T15:41:00.000",
+          "breaks": [],
+          "duplicity": 2,
+          "values": {},
+          "group-id": "",
+          "booked_users": [
+            "5dde7024eded8872705a0012",
+            "5dde7024eded8872705a0013"
+          ],
+          "booked": 2,
+          "quote-id": "5dde7024eded8872705a0015",
+          "rfq-shift-id": "5dde7024eded8872705a0011"
+        }
       },
       "Registry": {
         "allOf": [
@@ -5312,18 +5334,23 @@
           "created-by": "5dde6e21c9e77c0001a1e3b0",
           "valid-from": 1574859236203,
           "changed-by": "5dde6e21c9e77c0001a1e3b0",
-          "status": "open for quotes",
-          "form-id": "5dde7024eded8872705a0000",
-          "form-vid": "5dde71e4c9e77c0001730000",
+          "status": "open",
+          "form-id": "5dde7024eded8872705a1ff7",
+          "form-vid": "5dde71e4c9e77c000173dd03",
           "original-duplicity": 3,
-          "client": {},
-          "client-id": "5dde6e21c9e77c0001a1e3a7",
-          "message": "My message",
           "values": {},
           "shift-dates": [
-            "2019-01-01"
+            "2019-11-29",
+            "2019-11-30",
+            "2019-11-28"
           ],
-          "rfq-no": "12",
+          "client": {
+            "phone": "0123-405060",
+            "email": "name@company.com",
+            "company": "Company AB",
+            "name": "Firstname Surname"
+          },
+          "rfq-no": "13",
           "rfq-parent-id": "5dde7024eded8872705a0001",
           "rfq-parent-vid": "5dde71e4c9e77c0001730001"
         }
@@ -5366,22 +5393,22 @@
           "created-by": "5dde6e21c9e77c0001a1e3b0",
           "valid-from": 1574859236203,
           "changed-by": "5dde6e21c9e77c0001a1e3b0",
-          "status": "no status",
+          "status": "open",
           "form-id": "5dde7024eded8872705a1ff7",
           "form-vid": "5dde71e4c9e77c000173dd03",
           "original-duplicity": 3,
-          "client": {
-            "phone": "0123-405060",
-            "email": "name@company.com",
-            "company": "Company AB",
-            "name": "Firstname Surname"
-          },
           "values": {},
           "shift-dates": [
             "2019-11-29",
             "2019-11-30",
             "2019-11-28"
           ],
+          "client": {
+            "phone": "0123-405060",
+            "email": "name@company.com",
+            "company": "Company AB",
+            "name": "Firstname Surname"
+          },
           "rfq-no": "13"
         }
       },

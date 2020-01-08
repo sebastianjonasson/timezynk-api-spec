@@ -13,12 +13,6 @@ allOf:
         description: The RfQ number
         format: ObjectId
         readOnly: true
-    required:
-      - form-id
-      - form-vid
-      - client-id
-      - supplier-id
-      - values
       
 example:
   # basic

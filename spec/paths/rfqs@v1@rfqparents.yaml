@@ -35,6 +35,12 @@ post:
         schema:
           allOf:
           - $ref: '#/components/schemas/RfqParent'
+          - required:
+            - form-id
+            - form-vid
+            - client-id
+            - supplier-id
+            - values
   tags:
     - RfQ parents
   responses:

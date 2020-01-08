@@ -39,6 +39,7 @@ example:
   shift-dates: ["2019-11-29", "2019-11-30", "2019-11-28"]
 
   # rfq parent
+  expires: 1233545
   client:
     phone: "0123-405060"
     email: "name@company.com"
@@ -47,5 +48,5 @@ example:
   rfq-no: "13"
 
   # specific
+  client-id: "5dde7024eded8872705a0017"
   rfq-parent-id: "5dde7024eded8872705a0001"
-  rfq-parent-vid: "5dde71e4c9e77c0001730001"

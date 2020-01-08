@@ -5344,6 +5344,7 @@
             "2019-11-30",
             "2019-11-28"
           ],
+          "expires": 1233545,
           "client": {
             "phone": "0123-405060",
             "email": "name@company.com",
@@ -5351,8 +5352,8 @@
             "name": "Firstname Surname"
           },
           "rfq-no": "13",
-          "rfq-parent-id": "5dde7024eded8872705a0001",
-          "rfq-parent-vid": "5dde71e4c9e77c0001730001"
+          "client-id": "5dde7024eded8872705a0017",
+          "rfq-parent-id": "5dde7024eded8872705a0001"
         }
       },
       "RfqParent": {
@@ -5365,6 +5366,10 @@
           },
           {
             "properties": {
+              "expires": {
+                "type": "number",
+                "description": "Timestamp in milliseconds for when the rfq expires"
+              },
               "client": {
                 "$ref": "#/components/schemas/Client",
                 "description": "Name and contact defails of the client owning the request."
@@ -5403,6 +5408,7 @@
             "2019-11-30",
             "2019-11-28"
           ],
+          "expires": 1558604010307,
           "client": {
             "phone": "0123-405060",
             "email": "name@company.com",

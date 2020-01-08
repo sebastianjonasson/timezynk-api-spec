@@ -1640,10 +1640,56 @@ paths:
               - draft
               - sent
               - accepted
+              - rejected
               - confirmed
+              - refused
       responses:
         '200':
-          description: A single order object
+          description: Updated quote
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '404':
+          description: Quote not found
+  '/rfqs/v1/quotes/{quoteId}/accept':
+    put:
+      summary: Accept quote
+      description: Endpoint for a client to accept a quote.
+      tags:
+        - Quotes
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Updated quote
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '404':
+          description: Quote not found
+  '/rfqs/v1/quotes/{quoteId}/confirm':
+    put:
+      summary: Confirm quote
+      description: Endpoint for a supplier to confirm a quote.
+      tags:
+        - Quotes
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Confirmed quote
           content:
             application/json:
               schema:

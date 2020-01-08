@@ -1,6 +1,6 @@
 post:
-  summary: Confirm quote
-  description: Endpoint for a supplier to confirm an accepted quote.
+  summary: Refuse quote
+  description: Endpoint for a supplier to refuse an accepted quote.
   tags:
     - Quotes
   parameters:

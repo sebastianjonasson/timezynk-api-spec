@@ -1,4 +1,4 @@
-put:
+post:
   summary: Accept quote
   description: Endpoint for a client to accept a quote.
   tags:

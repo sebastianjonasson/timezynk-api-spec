@@ -12,5 +12,11 @@ post:
   tags:
     - Quotes
   responses:
-    201:
-      description: "OK"
+    200:
+      description: Updated quote
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Quote'
+    404:
+      description: Quote not found

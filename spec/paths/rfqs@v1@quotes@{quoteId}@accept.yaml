@@ -1,6 +1,6 @@
 put:
-  summary: Update quote status
-  description: Endpoint for updating a single quote's status.
+  summary: Accept quote
+  description: Endpoint for a client to accept a quote.
   tags:
     - Quotes
   parameters:
@@ -10,12 +10,6 @@ put:
       schema:
         type: string
         format: ObjectId
-    - name: status
-      in: path
-      required: true
-      schema:
-        type: string
-        enum: [draft, sent, accepted, rejected, confirmed, refused]
   responses:
     200:
       description: Updated quote

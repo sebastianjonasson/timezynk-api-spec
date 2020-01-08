@@ -1618,42 +1618,8 @@ paths:
           description: Validation failed
         '404':
           description: Quote not found
-  '/rfqs/v1/quotes/{quoteId}/{status}':
-    put:
-      summary: Update quote status
-      description: Endpoint for updating a single quote's status.
-      tags:
-        - Quotes
-      parameters:
-        - name: quoteId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: ObjectId
-        - name: status
-          in: path
-          required: true
-          schema:
-            type: string
-            enum:
-              - draft
-              - sent
-              - accepted
-              - rejected
-              - confirmed
-              - refused
-      responses:
-        '200':
-          description: Updated quote
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Quote'
-        '404':
-          description: Quote not found
   '/rfqs/v1/quotes/{quoteId}/accept':
-    put:
+    post:
       summary: Accept quote
       description: Endpoint for a client to accept a quote.
       tags:
@@ -1675,9 +1641,9 @@ paths:
         '404':
           description: Quote not found
   '/rfqs/v1/quotes/{quoteId}/confirm':
-    put:
+    post:
       summary: Confirm quote
-      description: Endpoint for a supplier to confirm a quote.
+      description: Endpoint for a supplier to confirm an accepted quote.
       tags:
         - Quotes
       parameters:
@@ -1689,7 +1655,51 @@ paths:
             format: ObjectId
       responses:
         '200':
-          description: Confirmed quote
+          description: Updated quote
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '404':
+          description: Quote not found
+  '/rfqs/v1/quotes/{quoteId}/refuse':
+    post:
+      summary: Refuse quote
+      description: Endpoint for a supplier to refuse an accepted quote.
+      tags:
+        - Quotes
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Updated quote
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '404':
+          description: Quote not found
+  '/rfqs/v1/quotes/{quoteId}/reject':
+    post:
+      summary: Accept quote
+      description: Endpoint for a client to reject a quote.
+      tags:
+        - Quotes
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Updated quote
           content:
             application/json:
               schema:
@@ -1711,8 +1721,14 @@ paths:
       tags:
         - Quotes
       responses:
-        '201':
-          description: OK
+        '200':
+          description: Updated quote
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '404':
+          description: Quote not found
   /rfqs/v1/quoteshifts:
     get:
       summary: List quote shifts

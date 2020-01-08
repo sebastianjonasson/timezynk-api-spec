@@ -15,7 +15,7 @@ put:
       required: true
       schema:
         type: string
-        enum: [draft, sent, accepted, confirmed]
+        enum: [draft, sent, accepted, rejected, confirmed, refused]
   responses:
     200:
       description: A single order object

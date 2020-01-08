@@ -1999,7 +1999,7 @@ paths:
         '404':
           description: RfQ parent not found
         '405':
-          description: This RfQ parent already has existing RfQs.
+          description: This property cannot be changed after RfQ parent has been sent.
         default:
           description: Unexpected error
           content:

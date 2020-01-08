@@ -3037,6 +3037,15 @@
                 "allOf": [
                   {
                     "$ref": "#/components/schemas/RfqParent"
+                  },
+                  {
+                    "required": [
+                      "form-id",
+                      "form-vid",
+                      "client-id",
+                      "supplier-id",
+                      "values"
+                    ]
                   }
                 ]
               }
@@ -5481,14 +5490,7 @@
                 "format": "ObjectId",
                 "readOnly": true
               }
-            },
-            "required": [
-              "form-id",
-              "form-vid",
-              "client-id",
-              "supplier-id",
-              "values"
-            ]
+            }
           }
         ],
         "example": {

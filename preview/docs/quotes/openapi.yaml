@@ -1930,6 +1930,12 @@ paths:
             schema:
               allOf:
                 - $ref: '#/components/schemas/RfqParent'
+                - required:
+                    - form-id
+                    - form-vid
+                    - client-id
+                    - supplier-id
+                    - values
       tags:
         - RfQ parents
       responses:
@@ -3591,12 +3597,6 @@ components:
               description: The RfQ number
               format: ObjectId
               readOnly: true
-          required:
-            - form-id
-            - form-vid
-            - client-id
-            - supplier-id
-            - values
       example:
         id: 5dde7024eded8872705a0001
         vid: 5dde71e4c9e77c0001730001

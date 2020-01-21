@@ -1,10 +1,10 @@
 get:
-  summary: Fetch RfQ parents
+  summary: Fetch Outgoing RfQs
   description: |
-    The RfQ parents endpoint returns an array of all created rfq parents.
+    The Outgoing RfQs endpoint returns an array of all created rfq parents.
     The RfQ parent is the client's counterpart of the RfQs.
   tags:
-    - RfQ parents
+    - Outgoing RfQs
   responses:
     200:
       description: An array of rfq parents
@@ -13,7 +13,7 @@ get:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/RfqParent'
+              $ref: '#/components/schemas/OutgoingRfq'
     default:
       description: Unexpected error
       content:
@@ -34,7 +34,7 @@ post:
       application/json:
         schema:
           allOf:
-          - $ref: '#/components/schemas/RfqParent'
+          - $ref: '#/components/schemas/OutgoingRfq'
           - required:
             - form-id
             - form-vid
@@ -42,11 +42,11 @@ post:
             - supplier-id
             - values
   tags:
-    - RfQ parents
+    - Outgoing RfQs
   responses:
     200:
       description: Newly added RfQ parent object
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RfqParent'
+            $ref: '#/components/schemas/OutgoingRfq'

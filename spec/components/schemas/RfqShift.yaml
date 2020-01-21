@@ -7,15 +7,15 @@ allOf:
         type: string
         format: ObjectId
         description: The corresponding shift-id from which this RfQshift was created.
-      rfq-parent-id:
+      outgoing-rfq-id:
         type: string
         format: ObjectId
         description: ID of order that created the shift
     required:
-      - rfq-parent-id
+      - outgoing-rfq-id
       - start
       - end
- 
+
 example:
   # basic
   id: "5dde7024eded8872705a0000"
@@ -36,4 +36,4 @@ example:
 
   # specific
   shift-id: "5dde7024eded8872705a0012"
-  rfq-parent-id: "5dde7024eded8872705a0013"
+  outgoing-rfq-id: "5dde7024eded8872705a0013"

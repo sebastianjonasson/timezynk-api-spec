@@ -1,14 +1,14 @@
 allOf:
   - $ref: '#/components/schemas/BasicObject'
   - $ref: '#/components/schemas/BaseOrder'
-  - $ref: '#/components/schemas/RfqParent'
-  - properties: 
+  - $ref: '#/components/schemas/OutgoingRfq'
+  - properties:
       client-id:
         type: string
         description: |
           Id of the company owning the RfQ.
         format: ObjectId
-      rfq-parent-id:
+      outgoing-rfq-id:
         type: string
         description: |
           Id of the rfq parent this rfq was created from.
@@ -16,7 +16,7 @@ allOf:
     required:
       - form-id
       - form-vid
-      - rfq-parent-id
+      - outgoing-rfq-id
       - client-id
       - values
 
@@ -49,4 +49,4 @@ example:
 
   # specific
   client-id: "5dde7024eded8872705a0017"
-  rfq-parent-id: "5dde7024eded8872705a0001"
+  outgoing-rfq-id: "5dde7024eded8872705a0001"

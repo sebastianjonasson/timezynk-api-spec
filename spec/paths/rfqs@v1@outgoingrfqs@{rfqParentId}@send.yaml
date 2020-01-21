@@ -23,10 +23,10 @@ post:
               items:
                 type: string
                 format: ObjectId
-          required: 
+          required:
             - supplier-ids
   tags:
-    - RfQ parents
+    - Outgoing RfQs
   responses:
     201:
       description: "OK"

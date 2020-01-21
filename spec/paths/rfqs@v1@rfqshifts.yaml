@@ -6,7 +6,7 @@ get:
     - RfQ shifts
   parameters:
       - in: query
-        name: rfq-parent-id
+        name: outgoing-rfq-id
         schema:
           type: string
           format: ObjectId

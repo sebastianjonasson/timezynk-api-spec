@@ -38,8 +38,8 @@ post:
           - form-id
           - form-vid
           - rfq-id
-          - rfq-parent-id
-          - rfq-parent-vid
+          - outgoing-rfq-id
+          - outgoing-rfq-vid
           - client-id
           - values
   tags:

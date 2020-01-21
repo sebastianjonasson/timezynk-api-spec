@@ -3,7 +3,7 @@ get:
   description: |
     Endpoint for fetching a single RfQ parent.
   tags:
-    - RfQ parents
+    - Outgoing RfQs
   parameters:
     - name: rfqParentId
       in: path
@@ -17,7 +17,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RfqParent'
+            $ref: '#/components/schemas/OutgoingRfq'
     default:
       description: Unexpected error
       content:
@@ -38,17 +38,17 @@ put:
     content:
       application/json:
         schema:
-          $ref: "#/components/schemas/RfqParent"
+          $ref: "#/components/schemas/OutgoingRfq"
     required: true
   tags:
-    - RfQ parents
+    - Outgoing RfQs
   responses:
     "200":
       description: Updated RfQ parent object
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/RfqParent"
+            $ref: "#/components/schemas/OutgoingRfq"
     "404":
       description: RfQ parent not found
     "405":

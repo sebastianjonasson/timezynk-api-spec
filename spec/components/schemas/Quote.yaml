@@ -1,13 +1,13 @@
 allOf:
   - $ref: '#/components/schemas/BasicObject'
   - $ref: '#/components/schemas/BaseOrder'
-  - properties: 
+  - properties:
       client-id:
         type: string
         description: |
           Id of the company owning the RfQ.
         format: ObjectId
-      rfq-parent-id:
+      outgoing-rfq-id:
         type: string
         description: |
           Id of the rfq parent this rfq was created from.
@@ -43,6 +43,6 @@ example:
 
   # specific
   client-id: "5dde6e21c9e77c0001a1e3a7"
-  rfq-parent-id: "5dde7024eded8872705a0001"
+  outgoing-rfq-id: "5dde7024eded8872705a0001"
   rfq-id: "5dde7024eded8872705a0001"
   quote-no: "34"

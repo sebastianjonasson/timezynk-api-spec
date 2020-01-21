@@ -2407,6 +2407,229 @@
         }
       }
     },
+    "/rfqs/v1/outgoingrfqs": {
+      "get": {
+        "summary": "Fetch Outgoing RfQs",
+        "description": "The Outgoing RfQs endpoint returns an array of all created rfq parents.\nThe RfQ parent is the client's counterpart of the RfQs.\n",
+        "tags": [
+          "Outgoing RfQs"
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of rfq parents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OutgoingRfq"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create RfQ parent",
+        "description": "Endpoint for creating a new request for quotes parent\n\nTo create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your RFQ parent object.\n",
+        "requestBody": {
+          "description": "RfQ parent object to be created.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/OutgoingRfq"
+                  },
+                  {
+                    "required": [
+                      "form-id",
+                      "form-vid",
+                      "client-id",
+                      "supplier-id",
+                      "values"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Outgoing RfQs"
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added RfQ parent object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutgoingRfq"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/outgoingrfqs/{rfqParentId}": {
+      "get": {
+        "summary": "Fetch single RfQ parent",
+        "description": "Endpoint for fetching a single RfQ parent.\n",
+        "tags": [
+          "Outgoing RfQs"
+        ],
+        "parameters": [
+          {
+            "name": "rfqParentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single RfQ parent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutgoingRfq"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update RfQ parent",
+        "parameters": [
+          {
+            "name": "rfqParentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutgoingRfq"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Outgoing RfQs"
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated RfQ parent object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutgoingRfq"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RfQ parent not found"
+          },
+          "405": {
+            "description": "This property cannot be changed after RfQ parent has been sent."
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/outgoingrfqs/{rfqParentId}/send": {
+      "post": {
+        "summary": "Send RfQs",
+        "description": "Endpoint for sending RfQs to suppliers.\n",
+        "parameters": [
+          {
+            "name": "rfqParentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "List of suppliers.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "List of suppliers to create RfQs for.",
+                "properties": {
+                  "supplier-ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "ObjectId"
+                    }
+                  }
+                },
+                "required": [
+                  "supplier-ids"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Outgoing RfQs"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/rfqs/v1/quotes": {
       "get": {
         "summary": "Fetch quotes",
@@ -2458,8 +2681,8 @@
                   "form-id",
                   "form-vid",
                   "rfq-id",
-                  "rfq-parent-id",
-                  "rfq-parent-vid",
+                  "outgoing-rfq-id",
+                  "outgoing-rfq-vid",
                   "client-id",
                   "values"
                 ]
@@ -2943,229 +3166,6 @@
         }
       }
     },
-    "/rfqs/v1/rfqparent/{rfqParentId}/send": {
-      "post": {
-        "summary": "Send RfQs",
-        "description": "Endpoint for sending RfQs to suppliers.\n",
-        "parameters": [
-          {
-            "name": "rfqParentId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "List of suppliers.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "description": "List of suppliers to create RfQs for.",
-                "properties": {
-                  "supplier-ids": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "ObjectId"
-                    }
-                  }
-                },
-                "required": [
-                  "supplier-ids"
-                ]
-              }
-            }
-          }
-        },
-        "tags": [
-          "RfQ parents"
-        ],
-        "responses": {
-          "201": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/rfqs/v1/rfqparents": {
-      "get": {
-        "summary": "Fetch RfQ parents",
-        "description": "The RfQ parents endpoint returns an array of all created rfq parents.\nThe RfQ parent is the client's counterpart of the RfQs.\n",
-        "tags": [
-          "RfQ parents"
-        ],
-        "responses": {
-          "200": {
-            "description": "An array of rfq parents",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RfqParent"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Create RfQ parent",
-        "description": "Endpoint for creating a new request for quotes parent\n\nTo create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your RFQ parent object.\n",
-        "requestBody": {
-          "description": "RfQ parent object to be created.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/RfqParent"
-                  },
-                  {
-                    "required": [
-                      "form-id",
-                      "form-vid",
-                      "client-id",
-                      "supplier-id",
-                      "values"
-                    ]
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "tags": [
-          "RfQ parents"
-        ],
-        "responses": {
-          "200": {
-            "description": "Newly added RfQ parent object",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RfqParent"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rfqs/v1/rfqparents/{rfqParentId}": {
-      "get": {
-        "summary": "Fetch single RfQ parent",
-        "description": "Endpoint for fetching a single RfQ parent.\n",
-        "tags": [
-          "RfQ parents"
-        ],
-        "parameters": [
-          {
-            "name": "rfqParentId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A single RfQ parent",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RfqParent"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Update RfQ parent",
-        "parameters": [
-          {
-            "name": "rfqParentId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RfqParent"
-              }
-            }
-          },
-          "required": true
-        },
-        "tags": [
-          "RfQ parents"
-        ],
-        "responses": {
-          "200": {
-            "description": "Updated RfQ parent object",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RfqParent"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "RfQ parent not found"
-          },
-          "405": {
-            "description": "This property cannot be changed after RfQ parent has been sent."
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/rfqs/v1/rfqs": {
       "get": {
         "summary": "Fetch RfQs",
@@ -3255,7 +3255,7 @@
         "parameters": [
           {
             "in": "query",
-            "name": "rfq-parent-id",
+            "name": "outgoing-rfq-id",
             "schema": {
               "type": "string",
               "format": "ObjectId"
@@ -5194,6 +5194,61 @@
           ]
         }
       },
+      "OutgoingRfq": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicObject"
+          },
+          {
+            "$ref": "#/components/schemas/BaseOrder"
+          },
+          {
+            "properties": {
+              "expires": {
+                "type": "number",
+                "description": "Timestamp in milliseconds for when the rfq expires"
+              },
+              "client": {
+                "$ref": "#/components/schemas/Client",
+                "description": "Name and contact defails of the client owning the request."
+              },
+              "rfq-no": {
+                "type": "string",
+                "description": "The RfQ number",
+                "format": "ObjectId",
+                "readOnly": true
+              }
+            }
+          }
+        ],
+        "example": {
+          "id": "5dde7024eded8872705a0001",
+          "vid": "5dde71e4c9e77c0001730001",
+          "company-id": "5dde6e21c9e77c0001a1e3a7",
+          "created": 1574858788,
+          "created-by": "5dde6e21c9e77c0001a1e3b0",
+          "valid-from": 1574859236203,
+          "changed-by": "5dde6e21c9e77c0001a1e3b0",
+          "status": "open",
+          "form-id": "5dde7024eded8872705a1ff7",
+          "form-vid": "5dde71e4c9e77c000173dd03",
+          "original-duplicity": 3,
+          "values": {},
+          "shift-dates": [
+            "2019-11-29",
+            "2019-11-30",
+            "2019-11-28"
+          ],
+          "expires": 1558604010307,
+          "client": {
+            "phone": "0123-405060",
+            "email": "name@company.com",
+            "company": "Company AB",
+            "name": "Firstname Surname"
+          },
+          "rfq-no": "13"
+        }
+      },
       "PermissionsObject": {
         "type": "object",
         "properties": {
@@ -5240,7 +5295,7 @@
                 "description": "Id of the company owning the RfQ.\n",
                 "format": "ObjectId"
               },
-              "rfq-parent-id": {
+              "outgoing-rfq-id": {
                 "type": "string",
                 "description": "Id of the rfq parent this rfq was created from.\n",
                 "format": "ObjectId"
@@ -5275,7 +5330,7 @@
             "2019-01-01"
           ],
           "client-id": "5dde6e21c9e77c0001a1e3a7",
-          "rfq-parent-id": "5dde7024eded8872705a0001",
+          "outgoing-rfq-id": "5dde7024eded8872705a0001",
           "rfq-id": "5dde7024eded8872705a0001",
           "quote-no": "34"
         }
@@ -5412,7 +5467,7 @@
             "$ref": "#/components/schemas/BaseOrder"
           },
           {
-            "$ref": "#/components/schemas/RfqParent"
+            "$ref": "#/components/schemas/OutgoingRfq"
           },
           {
             "properties": {
@@ -5421,7 +5476,7 @@
                 "description": "Id of the company owning the RfQ.\n",
                 "format": "ObjectId"
               },
-              "rfq-parent-id": {
+              "outgoing-rfq-id": {
                 "type": "string",
                 "description": "Id of the rfq parent this rfq was created from.\n",
                 "format": "ObjectId"
@@ -5430,7 +5485,7 @@
             "required": [
               "form-id",
               "form-vid",
-              "rfq-parent-id",
+              "outgoing-rfq-id",
               "client-id",
               "values"
             ]
@@ -5463,62 +5518,7 @@
           },
           "rfq-no": "13",
           "client-id": "5dde7024eded8872705a0017",
-          "rfq-parent-id": "5dde7024eded8872705a0001"
-        }
-      },
-      "RfqParent": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BasicObject"
-          },
-          {
-            "$ref": "#/components/schemas/BaseOrder"
-          },
-          {
-            "properties": {
-              "expires": {
-                "type": "number",
-                "description": "Timestamp in milliseconds for when the rfq expires"
-              },
-              "client": {
-                "$ref": "#/components/schemas/Client",
-                "description": "Name and contact defails of the client owning the request."
-              },
-              "rfq-no": {
-                "type": "string",
-                "description": "The RfQ number",
-                "format": "ObjectId",
-                "readOnly": true
-              }
-            }
-          }
-        ],
-        "example": {
-          "id": "5dde7024eded8872705a0001",
-          "vid": "5dde71e4c9e77c0001730001",
-          "company-id": "5dde6e21c9e77c0001a1e3a7",
-          "created": 1574858788,
-          "created-by": "5dde6e21c9e77c0001a1e3b0",
-          "valid-from": 1574859236203,
-          "changed-by": "5dde6e21c9e77c0001a1e3b0",
-          "status": "open",
-          "form-id": "5dde7024eded8872705a1ff7",
-          "form-vid": "5dde71e4c9e77c000173dd03",
-          "original-duplicity": 3,
-          "values": {},
-          "shift-dates": [
-            "2019-11-29",
-            "2019-11-30",
-            "2019-11-28"
-          ],
-          "expires": 1558604010307,
-          "client": {
-            "phone": "0123-405060",
-            "email": "name@company.com",
-            "company": "Company AB",
-            "name": "Firstname Surname"
-          },
-          "rfq-no": "13"
+          "outgoing-rfq-id": "5dde7024eded8872705a0001"
         }
       },
       "RfqShift": {
@@ -5537,14 +5537,14 @@
                 "format": "ObjectId",
                 "description": "The corresponding shift-id from which this RfQshift was created."
               },
-              "rfq-parent-id": {
+              "outgoing-rfq-id": {
                 "type": "string",
                 "format": "ObjectId",
                 "description": "ID of order that created the shift"
               }
             },
             "required": [
-              "rfq-parent-id",
+              "outgoing-rfq-id",
               "start",
               "end"
             ]
@@ -5565,7 +5565,7 @@
           "values": {},
           "group-id": "",
           "shift-id": "5dde7024eded8872705a0012",
-          "rfq-parent-id": "5dde7024eded8872705a0013"
+          "outgoing-rfq-id": "5dde7024eded8872705a0013"
         }
       },
       "SalaryArticle": {

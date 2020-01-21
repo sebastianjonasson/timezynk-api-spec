@@ -1,10 +1,11 @@
-get:
-  summary: Fetch single client
-  description: Endpoint for fetching a single client
+put:
+  summary: Confirm Client
+  description: |
+    The Confirm Client endpoint allows a user to confirm a supplier invitation from a client.
   tags:
     - Clients
   parameters:
-    - name: clientId
+    - name: clientCode
       in: path
       required: true
       schema:
@@ -12,13 +13,7 @@ get:
         format: ObjectId
   responses:
     200:
-      description: Single client
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OrderClient'
-    404:
-      description: Client not found
+      description: OK
     default:
       description: Unexpected error
       content:

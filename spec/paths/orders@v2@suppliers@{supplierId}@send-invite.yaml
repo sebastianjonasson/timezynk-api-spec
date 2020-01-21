@@ -1,0 +1,21 @@
+post:
+  summary: Send invite email
+  description: Endpoint for sending an invitation email to a created supplier.
+  tags:
+    - Suppliers
+  parameters:
+    - name: supplierId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    201:
+      description: OK
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

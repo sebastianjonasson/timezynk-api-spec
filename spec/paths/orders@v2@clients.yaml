@@ -1,12 +1,12 @@
 get:
-  summary: List order clients
+  summary: List clients
   description: |
-    The Order Clients endpoint returns a list of all invited and active order clients.
+    The Clients endpoint returns a list of all active clients.
   tags:
-    - Order Clients
+    - Clients
   responses:
     200:
-      description: An array of order clients
+      description: An array of clients
       content:
         application/json:
           schema:
@@ -19,6 +19,7 @@ get:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+            
 post:
   summary: Create order clients
   description: |

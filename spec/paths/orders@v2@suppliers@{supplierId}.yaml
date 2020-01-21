@@ -1,0 +1,60 @@
+get:
+  summary: Fetch single client
+  description: Endpoint for fetching a single supplier
+  tags:
+    - Suppliers
+  parameters:
+    - name: supplierId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: Single supplier
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrderSupplier'
+    404:
+      description: Supplier not found
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+put:
+  summary: Update supplier
+  parameters:
+    - name: supplierId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/OrderSupplier"
+    required: true
+  tags:
+    - Suppliers
+  responses:
+    "200":
+      description: Updated supplier
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OrderSupplier"
+    "404":
+      description: Supplier not found
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

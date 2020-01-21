@@ -1,0 +1,22 @@
+get:
+  summary: Fetch RfQs
+  description: |
+    The RfQs endpoint returns an array of all received RfQs.
+    The RfQ is the supplier's counterpart of the RfQ parent.
+  tags:
+    - Incoming RfQs
+  responses:
+    200:
+      description: An array of RfQs
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Rfq'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

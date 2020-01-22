@@ -1510,6 +1510,8 @@ paths:
   /rfqs/v1/bulk/rfqshifts:
     post:
       summary: Create multiple RfQ shifts
+      description: |
+        SPEC UPDATE - duplicity removed, shift-id required.
       requestBody:
         content:
           application/json:
@@ -1520,7 +1522,7 @@ paths:
         description: RfQ shifts to be added
         required: true
       tags:
-        - RfQ shifts
+        - RfQ shifts UPDATE
       responses:
         '200':
           description: Newly added RfQ shifts
@@ -2099,7 +2101,9 @@ paths:
       description: |
         Endpoint for creating a new RfQ shift
 
-        To create an RfQ shift you first need to create an RfQ parent. You should then use `id` build your RFQ shift object.
+        To create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.
+
+        SPEC UPDATE - duplicity removed, shift-id required.
       requestBody:
         description: RfQ parent object to be created.
         required: true
@@ -2109,7 +2113,7 @@ paths:
               allOf:
                 - $ref: '#/components/schemas/RfqShift'
       tags:
-        - RfQ shifts
+        - RfQ shifts UPDATE
       responses:
         '200':
           description: Newly added RfQ shift
@@ -3505,12 +3509,12 @@ components:
               type: string
               description: Quote shift status
               enum:
-                - in review
-                - approved
+                - sent
+                - accepted
                 - rejected
                 - confirmed
                 - refused
-              default: in review
+              default: sent
               readOnly: true
             client-id:
               type: string
@@ -3571,7 +3575,7 @@ components:
             stop: '2019-04-30T16:15:00.000'
         values: {}
         group-id: ''
-        status: in review
+        status: sent
         client-id: 5dde6e21c9e77c0001a1e3a7
         booked-users: 5dde6e21c9e77c0001a1e3aa
         outgoing-rfq-id: 5dde7024eded8872705a0001

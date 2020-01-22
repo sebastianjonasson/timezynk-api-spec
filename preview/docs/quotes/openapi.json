@@ -2394,6 +2394,7 @@
     "/rfqs/v1/bulk/rfqshifts": {
       "post": {
         "summary": "Create multiple RfQ shifts",
+        "description": "SPEC UPDATE - duplicity removed, shift-id required.\n",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2409,7 +2410,7 @@
           "required": true
         },
         "tags": [
-          "RfQ shifts"
+          "RfQ shifts UPDATE"
         ],
         "responses": {
           "200": {
@@ -3284,7 +3285,7 @@
       },
       "post": {
         "summary": "Create RfQ shift",
-        "description": "Endpoint for creating a new RfQ shift\n\nTo create an RfQ shift you first need to create an RfQ parent. You should then use `id` build your RFQ shift object.\n",
+        "description": "Endpoint for creating a new RfQ shift\n\nTo create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.\n\nSPEC UPDATE - duplicity removed, shift-id required.\n",
         "requestBody": {
           "description": "RfQ parent object to be created.",
           "required": true,
@@ -3301,7 +3302,7 @@
           }
         },
         "tags": [
-          "RfQ shifts"
+          "RfQ shifts UPDATE"
         ],
         "responses": {
           "200": {
@@ -5339,13 +5340,13 @@
                 "type": "string",
                 "description": "Quote shift status",
                 "enum": [
-                  "in review",
-                  "approved",
+                  "sent",
+                  "accepted",
                   "rejected",
                   "confirmed",
                   "refused"
                 ],
-                "default": "in review",
+                "default": "sent",
                 "readOnly": true
               },
               "client-id": {
@@ -5421,7 +5422,7 @@
           ],
           "values": {},
           "group-id": "",
-          "status": "in review",
+          "status": "sent",
           "client-id": "5dde6e21c9e77c0001a1e3a7",
           "booked-users": "5dde6e21c9e77c0001a1e3aa",
           "outgoing-rfq-id": "5dde7024eded8872705a0001",

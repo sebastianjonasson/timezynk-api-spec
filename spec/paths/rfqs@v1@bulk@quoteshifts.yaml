@@ -1,6 +1,6 @@
 post:
   summary: Create multiple quote shifts
-  description: UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
+  description: SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
   requestBody:
     content:
       application/json:

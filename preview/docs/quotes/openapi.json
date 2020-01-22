@@ -2293,6 +2293,7 @@
     "/rfqs/v1/bulk/quoteshifts": {
       "post": {
         "summary": "Create multiple quote shifts",
+        "description": "SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2300,11 +2301,6 @@
                 "type": "array",
                 "items": {
                   "properties": {
-                    "quote-id": {
-                      "type": "string",
-                      "format": "ObjectId",
-                      "description": "Id of the quote this shift belongs to."
-                    },
                     "rfq-shift-id": {
                       "type": "string",
                       "format": "ObjectId",
@@ -2312,26 +2308,61 @@
                     },
                     "booked-users": {
                       "type": "array",
-                      "description": "List of suggested users",
+                      "description": "List of length 1, containing proposed user´s user-id",
                       "items": {
                         "type": "string",
                         "format": "ObjectId"
                       }
+                    },
+                    "booked-user": {
+                      "type": "object",
+                      "description": "Suggested user for this shift",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Name of worker"
+                        },
+                        "id-no": {
+                          "type": "string",
+                          "description": "National identification number (personnummer) of the worker",
+                          "required": [
+                            "quote-id",
+                            "rfq-shift-id"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "id-no"
+                      ]
+                    },
+                    "outgoing-rfq-id": {
+                      "type": "string",
+                      "description": "Id of the rfq parent this rfq was created from.\n",
+                      "format": "ObjectId"
+                    },
+                    "incoming-rfq-id": {
+                      "type": "string",
+                      "description": "Id of the RfQ.\n",
+                      "format": "ObjectId"
                     }
                   },
                   "required": [
-                    "quote-id",
-                    "rfq-shift-id"
+                    "rfq-shift-id",
+                    "booked-user",
+                    "booked-users",
+                    "outgoing-rfq-id",
+                    "incoming-rfq-id",
+                    "client-id"
                   ]
                 }
               }
             }
           },
-          "description": "Quote shifts to be added",
-          "required": true
+          "description": "Quote shifts to be added"
         },
         "tags": [
-          "Quote shifts"
+          "Quote shifts UPDATE"
         ],
         "responses": {
           "200": {
@@ -4356,11 +4387,6 @@
                   "$ref": "#/components/schemas/Break"
                 }
               },
-              "duplicity": {
-                "type": "number",
-                "description": "Maximum (and desired) number of booked users",
-                "default": 1
-              },
               "values": {
                 "type": "object",
                 "description": "Values for custom registry fields"
@@ -5346,33 +5372,69 @@
           {
             "type": "object",
             "properties": {
+              "status": {
+                "type": "string",
+                "description": "Quote shift status",
+                "enum": [
+                  "in review",
+                  "approved",
+                  "rejected",
+                  "confirmed",
+                  "refused"
+                ],
+                "default": "in review",
+                "readOnly": true
+              },
+              "client-id": {
+                "type": "string",
+                "description": "Id of the company owning the RfQ.\n",
+                "format": "ObjectId"
+              },
               "booked-users": {
                 "type": "array",
-                "description": "List of suggested users",
+                "description": "List of length 1, continatining the user id of the proposed user",
                 "items": {
                   "type": "string",
                   "format": "ObjectId"
                 }
               },
-              "booked": {
-                "type": "number",
-                "description": "Number of booked users",
-                "readOnly": true
-              },
-              "quote-id": {
+              "outgoing-rfq-id": {
                 "type": "string",
-                "format": "ObjectId",
-                "description": "Id of the quote this shift belongs to."
+                "description": "Id of the rfq parent this rfq was created from.\n",
+                "format": "ObjectId"
+              },
+              "incoming-rfq-id": {
+                "type": "string",
+                "description": "Id of the RfQ.\n",
+                "format": "ObjectId"
               },
               "rfq-shift-id": {
                 "type": "string",
                 "format": "ObjectId",
                 "description": "The corresponding shift-id from the RfQ."
+              },
+              "booked-user": {
+                "type": "object",
+                "description": "Suggested user for this shift",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of worker"
+                  },
+                  "id-no": {
+                    "type": "string",
+                    "description": "National identification number (personnummer) of the worker"
+                  }
+                }
               }
             },
             "required": [
               "rfq-shift-id",
-              "quote-id"
+              "booked-user",
+              "booked-users",
+              "outgoing-rfq-id",
+              "incoming-rfq-id",
+              "client-id"
             ]
           }
         ],
@@ -5383,20 +5445,29 @@
           "created": 1574858788000,
           "created-by": "5dde6e21c9e77c0001a1e3b0",
           "valid-from": 1574859236203,
+          "valid-to": 0,
           "changed-by": "5dde6e21c9e77c0001a1e3b0",
-          "start": "2019-04-30T15:41:00.000",
-          "end": "2019-04-30T15:41:00.000",
-          "breaks": [],
-          "duplicity": 2,
+          "archived": 0,
+          "start": "2019-04-30T15:00:00.000",
+          "end": "2019-04-30T17:00:00.000",
+          "breaks": [
+            {
+              "start": "2019-04-30T16:00:00.000",
+              "stop": "2019-04-30T16:15:00.000"
+            }
+          ],
           "values": {},
           "group-id": "",
-          "booked_users": [
-            "5dde7024eded8872705a0012",
-            "5dde7024eded8872705a0013"
-          ],
-          "booked": 2,
-          "quote-id": "5dde7024eded8872705a0015",
-          "rfq-shift-id": "5dde7024eded8872705a0011"
+          "status": "in review",
+          "client-id": "5dde6e21c9e77c0001a1e3a7",
+          "booked-users": "5dde6e21c9e77c0001a1e3aa",
+          "outgoing-rfq-id": "5dde7024eded8872705a0001",
+          "incoming-rfq-id": "5dde7024eded8872705a0002",
+          "rfq-shift-id": "5dde7024eded8872705a0011",
+          "booked-user": {
+            "name": "Firstname Surname",
+            "id-no": "851103-1234"
+          }
         }
       },
       "Registry": {
@@ -5545,6 +5616,7 @@
             },
             "required": [
               "outgoing-rfq-id",
+              "shift-id",
               "start",
               "end"
             ]
@@ -5557,11 +5629,17 @@
           "created": 1574858788000,
           "created-by": "5dde6e21c9e77c0001a1e3b0",
           "valid-from": 1574859236203,
+          "valid-to": 0,
           "changed-by": "5dde6e21c9e77c0001a1e3b0",
-          "start": "2019-04-30T15:41:00.000",
-          "end": "2019-04-30T15:41:00.000",
-          "breaks": [],
-          "duplicity": 2,
+          "archived": 0,
+          "start": "2019-04-30T15:00:00.000",
+          "end": "2019-04-30T17:00:00.000",
+          "breaks": [
+            {
+              "start": "2019-04-30T16:00:00.000",
+              "stop": "2019-04-30T16:15:00.000"
+            }
+          ],
           "values": {},
           "group-id": "",
           "shift-id": "5dde7024eded8872705a0012",
@@ -5601,6 +5679,11 @@
           {
             "type": "object",
             "properties": {
+              "duplicity": {
+                "type": "number",
+                "description": "Maximum (and desired) number of booked users",
+                "default": 1
+              },
               "withhold": {
                 "type": "boolean",
                 "description": "Hide shift from users making it visible for managers only",

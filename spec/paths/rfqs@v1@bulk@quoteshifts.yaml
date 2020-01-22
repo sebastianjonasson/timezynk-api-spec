@@ -1,5 +1,6 @@
 post:
   summary: Create multiple quote shifts
+  description: UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
   requestBody:
     content:
       application/json:
@@ -7,27 +8,53 @@ post:
           type: array
           items:
             properties:
-              quote-id:
-                type: string
-                format: ObjectId
-                description: Id of the quote this shift belongs to.
               rfq-shift-id:
                 type: string
                 format: ObjectId
                 description: The corresponding shift-id from the RfQ.
               booked-users:
                 type: array
-                description: List of suggested users
+                description: List of length 1, containing proposed user´s user-id
                 items:
                   type: string
                   format: ObjectId
+              booked-user:
+                type: object
+                description: Suggested user for this shift
+                properties: 
+                  name:
+                    type: string
+                    description: Name of worker
+                  id-no:
+                    type: string
+                    description: National identification number (personnummer) of the worker
+                    required:
+                      - quote-id
+                      - rfq-shift-id
+                required:
+                  - name
+                  - id-no
+              outgoing-rfq-id:
+                type: string
+                description: |
+                  Id of the rfq parent this rfq was created from.
+                format: ObjectId
+              incoming-rfq-id:
+                type: string
+                description: |
+                  Id of the RfQ.
+                format: ObjectId
             required:
-              - quote-id
               - rfq-shift-id
+              - booked-user
+              - booked-users
+              - outgoing-rfq-id
+              - incoming-rfq-id
+              - client-id
     description: Quote shifts to be added
-    required: true
+
   tags:
-    - Quote shifts
+    - Quote shifts UPDATE
   responses:
     "200":
       description: Newly added quote shifts

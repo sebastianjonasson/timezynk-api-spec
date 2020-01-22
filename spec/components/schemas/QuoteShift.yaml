@@ -7,12 +7,12 @@ allOf:
         type: string
         description: Quote shift status
         enum:
-          - in review
-          - approved
+          - sent
+          - accepted
           - rejected
           - confirmed
           - refused
-        default: in review
+        default: sent
         readOnly: true
       client-id:
         type: string
@@ -79,7 +79,7 @@ example:
   group-id: ""
 
   # specific
-  status: "in review"
+  status: "sent"
   client-id: "5dde6e21c9e77c0001a1e3a7"
   booked-users: "5dde6e21c9e77c0001a1e3aa"
   outgoing-rfq-id: "5dde7024eded8872705a0001"

@@ -1,5 +1,7 @@
 post:
   summary: Create multiple RfQ shifts
+  description: |
+    SPEC UPDATE - duplicity removed, shift-id required.
   requestBody:
     content:
       application/json:
@@ -10,7 +12,7 @@ post:
     description: RfQ shifts to be added
     required: true
   tags:
-    - RfQ shifts
+    - RfQ shifts UPDATE
   responses:
     "200":
       description: Newly added RfQ shifts

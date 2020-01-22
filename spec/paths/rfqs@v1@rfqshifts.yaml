@@ -31,7 +31,9 @@ post:
   description: |
     Endpoint for creating a new RfQ shift
 
-    To create an RfQ shift you first need to create an RfQ parent. You should then use `id` build your RFQ shift object.
+    To create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.
+    
+    SPEC UPDATE - duplicity removed, shift-id required.
   requestBody:
     description: RfQ parent object to be created.
     required: true
@@ -41,7 +43,7 @@ post:
           allOf:
           - $ref: '#/components/schemas/RfqShift'
   tags:
-    - RfQ shifts
+    - RfQ shifts UPDATE
   responses:
     200:
       description: Newly added RfQ shift

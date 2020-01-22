@@ -2439,345 +2439,6 @@
         }
       }
     },
-    "/rfqs/v1/quotes": {
-      "get": {
-        "summary": "Fetch quotes",
-        "description": "The quotes endpoint returns an array of all quotes.\n",
-        "tags": [
-          "Quotes"
-        ],
-        "responses": {
-          "200": {
-            "description": "An array of quotes",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Quote"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Create quote",
-        "description": "Endpoint for creating a quote.\n\nTo create a quote you first need to create an RfQ. You should then use `id` to build your quote object.\n",
-        "requestBody": {
-          "description": "Quote object to be created.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Quote"
-                  }
-                ],
-                "required": [
-                  "form-id",
-                  "form-vid",
-                  "rfq-id",
-                  "outgoing-rfq-id",
-                  "outgoing-rfq-vid",
-                  "client-id",
-                  "values"
-                ]
-              }
-            }
-          }
-        },
-        "tags": [
-          "Quotes"
-        ],
-        "responses": {
-          "200": {
-            "description": "Newly added RfQ parent object",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Quote"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quotes/{quoteId}": {
-      "get": {
-        "summary": "Fetch single quote",
-        "description": "Endpoint for fetching a single quote.\n",
-        "tags": [
-          "Quotes"
-        ],
-        "parameters": [
-          {
-            "name": "quoteId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A single quote",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Quote"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Update quote",
-        "parameters": [
-          {
-            "name": "quoteId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Quote"
-              }
-            }
-          },
-          "required": true
-        },
-        "tags": [
-          "Quotes"
-        ],
-        "responses": {
-          "200": {
-            "description": "Updated quote",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Quote"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation failed"
-          },
-          "404": {
-            "description": "Quote not found"
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quotes/{quoteId}/accept": {
-      "post": {
-        "summary": "Accept quote",
-        "description": "Endpoint for a client to accept a quote.",
-        "tags": [
-          "Quotes"
-        ],
-        "parameters": [
-          {
-            "name": "quoteId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Updated quote",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Quote"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote not found"
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quotes/{quoteId}/confirm": {
-      "post": {
-        "summary": "Confirm quote",
-        "description": "Endpoint for a supplier to confirm an accepted quote.",
-        "tags": [
-          "Quotes"
-        ],
-        "parameters": [
-          {
-            "name": "quoteId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Updated quote",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Quote"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote not found"
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quotes/{quoteId}/refuse": {
-      "post": {
-        "summary": "Refuse quote",
-        "description": "Endpoint for a supplier to refuse an accepted quote.",
-        "tags": [
-          "Quotes"
-        ],
-        "parameters": [
-          {
-            "name": "quoteId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Updated quote",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Quote"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote not found"
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quotes/{quoteId}/reject": {
-      "post": {
-        "summary": "Accept quote",
-        "description": "Endpoint for a client to reject a quote.",
-        "tags": [
-          "Quotes"
-        ],
-        "parameters": [
-          {
-            "name": "quoteId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Updated quote",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Quote"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote not found"
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quotes/{quoteId}/send": {
-      "post": {
-        "summary": "Send quote",
-        "description": "Endpoint for sending quote to client and making the quote readOnly.\n",
-        "parameters": [
-          {
-            "name": "quoteId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "tags": [
-          "Quotes"
-        ],
-        "responses": {
-          "200": {
-            "description": "Updated quote",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Quote"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote not found"
-          }
-        }
-      }
-    },
     "/rfqs/v1/quoteshifts": {
       "get": {
         "summary": "List quote shifts",
@@ -2924,6 +2585,253 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshifts/responses": {
+      "get": {
+        "summary": "Fetch quote shifts responses",
+        "description": "Endpoint returns an array of all quote shifts responses.\n",
+        "tags": [
+          "Quote shifts response NEW"
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of quote shift responses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuoteShiftsResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create quote shifts response",
+        "description": "Endpoint for a client to respond to a set of quote shifts.",
+        "tags": [
+          "Quote shifts response NEW"
+        ],
+        "requestBody": {
+          "description": "RfQ parent object to be created.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "description": "Quote shifts state",
+                    "enum": [
+                      "ACCEPTED",
+                      "REJECTED"
+                    ],
+                    "default": "ACCEPTED"
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Description of the response\n"
+                  },
+                  "supplier-id": {
+                    "type": "string",
+                    "description": "Id of the company owning the quote shifts.\n",
+                    "format": "ObjectId"
+                  },
+                  "quote-shift-ids": {
+                    "type": "array",
+                    "description": "List of quote shift ids.",
+                    "items": {
+                      "type": "string",
+                      "format": "ObjectId"
+                    }
+                  },
+                  "outgoing-rfq-id": {
+                    "type": "string",
+                    "description": "Id of the rfq parent this rfq was created from.\n",
+                    "format": "ObjectId"
+                  },
+                  "incoming-rfq-id": {
+                    "type": "string",
+                    "description": "Id of the RfQ.\n",
+                    "format": "ObjectId"
+                  }
+                },
+                "required": [
+                  "status",
+                  "supplier-id",
+                  "quote-shift-ids",
+                  "outgoing-rfq-id",
+                  "incoming-rfq-id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Quote shift response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote shifts response not found"
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshifts/responses/{responseId}": {
+      "get": {
+        "summary": "Fetch single quote shifts response",
+        "description": "Endpoint for fetching a single quote shifts response.\n",
+        "tags": [
+          "Quote shifts response NEW"
+        ],
+        "parameters": [
+          {
+            "name": "responseId",
+            "in": "path",
+            "description": "The quote shifts response id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single quote shifts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote not found"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshifts/responses/{responseId}/confirm": {
+      "post": {
+        "summary": "Confirm quote shifts response",
+        "description": "Endpoint for a supplier to confirm a quote shift response.",
+        "tags": [
+          "Quote shifts response NEW"
+        ],
+        "parameters": [
+          {
+            "name": "responseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated quote shifts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote not found"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshifts/responses/{responseId}/refuse": {
+      "post": {
+        "summary": "Refuse quote shifts response",
+        "description": "Endpoint for a supplier to refuse a quote shift response.",
+        "tags": [
+          "Quote shifts response NEW"
+        ],
+        "parameters": [
+          {
+            "name": "responseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated quote shifts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote not found"
           },
           "default": {
             "description": "Unexpected error",
@@ -5270,61 +5178,6 @@
           "id"
         ]
       },
-      "Quote": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BasicObject"
-          },
-          {
-            "$ref": "#/components/schemas/BaseOrder"
-          },
-          {
-            "properties": {
-              "client-id": {
-                "type": "string",
-                "description": "Id of the company owning the RfQ.\n",
-                "format": "ObjectId"
-              },
-              "outgoing-rfq-id": {
-                "type": "string",
-                "description": "Id of the rfq parent this rfq was created from.\n",
-                "format": "ObjectId"
-              },
-              "rfq-id": {
-                "type": "string",
-                "description": "Id of the RfQ.\n",
-                "format": "ObjectId"
-              },
-              "quote-no": {
-                "type": "string",
-                "description": "Human readable quote identification number.\n",
-                "readOnly": true
-              }
-            }
-          }
-        ],
-        "example": {
-          "id": "5dde7024eded8872705a0002",
-          "vid": "5dde71e4c9e77c0001730002",
-          "company-id": "5dde6e21c9e77c0001a1e3a7",
-          "created": 1574858788000,
-          "created-by": "5dde6e21c9e77c0001a1e3b0",
-          "valid-from": 1574859236203,
-          "changed-by": "5dde6e21c9e77c0001a1e3b0",
-          "status": "sent",
-          "form-id": "5dde7024eded8872705a0000",
-          "form-vid": "5dde71e4c9e77c0001730000",
-          "original-duplicity": 3,
-          "values": {},
-          "shift-dates": [
-            "2019-01-01"
-          ],
-          "client-id": "5dde6e21c9e77c0001a1e3a7",
-          "outgoing-rfq-id": "5dde7024eded8872705a0001",
-          "rfq-id": "5dde7024eded8872705a0001",
-          "quote-no": "34"
-        }
-      },
       "QuoteShift": {
         "allOf": [
           {
@@ -5432,6 +5285,82 @@
             "name": "Firstname Surname",
             "id-no": "851103-1234"
           }
+        }
+      },
+      "QuoteShiftsResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "description": "Quote shifts state",
+                "enum": [
+                  "ACCEPTED",
+                  "REJECTED",
+                  "CONFIRMED",
+                  "REFUSED"
+                ],
+                "default": "ACCEPTED"
+              },
+              "message": {
+                "type": "string",
+                "description": "Description of the response\n"
+              },
+              "supplier-id": {
+                "type": "string",
+                "description": "Id of the company owning the quote shifts.\n",
+                "format": "ObjectId"
+              },
+              "quote-shift-ids": {
+                "type": "array",
+                "description": "List of quote shift ids.",
+                "items": {
+                  "type": "string",
+                  "format": "ObjectId"
+                }
+              },
+              "outgoing-rfq-id": {
+                "type": "string",
+                "description": "Id of the rfq parent this rfq was created from.\n",
+                "format": "ObjectId"
+              },
+              "incoming-rfq-id": {
+                "type": "string",
+                "description": "Id of the RfQ.\n",
+                "format": "ObjectId"
+              }
+            },
+            "required": [
+              "status",
+              "supplier-id",
+              "quote-shift-ids",
+              "outgoing-rfq-id",
+              "incoming-rfq-id"
+            ]
+          }
+        ],
+        "example": {
+          "id": "5dde7024eded8872705a0000",
+          "vid": "5dde71e4c9e77c0001730000",
+          "company-id": "5dde6e21c9e77c0001a1e3a7",
+          "created": 1574858788000,
+          "created-by": "5dde6e21c9e77c0001a1e3b0",
+          "valid-from": 1574859236203,
+          "valid-to": 0,
+          "changed-by": "5dde6e21c9e77c0001a1e3b0",
+          "archived": 0,
+          "status": "accepted",
+          "message": "",
+          "supplier-id": "5dde6e21c9e77c0001a1e3a7",
+          "quote-shift-ids": [
+            "5dde7024eded8872705a0011"
+          ],
+          "outgoing-rfq-id": "5dde7024eded8872705a0001",
+          "incoming-rfq-id": "5dde7024eded8872705a0002"
         }
       },
       "Registry": {

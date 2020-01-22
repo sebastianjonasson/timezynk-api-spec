@@ -1,0 +1,81 @@
+get:
+  summary: Fetch quote shifts responses
+  description: |
+    Endpoint returns an array of all quote shifts responses.
+  tags:
+    - Quote shifts response NEW
+  responses:
+    200:
+      description: An array of quote shift responses
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/QuoteShiftsResponse'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+post:
+  summary: Create quote shifts response
+  description: Endpoint for a client to respond to a set of quote shifts.
+  tags:
+    - Quote shifts response NEW
+  requestBody:
+    description: RfQ parent object to be created.
+    required: true
+    content:
+      application/json:
+        schema:
+          properties:
+            status:
+              type: string
+              description: Quote shifts state
+              enum:
+                - ACCEPTED
+                - REJECTED
+              default: ACCEPTED
+            message:
+              type: string
+              description: |
+                Description of the response
+            supplier-id:
+              type: string
+              description: |
+                Id of the company owning the quote shifts.
+              format: ObjectId
+            quote-shift-ids:
+              type: array
+              description: List of quote shift ids.
+              items:
+                type: string
+                format: ObjectId
+            outgoing-rfq-id:
+              type: string
+              description: |
+                Id of the rfq parent this rfq was created from.
+              format: ObjectId
+            incoming-rfq-id:
+              type: string
+              description: |
+                Id of the RfQ.
+              format: ObjectId
+          required:
+            - status
+            - supplier-id
+            - quote-shift-ids
+            - outgoing-rfq-id
+            - incoming-rfq-id
+  responses:
+    200:
+      description: Quote shift response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/QuoteShiftsResponse'
+    404:
+      description: Quote shifts response not found

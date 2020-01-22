@@ -13,6 +13,7 @@ allOf:
         description: ID of order that created the shift
     required:
       - outgoing-rfq-id
+      - shift-id
       - start
       - end
 
@@ -24,13 +25,16 @@ example:
   created: 1574858788000
   created-by: "5dde6e21c9e77c0001a1e3b0"
   valid-from: 1574859236203
+  valid-to: 0
   changed-by: "5dde6e21c9e77c0001a1e3b0"
+  archived: 0
 
   # base shift
-  start: "2019-04-30T15:41:00.000"
-  end: "2019-04-30T15:41:00.000"
-  breaks: []
-  duplicity: 2
+  start: "2019-04-30T15:00:00.000"
+  end: "2019-04-30T17:00:00.000"
+  breaks: 
+    - start: "2019-04-30T16:00:00.000"
+      stop: "2019-04-30T16:15:00.000"
   values: {}
   group-id: ""
 

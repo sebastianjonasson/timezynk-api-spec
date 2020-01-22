@@ -3,6 +3,10 @@ allOf:
   - $ref: '#/components/schemas/BaseShift'
   - type: object
     properties:
+      duplicity:
+        type: number
+        description: Maximum (and desired) number of booked users
+        default: 1
       withhold:
         type: boolean
         description: Hide shift from users making it visible for managers only

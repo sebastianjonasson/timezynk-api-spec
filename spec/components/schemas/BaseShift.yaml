@@ -17,10 +17,6 @@ allOf:
         description: List of breaks
         items:
           $ref: "#/components/schemas/Break"
-      duplicity:
-        type: number
-        description: Maximum (and desired) number of booked users
-        default: 1
       values:
         type: object
         description: Values for custom registry fields

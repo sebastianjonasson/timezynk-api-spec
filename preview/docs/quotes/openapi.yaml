@@ -1652,6 +1652,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete quote shift
+      description: Deletion can only be done if shift is in DRAFT state.
+      tags:
+        - Quote shifts NEW
+      parameters:
+        - in: path
+          name: quoteShiftId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: OK
+        '404':
+          description: Not found
   /rfqs/v1/quoteshifts/responses:
     get:
       summary: Fetch quote shifts responses
@@ -3413,12 +3430,13 @@ components:
               type: string
               description: Quote shift status
               enum:
-                - sent
-                - accepted
-                - rejected
-                - confirmed
-                - refused
-              default: sent
+                - DRAFT
+                - SENT
+                - ACCEPTED
+                - REJECTED
+                - CONFIRMED
+                - REFUSED
+              default: DRAFT
               readOnly: true
             client-id:
               type: string
@@ -3479,7 +3497,7 @@ components:
             stop: '2019-04-30T16:15:00.000'
         values: {}
         group-id: ''
-        status: sent
+        status: DRAFT
         client-id: 5dde6e21c9e77c0001a1e3a7
         booked-users: 5dde6e21c9e77c0001a1e3aa
         outgoing-rfq-id: 5dde7024eded8872705a0001

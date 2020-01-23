@@ -1669,6 +1669,25 @@ paths:
           description: OK
         '404':
           description: Not found
+  '/rfqs/v1/quoteshifts/{quoteShiftId}/send':
+    post:
+      summary: Send quote shift
+      description: |
+        Endpoint for sending quote shift to scheduler.
+      parameters:
+        - name: quoteShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Quote shifts NEW
+      responses:
+        '201':
+          description: OK
+        '404':
+          description: Not found
   /rfqs/v1/quoteshifts/responses:
     get:
       summary: Fetch quote shifts responses

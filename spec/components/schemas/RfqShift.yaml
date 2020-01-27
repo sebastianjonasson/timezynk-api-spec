@@ -3,6 +3,15 @@ allOf:
   - $ref: '#/components/schemas/BaseShift'
   - type: object
     properties:
+      status:
+        type: string
+        description: Quote shift status
+        enum:
+          - OPEN
+          - ACCEPTED
+          - CONFIRMED
+        default: OPEN
+        readOnly: true
       shift-id:
         type: string
         format: ObjectId
@@ -39,5 +48,6 @@ example:
   group-id: ""
 
   # specific
+  status: "OPEN"
   shift-id: "5dde7024eded8872705a0012"
   outgoing-rfq-id: "5dde7024eded8872705a0013"

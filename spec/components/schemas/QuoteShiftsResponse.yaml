@@ -56,7 +56,7 @@ example:
   archived: 0
 
   # specific
-  status: "accepted"
+  status: "ACCEPTED"
   message: ""
   supplier-id: "5dde6e21c9e77c0001a1e3a7"
   quote-shift-ids: ["5dde7024eded8872705a0011"]

@@ -2,6 +2,8 @@ get:
   summary: List rfq shifts
   description: |
     The rfq shifts endpoint returns a list of all created rfq shifts.
+
+    UPDATE - rfq shift now contains status.
   tags:
     - Outgoing RfQ shifts UPDATE
   parameters:

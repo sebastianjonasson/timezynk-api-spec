@@ -1450,16 +1450,13 @@ paths:
                     type: string
                     format: ObjectId
                     description: The corresponding shift-id from the RfQ.
-                  booked-users:
-                    type: array
-                    description: 'List of length 1, containing proposed user´s user-id'
-                    items:
-                      type: string
-                      format: ObjectId
                   booked-user:
                     type: object
                     description: Suggested user for this shift
                     properties:
+                      id:
+                        type: string
+                        format: ObjectId
                       name:
                         type: string
                         description: Name of worker
@@ -1485,7 +1482,6 @@ paths:
                 required:
                   - rfq-shift-id
                   - booked-user
-                  - booked-users
                   - outgoing-rfq-id
                   - incoming-rfq-id
                   - client-id
@@ -1743,16 +1739,13 @@ paths:
                   type: string
                   format: ObjectId
                   description: The corresponding shift-id from the RfQ.
-                booked-users:
-                  type: array
-                  description: 'List of length 1, containing proposed user´s user-id'
-                  items:
-                    type: string
-                    format: ObjectId
                 booked-user:
                   type: object
                   description: Suggested user for this shift
                   properties:
+                    id:
+                      type: string
+                      format: ObjectId
                     name:
                       type: string
                       description: Name of worker
@@ -1760,6 +1753,7 @@ paths:
                       type: string
                       description: National identification number (personnummer) of the worker
                       required:
+                        - id
                         - quote-id
                         - rfq-shift-id
                   required:
@@ -1778,7 +1772,6 @@ paths:
               required:
                 - rfq-shift-id
                 - booked-user
-                - booked-users
                 - outgoing-rfq-id
                 - incoming-rfq-id
                 - client-id
@@ -3462,12 +3455,6 @@ components:
               description: |
                 Id of the company owning the RfQ.
               format: ObjectId
-            booked-users:
-              type: array
-              description: 'List of length 1, continatining the user id of the proposed user'
-              items:
-                type: string
-                format: ObjectId
             outgoing-rfq-id:
               type: string
               description: |
@@ -3486,16 +3473,23 @@ components:
               type: object
               description: Suggested user for this shift
               properties:
+                id:
+                  type: string
+                  format: ObjectId
+                  description: UserID
                 name:
                   type: string
                   description: Name of worker
                 id-no:
                   type: string
                   description: National identification number (personnummer) of the worker
+              required:
+                - id
+                - name
+                - id-no
           required:
             - rfq-shift-id
             - booked-user
-            - booked-users
             - outgoing-rfq-id
             - incoming-rfq-id
             - client-id
@@ -3518,11 +3512,11 @@ components:
         group-id: ''
         status: DRAFT
         client-id: 5dde6e21c9e77c0001a1e3a7
-        booked-users: 5dde6e21c9e77c0001a1e3aa
         outgoing-rfq-id: 5dde7024eded8872705a0001
         incoming-rfq-id: 5dde7024eded8872705a0002
         rfq-shift-id: 5dde7024eded8872705a0011
         booked-user:
+          id: 5dde6e21c9e77c0001a1e3aa
           name: Firstname Surname
           id-no: 851103-1234
     QuoteShiftsResponse:

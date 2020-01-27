@@ -26,7 +26,7 @@ post:
   description: |
     Endpoint for creating a new quote shift. SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
   requestBody:
-    description: Quote shift to be created. 
+    description: Quote shift to be created.
     required: true
     content:
       application/json:
@@ -36,16 +36,13 @@ post:
               type: string
               format: ObjectId
               description: The corresponding shift-id from the RfQ.
-            booked-users:
-              type: array
-              description: List of length 1, containing proposed user´s user-id
-              items:
-                type: string
-                format: ObjectId
             booked-user:
               type: object
               description: Suggested user for this shift
-              properties: 
+              properties:
+                id:
+                  type: string
+                  format: ObjectId
                 name:
                   type: string
                   description: Name of worker
@@ -53,6 +50,7 @@ post:
                   type: string
                   description: National identification number (personnummer) of the worker
                   required:
+                    - id
                     - quote-id
                     - rfq-shift-id
               required:
@@ -71,7 +69,6 @@ post:
           required:
             - rfq-shift-id
             - booked-user
-            - booked-users
             - outgoing-rfq-id
             - incoming-rfq-id
             - client-id

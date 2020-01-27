@@ -3,8 +3,13 @@ get:
   description: |
     Endpoint for fetching a single RfQ shift.
   tags:
-    - RfQ shifts
+    - Outgoing RfQ shifts UPDATE
   parameters:
+    - in: path
+      name: outgoingRfqId
+      schema:
+      type: string
+      format: ObjectId
     - name: rfqShiftId
       in: path
       required: true

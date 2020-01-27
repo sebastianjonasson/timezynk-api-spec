@@ -12,7 +12,7 @@ post:
     description: RfQ shifts to be added
     required: true
   tags:
-    - RfQ shifts UPDATE
+    - Outgoing RfQ shifts UPDATE
   responses:
     "200":
       description: Newly added RfQ shifts

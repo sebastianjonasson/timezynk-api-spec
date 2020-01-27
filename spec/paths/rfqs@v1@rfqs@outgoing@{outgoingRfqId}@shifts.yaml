@@ -3,10 +3,10 @@ get:
   description: |
     The rfq shifts endpoint returns a list of all created rfq shifts.
   tags:
-    - RfQ shifts
+    - Outgoing RfQ shifts UPDATE
   parameters:
-      - in: query
-        name: outgoing-rfq-id
+      - in: path
+        name: outgoingRfqId
         schema:
           type: string
           format: ObjectId
@@ -32,10 +32,10 @@ post:
     Endpoint for creating a new RfQ shift
 
     To create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.
-    
+
     SPEC UPDATE - duplicity removed, shift-id required.
   requestBody:
-    description: RfQ parent object to be created.
+    description: RfQ shift object to be created.
     required: true
     content:
       application/json:
@@ -43,7 +43,7 @@ post:
           allOf:
           - $ref: '#/components/schemas/RfqShift'
   tags:
-    - RfQ shifts UPDATE
+    - Outgoing RfQ shifts UPDATE
   responses:
     200:
       description: Newly added RfQ shift

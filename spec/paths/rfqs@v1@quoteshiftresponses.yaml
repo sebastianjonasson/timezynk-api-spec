@@ -38,11 +38,6 @@ post:
               enum:
                 - ACCEPTED
                 - REJECTED
-              default: ACCEPTED
-            message:
-              type: string
-              description: |
-                Description of the response
             supplier-id:
               type: string
               description: |

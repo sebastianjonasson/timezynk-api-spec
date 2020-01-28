@@ -3,15 +3,24 @@ allOf:
   - $ref: '#/components/schemas/BaseShift'
   - type: object
     properties:
-      status:
-        type: string
-        description: Quote shift status
-        enum:
-          - OPEN
-          - ACCEPTED
-          - CONFIRMED
-        default: OPEN
+      duplicity:
+        type: number
+        description: Maximum (and desired) number of booked users
+        default: 1
+      accepted-quote-shifts:
+        type: array
+        description: List of accepted quote shifts for this RfQ shift
         readOnly: true
+        items:
+          type: string
+          format: ObjectId
+      confirmed-quote-shifts:
+        type: array
+        description: List of confirmed quote shifts for this RfQ shift
+        readOnly: true
+        items:
+          type: string
+          format: ObjectId
       shift-id:
         type: string
         format: ObjectId
@@ -48,6 +57,8 @@ example:
   group-id: ""
 
   # specific
-  status: "OPEN"
+  duplicity: 4
+  accepted-quote-shifts: ["5dde7024eded8872705a0012", "5dde7024eded8872705a0013"]
+  confirmed-quote-shifts: ["5dde7024eded8872705a0014"]
   shift-id: "5dde7024eded8872705a0012"
   outgoing-rfq-id: "5dde7024eded8872705a0013"

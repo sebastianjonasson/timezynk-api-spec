@@ -3,7 +3,7 @@ get:
   description: |
     The rfq shifts endpoint returns a list of all created rfq shifts.
 
-    UPDATE - rfq shift now contains status.
+    UPDATE - status removed. Added duplicity, accepted-quote-shifts, confirmed-quote-shifts.
   tags:
     - Outgoing RfQ shifts UPDATE
   parameters:
@@ -35,7 +35,7 @@ post:
 
     To create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.
 
-    SPEC UPDATE - duplicity removed, shift-id required.
+    SPEC UPDATE - duplicity added, shift-id required
   requestBody:
     description: RfQ shift object to be created.
     required: true

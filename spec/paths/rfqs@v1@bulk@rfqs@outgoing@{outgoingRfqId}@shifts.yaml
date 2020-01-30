@@ -13,6 +13,13 @@ post:
     required: true
   tags:
     - Outgoing RfQ shifts UPDATE
+  parameters:
+    - in: path
+      name: outgoingRfqId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
   responses:
     "200":
       description: Newly added RfQ shifts

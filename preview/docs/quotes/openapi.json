@@ -2386,7 +2386,7 @@
         }
       }
     },
-    "/rfqs/v1/bulk/rfqshifts": {
+    "/rfqs/v1/bulk/rfqs/outgoing/{outgoingRfqId}/shifts": {
       "post": {
         "summary": "Create multiple RfQ shifts",
         "description": "SPEC UPDATE - duplicity removed, shift-id required.\n",
@@ -2405,7 +2405,18 @@
           "required": true
         },
         "tags": [
-          "RfQ shifts UPDATE"
+          "Outgoing RfQ shifts UPDATE"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "outgoingRfqId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -2486,12 +2497,7 @@
                     "enum": [
                       "ACCEPTED",
                       "REJECTED"
-                    ],
-                    "default": "ACCEPTED"
-                  },
-                  "message": {
-                    "type": "string",
-                    "description": "Description of the response\n"
+                    ]
                   },
                   "supplier-id": {
                     "type": "string",
@@ -2925,6 +2931,102 @@
         }
       }
     },
+    "/rfqs/v1/rfqs/incoming/{incomingRfqId}/shifts": {
+      "get": {
+        "summary": "List rfq shifts",
+        "description": "The rfq shifts endpoint returns a list of all created rfq shifts.\n\nUPDATE - status removed. Added duplicity, accepted-quote-shifts, confirmed-quote-shifts.\n",
+        "tags": [
+          "Incoming RfQ shifts UPDATE"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incomingRfqId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of RfQ shifts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RfqShift"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/rfqs/incoming/{incomingRfqId}/shifts/{rfqShiftId}": {
+      "get": {
+        "summary": "Fetch single RfQ shift",
+        "description": "Endpoint for fetching a single RfQ shift.\n",
+        "tags": [
+          "Incoming RfQ shifts UPDATE"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incomingRfqId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          },
+          {
+            "name": "rfqShiftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single RfQ shift",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RfqShift"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/rfqs/v1/rfqs/incoming/{rfqId}": {
       "get": {
         "summary": "Fetch single RfQ",
@@ -3040,6 +3142,147 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OutgoingRfq"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/shifts": {
+      "get": {
+        "summary": "List rfq shifts",
+        "description": "The rfq shifts endpoint returns a list of all created rfq shifts.\n\nUPDATE - status removed. Added duplicity, accepted-quote-shifts, confirmed-quote-shifts.\n",
+        "tags": [
+          "Outgoing RfQ shifts UPDATE"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "outgoingRfqId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of RfQ shifts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RfqShift"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create RfQ shift",
+        "description": "Endpoint for creating a new RfQ shift\n\nTo create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.\n\nSPEC UPDATE - duplicity added, shift-id required\n",
+        "tags": [
+          "Outgoing RfQ shifts UPDATE"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "outgoingRfqId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "RfQ shift object to be created.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RfqShift"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly added RfQ shift",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RfqShift"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/shifts/{rfqShiftId}": {
+      "get": {
+        "summary": "Fetch single RfQ shift",
+        "description": "Endpoint for fetching a single RfQ shift.\n\nUPDATE - rfq shift now contains status.\n",
+        "tags": [
+          "Outgoing RfQ shifts UPDATE"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "outgoingRfqId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          },
+          {
+            "name": "rfqShiftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single RfQ shift",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RfqShift"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -3189,126 +3432,6 @@
         "responses": {
           "201": {
             "description": "OK"
-          }
-        }
-      }
-    },
-    "/rfqs/v1/rfqshifts": {
-      "get": {
-        "summary": "List rfq shifts",
-        "description": "The rfq shifts endpoint returns a list of all created rfq shifts.\n",
-        "tags": [
-          "RfQ shifts"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "outgoing-rfq-id",
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An array of RfQ shifts",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RfqShift"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Create RfQ shift",
-        "description": "Endpoint for creating a new RfQ shift\n\nTo create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.\n\nSPEC UPDATE - duplicity removed, shift-id required.\n",
-        "requestBody": {
-          "description": "RfQ parent object to be created.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/RfqShift"
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "tags": [
-          "RfQ shifts UPDATE"
-        ],
-        "responses": {
-          "200": {
-            "description": "Newly added RfQ shift",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RfqShift"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rfqs/v1/rfqshifts/{rfqShiftId}": {
-      "get": {
-        "summary": "Fetch single RfQ shift",
-        "description": "Endpoint for fetching a single RfQ shift.\n",
-        "tags": [
-          "RfQ shifts"
-        ],
-        "parameters": [
-          {
-            "name": "rfqShiftId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A single RfQ shift",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RfqShift"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
           }
         }
       }
@@ -5147,6 +5270,16 @@
           },
           {
             "properties": {
+              "status": {
+                "type": "string",
+                "description": "Quote shift status",
+                "enum": [
+                  "OPEN",
+                  "SENT"
+                ],
+                "default": "OPEN",
+                "readOnly": true
+              },
               "expires": {
                 "type": "number",
                 "description": "Timestamp in milliseconds for when the rfq expires"
@@ -5171,8 +5304,10 @@
           "created": 1574858788,
           "created-by": "5dde6e21c9e77c0001a1e3b0",
           "valid-from": 1574859236203,
+          "valid-to": 0,
           "changed-by": "5dde6e21c9e77c0001a1e3b0",
-          "status": "open",
+          "archived": 0,
+          "status": "OPEN",
           "form-id": "5dde7024eded8872705a1ff7",
           "form-vid": "5dde71e4c9e77c000173dd03",
           "original-duplicity": 3,
@@ -5350,12 +5485,7 @@
                   "REJECTED",
                   "CONFIRMED",
                   "REFUSED"
-                ],
-                "default": "ACCEPTED"
-              },
-              "message": {
-                "type": "string",
-                "description": "Description of the response\n"
+                ]
               },
               "supplier-id": {
                 "type": "string",
@@ -5400,8 +5530,7 @@
           "valid-to": 0,
           "changed-by": "5dde6e21c9e77c0001a1e3b0",
           "archived": 0,
-          "status": "accepted",
-          "message": "",
+          "status": "ACCEPTED",
           "supplier-id": "5dde6e21c9e77c0001a1e3a7",
           "quote-shift-ids": [
             "5dde7024eded8872705a0011"
@@ -5509,8 +5638,9 @@
           "created": 1574858788000,
           "created-by": "5dde6e21c9e77c0001a1e3b0",
           "valid-from": 1574859236203,
+          "valid-to": 0,
           "changed-by": "5dde6e21c9e77c0001a1e3b0",
-          "status": "open",
+          "archived": 0,
           "form-id": "5dde7024eded8872705a1ff7",
           "form-vid": "5dde71e4c9e77c000173dd03",
           "original-duplicity": 3,
@@ -5543,6 +5673,29 @@
           {
             "type": "object",
             "properties": {
+              "duplicity": {
+                "type": "number",
+                "description": "Maximum (and desired) number of booked users",
+                "default": 1
+              },
+              "accepted-quote-shifts": {
+                "type": "array",
+                "description": "List of accepted quote shifts for this RfQ shift",
+                "readOnly": true,
+                "items": {
+                  "type": "string",
+                  "format": "ObjectId"
+                }
+              },
+              "confirmed-quote-shifts": {
+                "type": "array",
+                "description": "List of confirmed quote shifts for this RfQ shift",
+                "readOnly": true,
+                "items": {
+                  "type": "string",
+                  "format": "ObjectId"
+                }
+              },
               "shift-id": {
                 "type": "string",
                 "format": "ObjectId",
@@ -5582,6 +5735,14 @@
           ],
           "values": {},
           "group-id": "",
+          "duplicity": 4,
+          "accepted-quote-shifts": [
+            "5dde7024eded8872705a0012",
+            "5dde7024eded8872705a0013"
+          ],
+          "confirmed-quote-shifts": [
+            "5dde7024eded8872705a0014"
+          ],
           "shift-id": "5dde7024eded8872705a0012",
           "outgoing-rfq-id": "5dde7024eded8872705a0013"
         }

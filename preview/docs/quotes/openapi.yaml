@@ -1503,7 +1503,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /rfqs/v1/bulk/rfqshifts:
+  '/rfqs/v1/bulk/rfqs/outgoing/{outgoingRfqId}/shifts':
     post:
       summary: Create multiple RfQ shifts
       description: |
@@ -1518,7 +1518,14 @@ paths:
         description: RfQ shifts to be added
         required: true
       tags:
-        - RfQ shifts UPDATE
+        - Outgoing RfQ shifts UPDATE
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
       responses:
         '200':
           description: Newly added RfQ shifts
@@ -1574,11 +1581,6 @@ paths:
                   enum:
                     - ACCEPTED
                     - REJECTED
-                  default: ACCEPTED
-                message:
-                  type: string
-                  description: |
-                    Description of the response
                 supplier-id:
                   type: string
                   description: |
@@ -1871,6 +1873,70 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/shifts':
+    get:
+      summary: List rfq shifts
+      description: |
+        The rfq shifts endpoint returns a list of all created rfq shifts.
+
+        UPDATE - status removed. Added duplicity, accepted-quote-shifts, confirmed-quote-shifts.
+      tags:
+        - Incoming RfQ shifts UPDATE
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of RfQ shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/shifts/{rfqShiftId}':
+    get:
+      summary: Fetch single RfQ shift
+      description: |
+        Endpoint for fetching a single RfQ shift.
+      tags:
+        - Incoming RfQ shifts UPDATE
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: rfqShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single RfQ shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   '/rfqs/v1/rfqs/incoming/{rfqId}':
     get:
       summary: Fetch single RfQ
@@ -1951,6 +2017,104 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OutgoingRfq'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/shifts':
+    get:
+      summary: List rfq shifts
+      description: |
+        The rfq shifts endpoint returns a list of all created rfq shifts.
+
+        UPDATE - status removed. Added duplicity, accepted-quote-shifts, confirmed-quote-shifts.
+      tags:
+        - Outgoing RfQ shifts UPDATE
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of RfQ shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create RfQ shift
+      description: |
+        Endpoint for creating a new RfQ shift
+
+        To create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.
+
+        SPEC UPDATE - duplicity added, shift-id required
+      tags:
+        - Outgoing RfQ shifts UPDATE
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: RfQ shift object to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/RfqShift'
+      responses:
+        '200':
+          description: Newly added RfQ shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqShift'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/shifts/{rfqShiftId}':
+    get:
+      summary: Fetch single RfQ shift
+      description: |
+        Endpoint for fetching a single RfQ shift.
+
+        UPDATE - rfq shift now contains status.
+      tags:
+        - Outgoing RfQ shifts UPDATE
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: rfqShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single RfQ shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   '/rfqs/v1/rfqs/outgoing/{rfqParentId}':
     get:
       summary: Fetch single RfQ parent
@@ -2045,86 +2209,6 @@ paths:
       responses:
         '201':
           description: OK
-  /rfqs/v1/rfqshifts:
-    get:
-      summary: List rfq shifts
-      description: |
-        The rfq shifts endpoint returns a list of all created rfq shifts.
-      tags:
-        - RfQ shifts
-      parameters:
-        - in: query
-          name: outgoing-rfq-id
-          schema:
-            type: string
-            format: ObjectId
-      responses:
-        '200':
-          description: An array of RfQ shifts
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RfqShift'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    post:
-      summary: Create RfQ shift
-      description: |
-        Endpoint for creating a new RfQ shift
-
-        To create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.
-
-        SPEC UPDATE - duplicity removed, shift-id required.
-      requestBody:
-        description: RfQ parent object to be created.
-        required: true
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/RfqShift'
-      tags:
-        - RfQ shifts UPDATE
-      responses:
-        '200':
-          description: Newly added RfQ shift
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RfqShift'
-  '/rfqs/v1/rfqshifts/{rfqShiftId}':
-    get:
-      summary: Fetch single RfQ shift
-      description: |
-        Endpoint for fetching a single RfQ shift.
-      tags:
-        - RfQ shifts
-      parameters:
-        - name: rfqShiftId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: ObjectId
-      responses:
-        '200':
-          description: A single RfQ shift
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RfqShift'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /settings/v1/company:
     get:
       summary: Get company settings
@@ -3375,6 +3459,14 @@ components:
         - $ref: '#/components/schemas/BasicObject'
         - $ref: '#/components/schemas/BaseOrder'
         - properties:
+            status:
+              type: string
+              description: Quote shift status
+              enum:
+                - OPEN
+                - SENT
+              default: OPEN
+              readOnly: true
             expires:
               type: number
               description: Timestamp in milliseconds for when the rfq expires
@@ -3393,8 +3485,10 @@ components:
         created: 1574858788
         created-by: 5dde6e21c9e77c0001a1e3b0
         valid-from: 1574859236203
+        valid-to: 0
         changed-by: 5dde6e21c9e77c0001a1e3b0
-        status: open
+        archived: 0
+        status: OPEN
         form-id: 5dde7024eded8872705a1ff7
         form-vid: 5dde71e4c9e77c000173dd03
         original-duplicity: 3
@@ -3532,11 +3626,6 @@ components:
                 - REJECTED
                 - CONFIRMED
                 - REFUSED
-              default: ACCEPTED
-            message:
-              type: string
-              description: |
-                Description of the response
             supplier-id:
               type: string
               description: |
@@ -3574,8 +3663,7 @@ components:
         valid-to: 0
         changed-by: 5dde6e21c9e77c0001a1e3b0
         archived: 0
-        status: accepted
-        message: ''
+        status: ACCEPTED
         supplier-id: 5dde6e21c9e77c0001a1e3a7
         quote-shift-ids:
           - 5dde7024eded8872705a0011
@@ -3646,8 +3734,9 @@ components:
         created: 1574858788000
         created-by: 5dde6e21c9e77c0001a1e3b0
         valid-from: 1574859236203
+        valid-to: 0
         changed-by: 5dde6e21c9e77c0001a1e3b0
-        status: open
+        archived: 0
         form-id: 5dde7024eded8872705a1ff7
         form-vid: 5dde71e4c9e77c000173dd03
         original-duplicity: 3
@@ -3671,6 +3760,24 @@ components:
         - $ref: '#/components/schemas/BaseShift'
         - type: object
           properties:
+            duplicity:
+              type: number
+              description: Maximum (and desired) number of booked users
+              default: 1
+            accepted-quote-shifts:
+              type: array
+              description: List of accepted quote shifts for this RfQ shift
+              readOnly: true
+              items:
+                type: string
+                format: ObjectId
+            confirmed-quote-shifts:
+              type: array
+              description: List of confirmed quote shifts for this RfQ shift
+              readOnly: true
+              items:
+                type: string
+                format: ObjectId
             shift-id:
               type: string
               format: ObjectId
@@ -3701,6 +3808,12 @@ components:
             stop: '2019-04-30T16:15:00.000'
         values: {}
         group-id: ''
+        duplicity: 4
+        accepted-quote-shifts:
+          - 5dde7024eded8872705a0012
+          - 5dde7024eded8872705a0013
+        confirmed-quote-shifts:
+          - 5dde7024eded8872705a0014
         shift-id: 5dde7024eded8872705a0012
         outgoing-rfq-id: 5dde7024eded8872705a0013
     SalaryArticle:

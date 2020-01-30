@@ -9,9 +9,10 @@ get:
   parameters:
     - in: path
       name: outgoingRfqId
+      required: true
       schema:
-      type: string
-      format: ObjectId
+        type: string
+        format: ObjectId
     - name: rfqShiftId
       in: path
       required: true

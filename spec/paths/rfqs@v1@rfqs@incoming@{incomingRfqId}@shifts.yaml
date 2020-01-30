@@ -9,6 +9,7 @@ get:
   parameters:
       - in: path
         name: incomingRfqId
+        required: true
         schema:
           type: string
           format: ObjectId

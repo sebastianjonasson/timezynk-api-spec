@@ -7,9 +7,10 @@ get:
   parameters:
     - in: path
       name: incomingRfqId
+      required: true
       schema:
-      type: string
-      format: ObjectId
+        type: string
+        format: ObjectId
     - name: rfqShiftId
       in: path
       required: true

@@ -32,6 +32,14 @@ tags:
     description: Settings are used to store and retreive configuration parameters.
   - name: Experimental
     description: These APIs are experimental and and may be changed at any time without warning.
+  - name: RfQs - outgoing
+  - name: RfQs - incoming
+  - name: RfQ shifts - outgoing
+  - name: RfQ shifts - incoming
+  - name: Quote shifts - outgoing
+  - name: Quote shifts - incoming
+  - name: Quote shift response - outgoing
+  - name: Quote shift response - incoming
 servers:
   - url: 'https://api.timezynk.com/api'
 paths:
@@ -1905,10 +1913,9 @@ paths:
     get:
       summary: Fetch RfQs
       description: |
-        The RfQs endpoint returns an array of all received RfQs.
-        The RfQ is the supplier's counterpart of the RfQ parent.
+        The RfQs endpoint returns an array of all incoming RfQs.
       tags:
-        - Incoming RfQs
+        - RfQs - incoming
       responses:
         '200':
           description: An array of RfQs
@@ -1928,11 +1935,11 @@ paths:
     get:
       summary: List rfq shifts
       description: |
-        The rfq shifts endpoint returns a list of all created rfq shifts.
+        The rfq shifts endpoint returns a list of all incoming rfq shifts.
 
         UPDATE - status removed. Added duplicity, accepted-quote-shifts, confirmed-quote-shifts.
       tags:
-        - Incoming RfQ shifts UPDATE
+        - RfQ shifts - incoming UPDATE
       parameters:
         - in: path
           name: incomingRfqId
@@ -1961,7 +1968,7 @@ paths:
       description: |
         Endpoint for fetching a single RfQ shift.
       tags:
-        - Incoming RfQ shifts UPDATE
+        - RfQ shifts - incoming UPDATE
       parameters:
         - in: path
           name: incomingRfqId
@@ -1993,7 +2000,7 @@ paths:
       summary: Fetch single RfQ
       description: Endpoint for fetching a single RfQ
       tags:
-        - Incoming RfQs
+        - RfQs - incoming
       parameters:
         - name: rfqId
           in: path
@@ -2020,10 +2027,9 @@ paths:
     get:
       summary: Fetch Outgoing RfQs
       description: |
-        The Outgoing RfQs endpoint returns an array of all created rfq parents.
-        The RfQ parent is the client's counterpart of the RfQs.
+        The Outgoing RfQs endpoint returns an array of all outgoing rfq parents.
       tags:
-        - Outgoing RfQs
+        - RfQs - outgoing
       responses:
         '200':
           description: An array of rfq parents
@@ -2040,13 +2046,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
-      summary: Create RfQ parent
+      summary: Create outgoing RfQ
       description: |
-        Endpoint for creating a new request for quotes parent
+        Endpoint for creating a new request for quotes
 
-        To create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your RFQ parent object.
+        To create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your outgoing RFQ object.
       requestBody:
-        description: RfQ parent object to be created.
+        description: Outgoing RfQ object to be created.
         required: true
         content:
           application/json:
@@ -2060,10 +2066,10 @@ paths:
                     - supplier-id
                     - values
       tags:
-        - Outgoing RfQs
+        - RfQs - outgoing
       responses:
         '200':
-          description: Newly added RfQ parent object
+          description: Newly added outgoing RfQ object
           content:
             application/json:
               schema:
@@ -2166,11 +2172,11 @@ paths:
     get:
       summary: List rfq shifts
       description: |
-        The rfq shifts endpoint returns a list of all created rfq shifts.
+        The rfq shifts endpoint returns a list of all outgoing rfq shifts.
 
         UPDATE - status removed. Added duplicity, accepted-quote-shifts, confirmed-quote-shifts.
       tags:
-        - Outgoing RfQ shifts UPDATE
+        - RfQ shifts - outgoing UPDATE
       parameters:
         - in: path
           name: outgoingRfqId
@@ -2202,7 +2208,7 @@ paths:
 
         SPEC UPDATE - duplicity added, shift-id required
       tags:
-        - Outgoing RfQ shifts UPDATE
+        - RfQ shifts - outgoing UPDATE
       parameters:
         - in: path
           name: outgoingRfqId
@@ -2233,7 +2239,7 @@ paths:
 
         UPDATE - rfq shift now contains status.
       tags:
-        - Outgoing RfQ shifts UPDATE
+        - RfQ shifts - outgoing UPDATE
       parameters:
         - in: path
           name: outgoingRfqId

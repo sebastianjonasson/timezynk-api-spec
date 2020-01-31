@@ -2290,7 +2290,7 @@
         }
       }
     },
-    "/rfqs/v1/bulk/quoteshifts": {
+    "/rfqs/v1/bulk/quoteshifts/outgoing": {
       "post": {
         "summary": "Create multiple quote shifts",
         "description": "SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.",
@@ -2357,7 +2357,7 @@
           "description": "Quote shifts to be added"
         },
         "tags": [
-          "Quote shifts UPDATE"
+          "Quote shifts - outgoing NEW"
         ],
         "responses": {
           "200": {
@@ -2687,12 +2687,88 @@
         }
       }
     },
-    "/rfqs/v1/quoteshifts": {
+    "/rfqs/v1/quoteshifts/incoming": {
       "get": {
-        "summary": "List quote shifts",
+        "summary": "List incoming quote shifts",
         "description": "The quote shifts endpoint returns a list of all quote shifts.\nSPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.\n",
         "tags": [
-          "Quote shifts UPDATE"
+          "Quote shifts - incoming NEW"
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of quote shifts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuoteShift"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshifts/incoming/{incomingQuoteShiftId}": {
+      "get": {
+        "summary": "Fetch single quote shift",
+        "description": "Endpoint for fetching a single quote shift.\nSPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.\n",
+        "tags": [
+          "Quote shifts - incoming NEW"
+        ],
+        "parameters": [
+          {
+            "name": "incomingQuoteShiftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single quote shift",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShift"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshifts/outgoing": {
+      "get": {
+        "summary": "List outgoing quote shifts",
+        "description": "The quote shifts endpoint returns a list of all quote shifts.\nSPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.\n",
+        "tags": [
+          "Quote shifts - outgoing NEW"
         ],
         "responses": {
           "200": {
@@ -2785,7 +2861,7 @@
           }
         },
         "tags": [
-          "Quote shifts UPDATE"
+          "Quote shifts - outgoing NEW"
         ],
         "responses": {
           "200": {
@@ -2801,16 +2877,16 @@
         }
       }
     },
-    "/rfqs/v1/quoteshifts/{quoteShiftId}": {
+    "/rfqs/v1/quoteshifts/outgoing/{outgoingQuoteShiftId}": {
       "get": {
         "summary": "Fetch single quote shift",
         "description": "Endpoint for fetching a single quote shift.\nSPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.\n",
         "tags": [
-          "Quote shifts UPDATE"
+          "Quote shifts - outgoing NEW"
         ],
         "parameters": [
           {
-            "name": "quoteShiftId",
+            "name": "outgoingQuoteShiftId",
             "in": "path",
             "required": true,
             "schema": {
@@ -2846,12 +2922,12 @@
         "summary": "Delete quote shift",
         "description": "Deletion can only be done if shift is in DRAFT state.",
         "tags": [
-          "Quote shifts NEW"
+          "Quote shifts - outgoing NEW"
         ],
         "parameters": [
           {
             "in": "path",
-            "name": "quoteShiftId",
+            "name": "outgoingQuoteShiftId",
             "description": "Setting ID",
             "required": true,
             "schema": {
@@ -2869,13 +2945,13 @@
         }
       }
     },
-    "/rfqs/v1/quoteshifts/{quoteShiftId}/send": {
+    "/rfqs/v1/quoteshifts/outgoing/{outgoingQuoteShiftId}/send": {
       "post": {
         "summary": "Send quote shift",
         "description": "Endpoint for sending quote shift to scheduler.\n",
         "parameters": [
           {
-            "name": "quoteShiftId",
+            "name": "outgoingQuoteShiftId",
             "in": "path",
             "required": true,
             "schema": {
@@ -2885,7 +2961,7 @@
           }
         ],
         "tags": [
-          "Quote shifts NEW"
+          "Quote shifts - outgoing NEW"
         ],
         "responses": {
           "201": {

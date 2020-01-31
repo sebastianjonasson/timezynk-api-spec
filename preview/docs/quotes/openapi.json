@@ -2469,12 +2469,182 @@
         }
       }
     },
-    "/rfqs/v1/quoteshiftresponses": {
+    "/rfqs/v1/quoteshiftresponses/incoming": {
       "get": {
         "summary": "Fetch quote shifts responses",
         "description": "Endpoint returns an array of all quote shifts responses.\n",
         "tags": [
-          "Quote shifts response NEW"
+          "Quote shifts response - incoming NEW"
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of quote shift responses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuoteShiftsResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshiftresponses/incoming/{incomingResponseId}": {
+      "get": {
+        "summary": "Fetch single quote shifts response",
+        "description": "Endpoint for fetching a single quote shifts response.\n",
+        "tags": [
+          "Quote shifts response - incoming NEW"
+        ],
+        "parameters": [
+          {
+            "name": "incomingResponseId",
+            "in": "path",
+            "description": "The quote shifts response id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single quote shifts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote not found"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshiftresponses/incoming/{incomingResponseId}/confirm": {
+      "post": {
+        "summary": "Confirm quote shifts response",
+        "description": "Endpoint for a supplier to confirm a quote shift response.",
+        "tags": [
+          "Quote shifts response - incoming NEW"
+        ],
+        "parameters": [
+          {
+            "name": "incomingResponseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated quote shifts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote not found"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshiftresponses/incoming/{incomingResponseId}/refuse": {
+      "post": {
+        "summary": "Refuse quote shifts response",
+        "description": "Endpoint for a supplier to refuse a quote shift response.",
+        "tags": [
+          "Quote shifts response - incoming NEW"
+        ],
+        "parameters": [
+          {
+            "name": "incomingResponseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated quote shifts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote not found"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/quoteshiftresponses/outgoing": {
+      "get": {
+        "summary": "Fetch quote shifts responses",
+        "description": "Endpoint returns an array of all quote shifts responses.\n",
+        "tags": [
+          "Quote shifts response - outgoing NEW"
         ],
         "responses": {
           "200": {
@@ -2506,7 +2676,7 @@
         "summary": "Create quote shifts response",
         "description": "Endpoint for a client to respond to a set of quote shifts.",
         "tags": [
-          "Quote shifts response NEW"
+          "Quote shifts response - outgoing NEW"
         ],
         "requestBody": {
           "description": "RfQ parent object to be created.",
@@ -2575,16 +2745,16 @@
         }
       }
     },
-    "/rfqs/v1/quoteshiftresponses/{responseId}": {
+    "/rfqs/v1/quoteshiftresponses/outgoing/{outgoingResponseId}": {
       "get": {
         "summary": "Fetch single quote shifts response",
         "description": "Endpoint for fetching a single quote shifts response.\n",
         "tags": [
-          "Quote shifts response NEW"
+          "Quote shifts response - outgoing NEW"
         ],
         "parameters": [
           {
-            "name": "responseId",
+            "name": "outgoingResponseId",
             "in": "path",
             "description": "The quote shifts response id",
             "required": true,
@@ -2597,96 +2767,6 @@
         "responses": {
           "200": {
             "description": "A single quote shifts response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QuoteShiftsResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote not found"
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quoteshiftresponses/{responseId}/confirm": {
-      "post": {
-        "summary": "Confirm quote shifts response",
-        "description": "Endpoint for a supplier to confirm a quote shift response.",
-        "tags": [
-          "Quote shifts response NEW"
-        ],
-        "parameters": [
-          {
-            "name": "responseId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Updated quote shifts response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QuoteShiftsResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote not found"
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quoteshiftresponses/{responseId}/refuse": {
-      "post": {
-        "summary": "Refuse quote shifts response",
-        "description": "Endpoint for a supplier to refuse a quote shift response.",
-        "tags": [
-          "Quote shifts response NEW"
-        ],
-        "parameters": [
-          {
-            "name": "responseId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Updated quote shifts response",
             "content": {
               "application/json": {
                 "schema": {

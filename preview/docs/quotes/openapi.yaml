@@ -2068,6 +2068,100 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OutgoingRfq'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}':
+    get:
+      summary: Fetch single outgoing RfQ
+      description: |
+        Endpoint for fetching a single outgoing RfQ.
+      tags:
+        - RfQs - outgoing
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single outgoing RfQ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingRfq'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update outgoing RfQ
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutgoingRfq'
+        required: true
+      tags:
+        - RfQs - outgoing
+      responses:
+        '200':
+          description: Updated outgoing RfQ object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingRfq'
+        '404':
+          description: outgoing RfQ not found
+        '405':
+          description: This property cannot be changed after outgoing RfQ has been sent.
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/send':
+    post:
+      summary: Send RfQs
+      description: |
+        Endpoint for sending RfQs to suppliers.
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: List of suppliers.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: List of suppliers to create RfQs for.
+              properties:
+                supplier-ids:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+              required:
+                - supplier-ids
+      tags:
+        - RfQs - outgoing
+      responses:
+        '201':
+          description: OK
   '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/shifts':
     get:
       summary: List rfq shifts
@@ -2166,100 +2260,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/rfqs/v1/rfqs/outgoing/{rfqParentId}':
-    get:
-      summary: Fetch single RfQ parent
-      description: |
-        Endpoint for fetching a single RfQ parent.
-      tags:
-        - Outgoing RfQs
-      parameters:
-        - name: rfqParentId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: ObjectId
-      responses:
-        '200':
-          description: A single RfQ parent
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OutgoingRfq'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    put:
-      summary: Update RfQ parent
-      parameters:
-        - name: rfqParentId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: ObjectId
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OutgoingRfq'
-        required: true
-      tags:
-        - Outgoing RfQs
-      responses:
-        '200':
-          description: Updated RfQ parent object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OutgoingRfq'
-        '404':
-          description: RfQ parent not found
-        '405':
-          description: This property cannot be changed after RfQ parent has been sent.
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  '/rfqs/v1/rfqs/outgoing/{rfqParentId}/send':
-    post:
-      summary: Send RfQs
-      description: |
-        Endpoint for sending RfQs to suppliers.
-      parameters:
-        - name: rfqParentId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: ObjectId
-      requestBody:
-        description: List of suppliers.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              description: List of suppliers to create RfQs for.
-              properties:
-                supplier-ids:
-                  type: array
-                  items:
-                    type: string
-                    format: ObjectId
-              required:
-                - supplier-ids
-      tags:
-        - Outgoing RfQs
-      responses:
-        '201':
-          description: OK
   /settings/v1/company:
     get:
       summary: Get company settings

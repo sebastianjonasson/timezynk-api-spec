@@ -3,9 +3,9 @@ get:
   description: |
     Endpoint for fetching a single quote shifts response.
   tags:
-    - Quote shifts response NEW
+    - Quote shifts response - incoming NEW
   parameters:
-    - name: responseId
+    - name: incomingResponseId
       in: path
       description: The quote shifts response id
       required: true

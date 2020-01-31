@@ -2,9 +2,9 @@ post:
   summary: Confirm quote shifts response
   description: Endpoint for a supplier to confirm a quote shift response.
   tags:
-    - Quote shifts response NEW
+    - Quote shifts response - incoming NEW
   parameters:
-    - name: responseId
+    - name: incomingResponseId
       in: path
       required: true
       schema:

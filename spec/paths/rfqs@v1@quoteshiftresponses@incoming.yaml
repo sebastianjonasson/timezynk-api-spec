@@ -1,0 +1,21 @@
+get:
+  summary: Fetch quote shifts responses
+  description: |
+    Endpoint returns an array of all quote shifts responses.
+  tags:
+    - Quote shifts response - incoming NEW
+  responses:
+    200:
+      description: An array of quote shift responses
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/QuoteShiftsResponse'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

@@ -2,9 +2,9 @@ post:
   summary: Refuse quote shifts response
   description: Endpoint for a supplier to refuse a quote shift response.
   tags:
-    - Quote shifts response NEW
+    - Quote shifts response - incoming NEW
   parameters:
-    - name: responseId
+    - name: incomingResponseId
       in: path
       required: true
       schema:

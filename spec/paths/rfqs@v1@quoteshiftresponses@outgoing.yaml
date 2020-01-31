@@ -3,7 +3,7 @@ get:
   description: |
     Endpoint returns an array of all quote shifts responses.
   tags:
-    - Quote shifts response NEW
+    - Quote shifts response - outgoing NEW
   responses:
     200:
       description: An array of quote shift responses
@@ -24,7 +24,7 @@ post:
   summary: Create quote shifts response
   description: Endpoint for a client to respond to a set of quote shifts.
   tags:
-    - Quote shifts response NEW
+    - Quote shifts response - outgoing NEW
   requestBody:
     description: RfQ parent object to be created.
     required: true

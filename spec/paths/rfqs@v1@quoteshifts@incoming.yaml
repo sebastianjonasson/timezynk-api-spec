@@ -1,0 +1,22 @@
+get:
+  summary: List incoming quote shifts
+  description: |
+    The quote shifts endpoint returns a list of all quote shifts.
+    SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
+  tags:
+    - Quote shifts - incoming NEW
+  responses:
+    200:
+      description: An array of quote shifts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/QuoteShift'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

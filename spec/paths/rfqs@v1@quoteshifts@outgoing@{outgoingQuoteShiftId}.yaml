@@ -4,9 +4,9 @@ get:
     Endpoint for fetching a single quote shift.
     SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
   tags:
-    - Quote shifts UPDATE
+    - Quote shifts - outgoing NEW
   parameters:
-    - name: quoteShiftId
+    - name: outgoingQuoteShiftId
       in: path
       required: true
       schema:
@@ -30,10 +30,10 @@ delete:
   summary: Delete quote shift
   description: Deletion can only be done if shift is in DRAFT state.
   tags:
-    - Quote shifts NEW
+    - Quote shifts - outgoing NEW
   parameters:
     - in: path
-      name: quoteShiftId
+      name: outgoingQuoteShiftId
       description: Setting ID
       required: true
       schema:

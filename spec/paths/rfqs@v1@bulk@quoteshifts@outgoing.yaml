@@ -48,9 +48,8 @@ post:
               - incoming-rfq-id
               - client-id
     description: Quote shifts to be added
-
   tags:
-    - Quote shifts UPDATE
+    - Quote shifts - outgoing NEW
   responses:
     "200":
       description: Newly added quote shifts

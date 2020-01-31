@@ -1,10 +1,10 @@
 get:
-  summary: List quote shifts
+  summary: List outgoing quote shifts
   description: |
     The quote shifts endpoint returns a list of all quote shifts.
     SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
   tags:
-    - Quote shifts UPDATE
+    - Quote shifts - outgoing NEW
   responses:
     200:
       description: An array of quote shifts
@@ -73,7 +73,7 @@ post:
             - incoming-rfq-id
             - client-id
   tags:
-    - Quote shifts UPDATE
+    - Quote shifts - outgoing NEW
   responses:
     200:
       description: Newly added quote shift

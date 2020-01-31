@@ -3,7 +3,7 @@ post:
   description: |
     Endpoint for sending RfQs to suppliers.
   parameters:
-    - name: rfqParentId
+    - name: outgoingRfqId
       in: path
       required: true
       schema:
@@ -26,7 +26,7 @@ post:
           required:
             - supplier-ids
   tags:
-    - Outgoing RfQs
+    - RfQs - outgoing
   responses:
     201:
       description: "OK"

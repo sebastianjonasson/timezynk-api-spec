@@ -1,11 +1,11 @@
 get:
-  summary: Fetch single RfQ parent
+  summary: Fetch single outgoing RfQ
   description: |
-    Endpoint for fetching a single RfQ parent.
+    Endpoint for fetching a single outgoing RfQ.
   tags:
-    - Outgoing RfQs
+    - RfQs - outgoing
   parameters:
-    - name: rfqParentId
+    - name: outgoingRfqId
       in: path
       required: true
       schema:
@@ -13,7 +13,7 @@ get:
         format: ObjectId
   responses:
     200:
-      description: A single RfQ parent
+      description: A single outgoing RfQ
       content:
         application/json:
           schema:
@@ -26,9 +26,9 @@ get:
             $ref: '#/components/schemas/Error'
 
 put:
-  summary: Update RfQ parent
+  summary: Update outgoing RfQ
   parameters:
-    - name: rfqParentId
+    - name: outgoingRfqId
       in: path
       required: true
       schema:
@@ -41,18 +41,18 @@ put:
           $ref: "#/components/schemas/OutgoingRfq"
     required: true
   tags:
-    - Outgoing RfQs
+    - RfQs - outgoing
   responses:
     "200":
-      description: Updated RfQ parent object
+      description: Updated outgoing RfQ object
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/OutgoingRfq"
     "404":
-      description: RfQ parent not found
+      description: outgoing RfQ not found
     "405":
-      description: This property cannot be changed after RfQ parent has been sent.
+      description: This property cannot be changed after outgoing RfQ has been sent.
     default:
       description: Unexpected error
       content:

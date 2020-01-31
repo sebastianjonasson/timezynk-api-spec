@@ -33,5 +33,14 @@ tags:
   - name: Experimental
     description: These APIs are experimental and and may be changed at any time without
       warning.
+  - name: RfQs - outgoing
+  - name: RfQs - incoming
+  - name: RfQ shifts - outgoing
+  - name: RfQ shifts - incoming
+  - name: Quote shifts - outgoing
+  - name: Quote shifts - incoming
+  - name: Quote shift response - outgoing
+  - name: Quote shift response - incoming
+  
 servers:
   - url: https://api.timezynk.com/api

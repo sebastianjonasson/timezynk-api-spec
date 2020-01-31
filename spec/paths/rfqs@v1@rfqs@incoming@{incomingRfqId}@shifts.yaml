@@ -1,11 +1,11 @@
 get:
   summary: List rfq shifts
   description: |
-    The rfq shifts endpoint returns a list of all created rfq shifts.
+    The rfq shifts endpoint returns a list of all incoming rfq shifts.
 
     UPDATE - status removed. Added duplicity, accepted-quote-shifts, confirmed-quote-shifts.
   tags:
-    - Incoming RfQ shifts UPDATE
+    - RfQ shifts - incoming UPDATE
   parameters:
       - in: path
         name: incomingRfqId

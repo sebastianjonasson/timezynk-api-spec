@@ -5,7 +5,7 @@ get:
 
     UPDATE - rfq shift now contains status.
   tags:
-    - Outgoing RfQ shifts UPDATE
+    - RfQ shifts - outgoing UPDATE
   parameters:
     - in: path
       name: outgoingRfqId

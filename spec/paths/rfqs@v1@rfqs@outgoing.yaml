@@ -1,10 +1,9 @@
 get:
   summary: Fetch Outgoing RfQs
   description: |
-    The Outgoing RfQs endpoint returns an array of all created rfq parents.
-    The RfQ parent is the client's counterpart of the RfQs.
+    The Outgoing RfQs endpoint returns an array of all outgoing rfq parents.
   tags:
-    - Outgoing RfQs
+    - RfQs - outgoing
   responses:
     200:
       description: An array of rfq parents
@@ -22,13 +21,13 @@ get:
             $ref: '#/components/schemas/Error'
 
 post:
-  summary: Create RfQ parent
+  summary: Create outgoing RfQ
   description: |
-    Endpoint for creating a new request for quotes parent
+    Endpoint for creating a new request for quotes
 
-    To create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your RFQ parent object.
+    To create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your outgoing RFQ object.
   requestBody:
-    description: RfQ parent object to be created.
+    description: Outgoing RfQ object to be created.
     required: true
     content:
       application/json:
@@ -42,10 +41,10 @@ post:
             - supplier-id
             - values
   tags:
-    - Outgoing RfQs
+    - RfQs - outgoing
   responses:
     200:
-      description: Newly added RfQ parent object
+      description: Newly added outgoing RfQ object
       content:
         application/json:
           schema:

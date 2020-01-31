@@ -3,7 +3,7 @@ get:
   description: |
     Endpoint for fetching a single RfQ shift.
   tags:
-    - Incoming RfQ shifts UPDATE
+    - RfQ shifts - incoming UPDATE
   parameters:
     - in: path
       name: incomingRfqId

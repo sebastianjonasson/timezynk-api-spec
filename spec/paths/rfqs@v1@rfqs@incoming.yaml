@@ -1,10 +1,9 @@
 get:
   summary: Fetch RfQs
   description: |
-    The RfQs endpoint returns an array of all received RfQs.
-    The RfQ is the supplier's counterpart of the RfQ parent.
+    The RfQs endpoint returns an array of all incoming RfQs.
   tags:
-    - Incoming RfQs
+    - RfQs - incoming
   responses:
     200:
       description: An array of RfQs

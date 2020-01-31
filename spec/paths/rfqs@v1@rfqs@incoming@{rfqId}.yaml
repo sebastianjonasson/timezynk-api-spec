@@ -2,7 +2,7 @@ get:
   summary: Fetch single RfQ
   description: Endpoint for fetching a single RfQ
   tags:
-    - Incoming RfQs
+    - RfQs - incoming
   parameters:
     - name: rfqId
       in: path

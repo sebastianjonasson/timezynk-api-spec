@@ -14,5 +14,7 @@ post:
   responses:
     201:
       description: "OK"
-    "404":
+    404:
       description: Not found
+    409:
+      description: Already sent

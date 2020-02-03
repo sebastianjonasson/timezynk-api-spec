@@ -1,7 +1,8 @@
 post:
   summary: Create multiple quote shifts
-  description: SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
+  description: Endpoint for creating an array of new quote shifts. SPEC UPDATE - client-id
   requestBody:
+    description: Quote shifts to be added
     content:
       application/json:
         schema:
@@ -12,22 +13,20 @@ post:
                 type: string
                 format: ObjectId
                 description: The corresponding shift-id from the RfQ.
+              booked-users:
+                type: array
+                format: ObjectId
+                description: A list containing exactly one user id.
               booked-user:
                 type: object
                 description: Suggested user for this shift
                 properties:
-                  id:
-                    type: string
-                    format: ObjectId
                   name:
                     type: string
                     description: Name of worker
                   id-no:
                     type: string
                     description: National identification number (personnummer) of the worker
-                    required:
-                      - quote-id
-                      - rfq-shift-id
                 required:
                   - name
                   - id-no
@@ -43,15 +42,15 @@ post:
                 format: ObjectId
             required:
               - rfq-shift-id
+              - booked-users
               - booked-user
               - outgoing-rfq-id
               - incoming-rfq-id
               - client-id
-    description: Quote shifts to be added
   tags:
     - Quote shifts - outgoing NEW
   responses:
-    "200":
+    200:
       description: Newly added quote shifts
       content:
         application/json:
@@ -59,9 +58,12 @@ post:
             type: array
             items:
               $ref: "#/components/schemas/QuoteShift"
+    400:
+      description: |
+        A valid outgoing rfq is required. / Expecting booked users to contain exactly one id.
     default:
       description: Unexpected error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"

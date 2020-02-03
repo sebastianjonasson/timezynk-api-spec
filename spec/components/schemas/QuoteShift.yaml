@@ -1,6 +1,6 @@
 allOf:
-  - $ref: '#/components/schemas/BasicObject'
-  - $ref: '#/components/schemas/BaseShift'
+  - $ref: "#/components/schemas/BasicObject"
+  - $ref: "#/components/schemas/BaseShift"
   - type: object
     properties:
       status:
@@ -9,10 +9,6 @@ allOf:
         enum:
           - DRAFT
           - SENT
-          - ACCEPTED
-          - REJECTED
-          - CONFIRMED
-          - REFUSED
         default: DRAFT
         readOnly: true
       client-id:
@@ -34,14 +30,14 @@ allOf:
         type: string
         format: ObjectId
         description: The corresponding shift-id from the RfQ.
+      booked-users:
+        type: array
+        format: ObjectId
+        description: A list containing exactly one user id.
       booked-user:
         type: object
         description: Suggested user for this shift
         properties:
-          id:
-            type: string
-            format: ObjectId
-            description: UserID
           name:
             type: string
             description: Name of worker
@@ -49,15 +45,14 @@ allOf:
             type: string
             description: National identification number (personnummer) of the worker
         required:
-          - id
           - name
           - id-no
     required:
       - rfq-shift-id
+      - booked-users
       - booked-user
       - outgoing-rfq-id
       - incoming-rfq-id
-      - client-id
 
 example:
   # basic
@@ -86,8 +81,7 @@ example:
   outgoing-rfq-id: "5dde7024eded8872705a0001"
   incoming-rfq-id: "5dde7024eded8872705a0002"
   rfq-shift-id: "5dde7024eded8872705a0011"
+  booked-users: ["5dde7024eded8872705a0012"]
   booked-user:
-    id: "5dde6e21c9e77c0001a1e3aa"
     name: "Firstname Surname"
     id-no: "851103-1234"
-

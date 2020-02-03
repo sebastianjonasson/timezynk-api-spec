@@ -2,7 +2,6 @@ get:
   summary: Fetch single quote shift
   description: |
     Endpoint for fetching a single quote shift.
-    SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
   tags:
     - Quote shifts - outgoing NEW
   parameters:
@@ -18,13 +17,13 @@ get:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/QuoteShift'
+            $ref: "#/components/schemas/QuoteShift"
     default:
       description: Unexpected error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
 
 delete:
   summary: Delete quote shift
@@ -39,7 +38,9 @@ delete:
       schema:
         type: string
   responses:
-    "201":
+    201:
       description: OK
-    "404":
+    400:
+      description: Cannot delete quote shift that has been sent
+    404:
       description: Not found

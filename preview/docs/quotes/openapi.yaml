@@ -1443,11 +1443,19 @@ paths:
                 $ref: '#/components/schemas/Registry'
         '404':
           description: Registry not found
-  /rfqs/v1/bulk/quoteshifts/outgoing:
+  '/rfqs/v1/bulk/rfqs/incoming/{incomingRfqId}/quoteshifts':
     post:
       summary: Create multiple quote shifts
-      description: 'SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.'
+      description: Endpoint for creating an array of new quote shifts. SPEC UPDATE - client-id
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
       requestBody:
+        description: Quote shifts to be added
         content:
           application/json:
             schema:
@@ -1458,22 +1466,22 @@ paths:
                     type: string
                     format: ObjectId
                     description: The corresponding shift-id from the RfQ.
+                  booked-users:
+                    type: array
+                    description: A list containing exactly one user id.
+                    items:
+                      type: string
+                      format: ObjectId
                   booked-user:
                     type: object
                     description: Suggested user for this shift
                     properties:
-                      id:
-                        type: string
-                        format: ObjectId
                       name:
                         type: string
                         description: Name of worker
                       id-no:
                         type: string
                         description: National identification number (personnummer) of the worker
-                        required:
-                          - quote-id
-                          - rfq-shift-id
                     required:
                       - name
                       - id-no
@@ -1489,11 +1497,11 @@ paths:
                     format: ObjectId
                 required:
                   - rfq-shift-id
+                  - booked-users
                   - booked-user
                   - outgoing-rfq-id
                   - incoming-rfq-id
                   - client-id
-        description: Quote shifts to be added
       tags:
         - Quote shifts - outgoing NEW
       responses:
@@ -1505,6 +1513,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/QuoteShift'
+        '400':
+          description: |
+            A valid outgoing rfq is required. / Expecting booked users to contain exactly one id.
         default:
           description: Unexpected error
           content:
@@ -1763,65 +1774,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /rfqs/v1/quoteshifts/incoming:
+  /rfqs/v1/rfqs/incoming:
     get:
-      summary: List incoming quote shifts
+      summary: Fetch RfQs
       description: |
-        The quote shifts endpoint returns a list of all quote shifts.
-        SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
+        The RfQs endpoint returns an array of all incoming RfQs.
       tags:
-        - Quote shifts - incoming NEW
+        - RfQs - incoming
       responses:
         '200':
-          description: An array of quote shifts
+          description: An array of RfQs
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/QuoteShift'
+                  $ref: '#/components/schemas/Rfq'
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/rfqs/v1/quoteshifts/incoming/{incomingQuoteShiftId}':
-    get:
-      summary: Fetch single quote shift
-      description: |
-        Endpoint for fetching a single quote shift.
-        SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
-      tags:
-        - Quote shifts - incoming NEW
-      parameters:
-        - name: incomingQuoteShiftId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: ObjectId
-      responses:
-        '200':
-          description: A single quote shift
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/QuoteShift'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /rfqs/v1/quoteshifts/outgoing:
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshifts':
     get:
       summary: List outgoing quote shifts
       description: |
         The quote shifts endpoint returns a list of all quote shifts.
-        SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
       tags:
         - Quote shifts - outgoing NEW
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
       responses:
         '200':
           description: An array of quote shifts
@@ -1839,8 +1827,14 @@ paths:
                 $ref: '#/components/schemas/Error'
     post:
       summary: Create quote shift
-      description: |
-        Endpoint for creating a new quote shift. SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
+      description: Endpoint for creating a new quote shift. SPEC UPDATE - client-id
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
       requestBody:
         description: Quote shift to be created.
         required: true
@@ -1852,23 +1846,22 @@ paths:
                   type: string
                   format: ObjectId
                   description: The corresponding shift-id from the RfQ.
+                booked-users:
+                  type: array
+                  description: A list containing exactly one user id.
+                  items:
+                    type: string
+                    format: ObjectId
                 booked-user:
                   type: object
                   description: Suggested user for this shift
                   properties:
-                    id:
-                      type: string
-                      format: ObjectId
                     name:
                       type: string
                       description: Name of worker
                     id-no:
                       type: string
                       description: National identification number (personnummer) of the worker
-                      required:
-                        - id
-                        - quote-id
-                        - rfq-shift-id
                   required:
                     - name
                     - id-no
@@ -1884,6 +1877,7 @@ paths:
                   format: ObjectId
               required:
                 - rfq-shift-id
+                - booked-users
                 - booked-user
                 - outgoing-rfq-id
                 - incoming-rfq-id
@@ -1897,17 +1891,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuoteShift'
-  '/rfqs/v1/quoteshifts/outgoing/{outgoingQuoteShiftId}':
+        '400':
+          description: |
+            A valid outgoing rfq is required / Expecting booked users to contain exactly one id
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshifts/{quoteShiftId}':
     get:
       summary: Fetch single quote shift
       description: |
         Endpoint for fetching a single quote shift.
-        SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
       tags:
         - Quote shifts - outgoing NEW
       parameters:
-        - name: outgoingQuoteShiftId
+        - name: quoteShiftId
           in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - in: path
+          name: incomingRfqId
           required: true
           schema:
             type: string
@@ -1932,24 +1934,38 @@ paths:
         - Quote shifts - outgoing NEW
       parameters:
         - in: path
-          name: outgoingQuoteShiftId
+          name: quoteShiftId
           description: Setting ID
           required: true
           schema:
             type: string
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
       responses:
         '201':
           description: OK
+        '400':
+          description: Cannot delete quote shift that has been sent
         '404':
           description: Not found
-  '/rfqs/v1/quoteshifts/outgoing/{outgoingQuoteShiftId}/send':
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshifts/{quoteShiftId}/send':
     post:
       summary: Send quote shift
       description: |
         Endpoint for sending quote shift to scheduler.
       parameters:
-        - name: outgoingQuoteShiftId
+        - name: quoteShiftId
           in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - in: path
+          name: incomingRfqId
           required: true
           schema:
             type: string
@@ -1961,28 +1977,8 @@ paths:
           description: OK
         '404':
           description: Not found
-  /rfqs/v1/rfqs/incoming:
-    get:
-      summary: Fetch RfQs
-      description: |
-        The RfQs endpoint returns an array of all incoming RfQs.
-      tags:
-        - RfQs - incoming
-      responses:
-        '200':
-          description: An array of RfQs
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Rfq'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+        '409':
+          description: Already sent
   '/rfqs/v1/rfqs/incoming/{incomingRfqId}/shifts':
     get:
       summary: List rfq shifts
@@ -2181,6 +2177,70 @@ paths:
           description: outgoing RfQ not found
         '405':
           description: This property cannot be changed after outgoing RfQ has been sent.
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshifts':
+    get:
+      summary: List incoming quote shifts
+      description: |
+        The quote shifts endpoint returns a list of all quote shifts.
+        SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
+      tags:
+        - Quote shifts - incoming NEW
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of quote shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshifts/{quoteShiftId}':
+    get:
+      summary: Fetch single quote shift
+      description: |
+        Endpoint for fetching a single quote shift.
+        SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
+      tags:
+        - Quote shifts - incoming NEW
+      parameters:
+        - name: quoteShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single quote shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShift'
         default:
           description: Unexpected error
           content:
@@ -3647,10 +3707,6 @@ components:
               enum:
                 - DRAFT
                 - SENT
-                - ACCEPTED
-                - REJECTED
-                - CONFIRMED
-                - REFUSED
               default: DRAFT
               readOnly: true
             client-id:
@@ -3672,14 +3728,16 @@ components:
               type: string
               format: ObjectId
               description: The corresponding shift-id from the RfQ.
+            booked-users:
+              type: array
+              description: A list containing exactly one user id.
+              items:
+                type: string
+                format: ObjectId
             booked-user:
               type: object
               description: Suggested user for this shift
               properties:
-                id:
-                  type: string
-                  format: ObjectId
-                  description: UserID
                 name:
                   type: string
                   description: Name of worker
@@ -3687,15 +3745,14 @@ components:
                   type: string
                   description: National identification number (personnummer) of the worker
               required:
-                - id
                 - name
                 - id-no
           required:
             - rfq-shift-id
+            - booked-users
             - booked-user
             - outgoing-rfq-id
             - incoming-rfq-id
-            - client-id
       example:
         id: 5dde7024eded8872705a0000
         vid: 5dde71e4c9e77c0001730000
@@ -3718,8 +3775,9 @@ components:
         outgoing-rfq-id: 5dde7024eded8872705a0001
         incoming-rfq-id: 5dde7024eded8872705a0002
         rfq-shift-id: 5dde7024eded8872705a0011
+        booked-users:
+          - 5dde7024eded8872705a0012
         booked-user:
-          id: 5dde6e21c9e77c0001a1e3aa
           name: Firstname Surname
           id-no: 851103-1234
     QuoteShiftsResponse:

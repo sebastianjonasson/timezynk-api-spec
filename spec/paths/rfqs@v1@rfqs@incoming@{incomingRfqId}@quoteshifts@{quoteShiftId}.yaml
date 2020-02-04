@@ -5,8 +5,14 @@ get:
   tags:
     - Quote shifts - outgoing NEW
   parameters:
-    - name: outgoingQuoteShiftId
+    - name: quoteShiftId
       in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    - in: path
+      name: incomingRfqId
       required: true
       schema:
         type: string
@@ -32,11 +38,17 @@ delete:
     - Quote shifts - outgoing NEW
   parameters:
     - in: path
-      name: outgoingQuoteShiftId
+      name: quoteShiftId
       description: Setting ID
       required: true
       schema:
         type: string
+    - in: path
+      name: incomingRfqId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
   responses:
     201:
       description: OK

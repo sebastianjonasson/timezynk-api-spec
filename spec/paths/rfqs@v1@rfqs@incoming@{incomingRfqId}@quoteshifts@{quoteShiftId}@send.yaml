@@ -3,8 +3,14 @@ post:
   description: |
     Endpoint for sending quote shift to scheduler.
   parameters:
-    - name: outgoingQuoteShiftId
+    - name: quoteShiftId
       in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    - in: path
+      name: incomingRfqId
       required: true
       schema:
         type: string

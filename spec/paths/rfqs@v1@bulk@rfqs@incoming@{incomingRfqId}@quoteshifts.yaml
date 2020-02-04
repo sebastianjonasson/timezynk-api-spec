@@ -1,6 +1,13 @@
 post:
   summary: Create multiple quote shifts
   description: Endpoint for creating an array of new quote shifts. SPEC UPDATE - client-id
+  parameters:
+  - in: path
+    name: incomingRfqId
+    required: true
+    schema:
+      type: string
+      format: ObjectId
   requestBody:
     description: Quote shifts to be added
     content:
@@ -15,8 +22,10 @@ post:
                 description: The corresponding shift-id from the RfQ.
               booked-users:
                 type: array
-                format: ObjectId
                 description: A list containing exactly one user id.
+                items:
+                  type: string
+                  format: ObjectId
               booked-user:
                 type: object
                 description: Suggested user for this shift

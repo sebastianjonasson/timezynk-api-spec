@@ -4,6 +4,13 @@ get:
     The quote shifts endpoint returns a list of all quote shifts.
   tags:
     - Quote shifts - outgoing NEW
+  parameters:
+      - in: path
+        name: incomingRfqId
+        required: true
+        schema:
+          type: string
+          format: ObjectId
   responses:
     200:
       description: An array of quote shifts
@@ -23,6 +30,13 @@ get:
 post:
   summary: Create quote shift
   description: Endpoint for creating a new quote shift. SPEC UPDATE - client-id
+  parameters:
+      - in: path
+        name: incomingRfqId
+        required: true
+        schema:
+          type: string
+          format: ObjectId
   requestBody:
     description: Quote shift to be created.
     required: true
@@ -36,8 +50,10 @@ post:
               description: The corresponding shift-id from the RfQ.
             booked-users:
               type: array
-              format: ObjectId
               description: A list containing exactly one user id.
+              items:
+                type: string
+                format: ObjectId
             booked-user:
               type: object
               description: Suggested user for this shift

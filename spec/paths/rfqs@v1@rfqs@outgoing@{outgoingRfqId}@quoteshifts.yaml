@@ -1,12 +1,12 @@
 get:
-  summary: Fetch single quote shift
+  summary: List incoming quote shifts
   description: |
-    Endpoint for fetching a single quote shift.
+    The quote shifts endpoint returns a list of all quote shifts.
     SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
   tags:
     - Quote shifts - incoming NEW
   parameters:
-    - name: incomingQuoteShiftId
+    - name: outgoingRfqId
       in: path
       required: true
       schema:
@@ -14,11 +14,13 @@ get:
         format: ObjectId
   responses:
     200:
-      description: A single quote shift
+      description: An array of quote shifts
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/QuoteShift'
+            type: array
+            items:
+              $ref: '#/components/schemas/QuoteShift'
     default:
       description: Unexpected error
       content:

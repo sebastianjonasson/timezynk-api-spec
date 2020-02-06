@@ -1846,12 +1846,6 @@ paths:
                   type: string
                   format: ObjectId
                   description: The corresponding shift-id from the RfQ.
-                booked-users:
-                  type: array
-                  description: A list containing exactly one user id.
-                  items:
-                    type: string
-                    format: ObjectId
                 booked-user:
                   type: object
                   description: Suggested user for this shift
@@ -1862,6 +1856,10 @@ paths:
                     id-no:
                       type: string
                       description: National identification number (personnummer) of the worker
+                    id:
+                      type: string
+                      format: ObjectId
+                      description: User id of worker
                   required:
                     - name
                     - id-no
@@ -1877,7 +1875,6 @@ paths:
                   format: ObjectId
               required:
                 - rfq-shift-id
-                - booked-users
                 - booked-user
                 - outgoing-rfq-id
                 - incoming-rfq-id

@@ -1,0 +1,40 @@
+post:
+  summary: Confirm quote shifts response
+  description: >
+    Endpoint for a supplier to confirm a quote shift response.
+
+
+    Side effects:
+
+    * Incoming rfq set to CONFIRMED iff ACCEPTED linked quote shift responses = 0.
+
+    * Linked quote shifts in rfq shift accepted list moved to confirmed list.
+
+    * When an rfq shift duplicity = confirmed quote shifts, set other
+    quote shifts to REJECTED.
+  tags:
+    - Quote shift responses - incoming
+  parameters:
+    - name: incomingResponseId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: Updated quote shifts response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/QuoteShiftsResponse"
+    404:
+      description: Quote not found
+    409:
+      description: Quote shift response does not have status ACCEPTED
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

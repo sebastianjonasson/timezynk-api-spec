@@ -1,0 +1,41 @@
+post:
+  summary: Refuse quote shifts response
+  description: >
+    Endpoint for a supplier to refuse a quote shift response.
+
+
+    Side effects:
+
+    * Collect all quote shift responses for incoming rfq.
+      * When responses with status ACCEPTED = 0:
+        * if responses with status CONFIRMED = 0: set incoming rfq to REFUSED.
+        * else: set status to CONFIRMED.
+    * Linked quote shifts are removed from rfq shift accepted lists.
+
+    * Set linked quote shifts to REFUSED.
+  tags:
+    - Quote shift responses - incoming
+  parameters:
+    - name: incomingResponseId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: Updated quote shifts response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/QuoteShiftsResponse"
+    404:
+      description: Quote not found
+    409:
+      description: Quote shift response does not have status ACCEPTED
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

@@ -3,7 +3,7 @@ get:
   description: |
     Endpoint returns an array of all quote shifts responses.
   tags:
-    - Quote shifts response - incoming NEW
+    - Quote shift responses - incoming
   responses:
     200:
       description: An array of quote shift responses
@@ -12,10 +12,10 @@ get:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/QuoteShiftsResponse'
+              $ref: "#/components/schemas/QuoteShiftsResponse"
     default:
       description: Unexpected error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"

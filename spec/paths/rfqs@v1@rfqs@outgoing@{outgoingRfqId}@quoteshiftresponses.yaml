@@ -1,9 +1,9 @@
 get:
-  summary: Fetch quote shifts responses
+  summary: Fetch quote shift responses
   description: |
-    Endpoint returns an array of all quote shifts responses.
+    Endpoint returns an array of all quote shift responses.
   tags:
-    - Quote shifts response - outgoing NEW
+    - Quote shift responses - outgoing
   responses:
     200:
       description: An array of quote shift responses
@@ -12,19 +12,30 @@ get:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/QuoteShiftsResponse'
+              $ref: "#/components/schemas/QuoteShiftsResponse"
     default:
       description: Unexpected error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
 
 post:
-  summary: Create quote shifts response
-  description: Endpoint for a client to respond to a set of quote shifts.
+  summary: Create quote shift response
+  description: >
+    Endpoint for a client to respond to a set of quote shifts.
+
+
+    Side effects:
+
+    * When ACCEPTED, linked quote shifts will be added to the list of accepted
+    quote shifts for respective rfq shifts.
+
+    * Linked quote shifts statuses are updated with the same status.
+
+    * When ACCEPTED, incoming rfq gets same status.
   tags:
-    - Quote shifts response - outgoing NEW
+    - Quote shift responses - outgoing
   requestBody:
     description: RfQ parent object to be created.
     required: true
@@ -71,6 +82,10 @@ post:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/QuoteShiftsResponse'
-    404:
-      description: Quote shifts response not found
+            $ref: "#/components/schemas/QuoteShiftsResponse"
+    400:
+      description: |
+        * Outgoing rfq id not valid
+        * Status not "ACCEPTED" or "REJECTED"
+        * Quote shift or rfq shift not found
+        * Accepted and confirmed quote shifts are more than rfq shift duplicity

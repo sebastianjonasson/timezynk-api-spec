@@ -3,9 +3,9 @@ get:
   description: |
     Endpoint for fetching a single quote shifts response.
   tags:
-    - Quote shifts response - incoming NEW
+    - Quote shift responses - outgoing
   parameters:
-    - name: incomingResponseId
+    - name: outgoingResponseId
       in: path
       description: The quote shifts response id
       required: true
@@ -18,7 +18,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/QuoteShiftsResponse'
+            $ref: "#/components/schemas/QuoteShiftsResponse"
     404:
       description: Quote not found
     default:
@@ -26,4 +26,4 @@ get:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"

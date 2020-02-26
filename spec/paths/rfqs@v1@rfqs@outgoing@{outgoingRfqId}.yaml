@@ -17,16 +17,24 @@ get:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/OutgoingRfq'
+            $ref: "#/components/schemas/OutgoingRfq"
     default:
       description: Unexpected error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
 
 put:
   summary: Update outgoing RfQ
+  description: >
+    Send updates to an outgoing RfQ that has not been SENT. Only updates to "expires"
+    are allowed otherwise.
+
+
+    Side effects:
+
+    * If "expires" is updated, linked incoming RfQ's will also have "expires" updated.
   parameters:
     - name: outgoingRfqId
       in: path
@@ -43,19 +51,19 @@ put:
   tags:
     - RfQs - outgoing
   responses:
-    "200":
+    200:
       description: Updated outgoing RfQ object
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/OutgoingRfq"
-    "404":
+    404:
       description: outgoing RfQ not found
-    "405":
+    400:
       description: This property cannot be changed after outgoing RfQ has been sent.
     default:
       description: Unexpected error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"

@@ -10,8 +10,10 @@ post:
 
     * Linked quote shifts in rfq shift accepted list moved to confirmed list.
 
-    * When an rfq shift duplicity = confirmed quote shifts, set other
-    quote shifts to REJECTED.
+    * (When an rfq shift duplicity = confirmed quote shifts, set other
+    quote shifts to REJECTED.)
+
+    * Set linked quote shifts to CONFIRMED.
   tags:
     - Quote shift responses - incoming
   parameters:

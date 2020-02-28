@@ -31,7 +31,8 @@ tags:
   - name: Settings
     description: Settings are used to store and retreive configuration parameters.
   - name: Experimental
-    description: These APIs are experimental and and may be changed at any time without
+    description:
+      These APIs are experimental and and may be changed at any time without
       warning.
   - name: RfQs - outgoing
   - name: RfQs - incoming
@@ -39,8 +40,8 @@ tags:
   - name: RfQ shifts - incoming
   - name: Quote shifts - outgoing
   - name: Quote shifts - incoming
-  - name: Quote shift response - outgoing
-  - name: Quote shift response - incoming
-  
+  - name: Quote shift responses - outgoing
+  - name: Quote shift responses - incoming
+
 servers:
   - url: https://api.timezynk.com/api

@@ -1,0 +1,45 @@
+get:
+  summary: Fetch changes
+  tags:
+    - Experimental
+  parameters:
+    - name: from
+      in: query
+      required: true
+      description: Oldest timestamp to fetch changes for
+      schema:
+        type: number
+        format: timestamp
+    - name: to
+      in: query
+      required: false
+      description: Newest timestamp to fetch changes for
+      schema:
+        type: number
+        format: timestamp
+    - name: type
+      in: query
+      required: false
+      description: Type of changes to fetch
+      schema:
+        type: string
+        enum:
+          - create
+          - update
+          - delete
+    - name: user-id
+      in: query
+      required: false
+      description: Fetch changes done by a specific user
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: Array of changes
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/LogItem"

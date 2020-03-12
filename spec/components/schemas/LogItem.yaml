@@ -1,0 +1,46 @@
+type: object
+properties:
+  log-info:
+    type: object
+    required: [id, type, tstamp, user-id, collection, company-id]
+    properties:
+      id:
+        type: string
+        format: ObjectId
+        description: Unique ID for this change
+      type:
+        type: string
+        description: Type of change
+        enum:
+          - create
+          - update
+          - delete
+      tstamp:
+        type: number
+        format: timestamp
+        description: Timestamp for this change in milliseconds since the Unix Epoch
+      user-id:
+        type: string
+        format: ObjectId
+        description: ID of the user who did the change
+      collection:
+        type: string
+        description: Name of the collection that contains the changed document
+      company-id:
+        type: string
+        format: ObjectId
+        description: Company ID that owns the changed document
+  other:
+    type: string
+    description: All properties from the created, changed or deleted source document
+  original:
+    type: string
+    description: All properties from the created, changed or deleted source document
+  document:
+    type: string
+    description: All properties from the created, changed or deleted source document
+  properties:
+    type: string
+    description: All properties from the created, changed or deleted source document
+required:
+  - log-info

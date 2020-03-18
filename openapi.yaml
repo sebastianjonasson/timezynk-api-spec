@@ -410,6 +410,52 @@ paths:
       responses:
         '200':
           description: Delete successful
+  /domain-log/v1:
+    get:
+      summary: Fetch changes
+      tags:
+        - Experimental
+      parameters:
+        - name: from
+          in: query
+          required: true
+          description: Oldest timestamp to fetch changes for
+          schema:
+            type: number
+            format: timestamp
+        - name: to
+          in: query
+          required: false
+          description: Newest timestamp to fetch changes for
+          schema:
+            type: number
+            format: timestamp
+        - name: type
+          in: query
+          required: false
+          description: Type of changes to fetch
+          schema:
+            type: string
+            enum:
+              - create
+              - update
+              - delete
+        - name: user-id
+          in: query
+          required: false
+          description: Fetch changes done by a specific user
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of changes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LogItem'
   /experimental/blocked-inquiries:
     get:
       summary: Find blocked inquiries
@@ -2069,8 +2115,9 @@ components:
           readOnly: true
           format: ObjectId
         archived:
-          type: number
+          type: integer
           description: 'Timestamp in milliseconds for when the object was archived, or null if it is still active'
+          nullable: true
           example: null
       required:
         - id
@@ -2410,6 +2457,59 @@ components:
             - invoice-id
             - weight
             - export-data
+    LogItem:
+      type: object
+      properties:
+        log-info:
+          type: object
+          required:
+            - id
+            - type
+            - tstamp
+            - user-id
+            - collection
+            - company-id
+          properties:
+            id:
+              type: string
+              format: ObjectId
+              description: Unique ID for this change
+            type:
+              type: string
+              description: Type of change
+              enum:
+                - create
+                - update
+                - delete
+            tstamp:
+              type: number
+              format: timestamp
+              description: Timestamp for this change in milliseconds since the Unix Epoch
+            user-id:
+              type: string
+              format: ObjectId
+              description: ID of the user who did the change
+            collection:
+              type: string
+              description: Name of the collection that contains the changed document
+            company-id:
+              type: string
+              format: ObjectId
+              description: Company ID that owns the changed document
+        other:
+          type: string
+          description: 'All properties from the created, changed or deleted source document'
+        original:
+          type: string
+          description: 'All properties from the created, changed or deleted source document'
+        document:
+          type: string
+          description: 'All properties from the created, changed or deleted source document'
+        properties:
+          type: string
+          description: 'All properties from the created, changed or deleted source document'
+      required:
+        - log-info
     Order:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
@@ -2722,12 +2822,39 @@ components:
             duplicity:
               type: number
               description: Maximum (and desired) number of booked users
+              default: 1
             values:
               type: object
               description: Values for custom registry fields
             withhold:
               type: boolean
               description: Hide shift from users making it visible for managers only
+              readOnly: true
+            status:
+              type: string
+              description: Shift status
+              enum:
+                - active
+                - inactive
+                - duplicate
+                - order-outgoing
+              default: active
+              readOnly: true
+            group-id:
+              type: string
+              nullable: true
+              format: ObjectId
+              description: Common group ID for grouping several shifts together
+              example: null
+            order-id:
+              type: string
+              format: ObjectId
+              description: ID of order that created the shift
+              readOnly: true
+            mirror-shift-id:
+              type: string
+              format: ObjectId
+              description: The corresponding shift-id for the client or supplier when this shift is part of an order
               readOnly: true
           required:
             - id

@@ -51,9 +51,10 @@ allOf:
         readOnly: true
       group-id:
         type: string
+        nullable: true
         format: ObjectId
         description: Common group ID for grouping several shifts together
-        default: null
+        example: null
       order-id:
         type: string
         format: ObjectId

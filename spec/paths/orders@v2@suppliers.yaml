@@ -4,7 +4,34 @@ get:
     The Order Suppliers endpoint returns a list of all available to place orders from.
   tags:
     - Order Suppliers
-
+  responses:
+    200:
+      description: An array of order suppliers
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OrderSupplier'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+post:
+  summary: Create order suppliers
+  description: |
+    Endpoint for creating an order supplier. When the order supplier is created, an email invitation will be sent to the entered email.
+  tags:
+    - Order Suppliers
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/OrderSupplier'
+    description: Order supplier to be created.
+    required: true
   responses:
     200:
       description: An array of order suppliers

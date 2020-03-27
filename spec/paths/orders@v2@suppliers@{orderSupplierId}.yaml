@@ -1,0 +1,27 @@
+get:
+  summary: Fetch single order supplier
+  description: Endpoint for fetching a single order supplier
+  tags:
+    - Order Suppliers
+  parameters:
+    - name: orderSupplierId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: Single order supplier
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OrderSupplier"
+    404:
+      description: Order supplier not found
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

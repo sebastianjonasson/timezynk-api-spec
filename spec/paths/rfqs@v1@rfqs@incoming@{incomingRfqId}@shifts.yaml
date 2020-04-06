@@ -1,0 +1,29 @@
+get:
+  summary: List rfq shifts
+  description: |
+    The rfq shifts endpoint returns a list of all incoming rfq shifts.
+  tags:
+    - RfQ shifts - incoming
+  parameters:
+      - in: path
+        name: incomingRfqId
+        required: true
+        schema:
+          type: string
+          format: ObjectId
+  responses:
+    200:
+      description: An array of RfQ shifts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RfqShift'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+

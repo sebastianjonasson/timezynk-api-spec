@@ -1,18 +1,18 @@
 get:
-  summary: List order forms
+  summary: Fetch RfQs
   description: |
-    The Order Forms endpoint returns a list of all created order forms.
+    The RfQs endpoint returns an array of all incoming RfQs.
   tags:
-    - Order Forms
+    - RfQs - incoming
   responses:
     200:
-      description: An array of order froms
+      description: An array of RfQs
       content:
         application/json:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/OrderForm'
+              $ref: '#/components/schemas/Rfq'
     default:
       description: Unexpected error
       content:

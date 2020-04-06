@@ -1,0 +1,28 @@
+get:
+  summary: List incoming quote shifts
+  description: |
+    The quote shifts endpoint returns a list of all quote shifts.
+  tags:
+    - Quote shifts - incoming
+  parameters:
+    - name: outgoingRfqId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: An array of quote shifts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/QuoteShift'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

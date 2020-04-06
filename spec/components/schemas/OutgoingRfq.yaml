@@ -1,0 +1,52 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - $ref: '#/components/schemas/BaseOrder'
+  - properties: 
+      status:
+        type: string
+        description: Quote shift status
+        enum:
+          - OPEN
+          - SENT
+        default: OPEN
+        readOnly: true
+      expires:
+        type: number
+        description: Timestamp in milliseconds for when the rfq expires
+      client:
+        $ref: '#/components/schemas/Client'
+        description: Name and contact defails of the client owning the request.
+      rfq-no:
+        type: string
+        description: The RfQ number
+        format: ObjectId
+        readOnly: true
+      
+example:
+  # basic
+  id: "5dde7024eded8872705a0001"
+  vid: "5dde71e4c9e77c0001730001"
+  company-id: "5dde6e21c9e77c0001a1e3a7"
+  created: 1574858788
+  created-by: "5dde6e21c9e77c0001a1e3b0"
+  valid-from: 1574859236203
+  valid-to: 0
+  changed-by: "5dde6e21c9e77c0001a1e3b0"
+  archived: 0
+
+  # base order
+  status: "OPEN"
+  form-id: "5dde7024eded8872705a1ff7"
+  form-vid: "5dde71e4c9e77c000173dd03"
+  original-duplicity: 3
+  values: {}
+  shift-dates: ["2019-11-29", "2019-11-30", "2019-11-28"]
+
+  # specific
+  expires: 1558604010307
+  client:
+    phone: "0123-405060"
+    email: "name@company.com"
+    company: "Company AB"
+    name: "Firstname Surname"
+  rfq-no: "13"

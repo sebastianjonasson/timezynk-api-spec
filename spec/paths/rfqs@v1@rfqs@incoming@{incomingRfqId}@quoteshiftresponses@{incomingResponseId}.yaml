@@ -1,0 +1,36 @@
+get:
+  summary: Fetch single quote shifts response
+  description: |
+    Endpoint for fetching a single quote shifts response.
+  tags:
+    - Quote shift responses - incoming
+  parameters:
+    - name: incomingRfqId
+      in: path
+      description: The quote shifts response id
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    - name: incomingResponseId
+      in: path
+      description: The quote shifts response id
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: A single quote shifts response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/QuoteShiftsResponse"
+    404:
+      description: Quote not found
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

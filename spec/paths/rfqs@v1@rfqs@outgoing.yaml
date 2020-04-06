@@ -1,0 +1,51 @@
+get:
+  summary: Fetch Outgoing RfQs
+  description: |
+    The Outgoing RfQs endpoint returns an array of all outgoing rfq parents.
+  tags:
+    - RfQs - outgoing
+  responses:
+    200:
+      description: An array of rfq parents
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OutgoingRfq'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+post:
+  summary: Create outgoing RfQ
+  description: |
+    Endpoint for creating a new request for quotes
+
+    To create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your outgoing RFQ object.
+  requestBody:
+    description: Outgoing RfQ object to be created.
+    required: true
+    content:
+      application/json:
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/OutgoingRfq'
+          - required:
+            - form-id
+            - form-vid
+            - client-id
+            - supplier-id
+            - values
+  tags:
+    - RfQs - outgoing
+  responses:
+    200:
+      description: Newly added outgoing RfQ object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OutgoingRfq'

@@ -1,0 +1,8 @@
+type: object
+properties:
+  id:
+    type: string
+    format: ObjectId
+  shift-id:
+    type: string
+    format: ObjectId

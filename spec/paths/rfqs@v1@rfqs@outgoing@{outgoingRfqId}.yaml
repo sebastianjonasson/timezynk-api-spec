@@ -1,0 +1,69 @@
+get:
+  summary: Fetch single outgoing RfQ
+  description: |
+    Endpoint for fetching a single outgoing RfQ.
+  tags:
+    - RfQs - outgoing
+  parameters:
+    - name: outgoingRfqId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: A single outgoing RfQ
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OutgoingRfq"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+put:
+  summary: Update outgoing RfQ
+  description: >
+    Send updates to an outgoing RfQ that has not been SENT. Only updates to "expires"
+    are allowed otherwise.
+
+
+    Side effects:
+
+    * If "expires" is updated, linked incoming RfQ's will also have "expires" updated.
+  parameters:
+    - name: outgoingRfqId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/OutgoingRfq"
+    required: true
+  tags:
+    - RfQs - outgoing
+  responses:
+    200:
+      description: Updated outgoing RfQ object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OutgoingRfq"
+    404:
+      description: outgoing RfQ not found
+    400:
+      description: This property cannot be changed after outgoing RfQ has been sent.
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

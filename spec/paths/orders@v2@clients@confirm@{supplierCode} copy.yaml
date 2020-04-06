@@ -1,9 +1,9 @@
 put:
-  summary: Confirm supplier
+  summary: Confirm client
   description: |
-    The Confirm Supplier endpoint allows a user to confirm a client invitation from a supplier.
+    The Confirm Client endpoint allows a user to confirm a supplier invitation from a client.
   tags:
-    - Order Suppliers
+    - Order Clients
   parameters:
     - name: supplierCode
       in: path
@@ -12,7 +12,7 @@ put:
         type: string
         format: ObjectId
   requestBody:
-    description: Company Id of Supplier.
+    description: Company Id of Client.
     required: true
     content:
       application/json:
@@ -20,7 +20,7 @@ put:
           properties:
             company-id:
               type: string
-              description: Id of the company for the supplier.
+              description: Id of the company for the client.
               format: ObjectId
           required:
             - company-id
@@ -29,8 +29,8 @@ put:
       description: OK
     400:
       description: |
-        * Supplier could not be added
-        * Supplier already added
+        * Client could not be added
+        * Client already added
     default:
       description: Unexpected error
       content:

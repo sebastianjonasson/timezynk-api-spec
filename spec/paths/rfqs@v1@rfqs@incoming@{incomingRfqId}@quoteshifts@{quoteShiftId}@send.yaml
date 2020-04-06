@@ -1,0 +1,26 @@
+post:
+  summary: Send quote shift
+  description: |
+    Endpoint for sending quote shift to scheduler.
+  parameters:
+    - name: quoteShiftId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    - in: path
+      name: incomingRfqId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Quote shifts - outgoing
+  responses:
+    201:
+      description: "OK"
+    404:
+      description: Not found
+    409:
+      description: Already sent

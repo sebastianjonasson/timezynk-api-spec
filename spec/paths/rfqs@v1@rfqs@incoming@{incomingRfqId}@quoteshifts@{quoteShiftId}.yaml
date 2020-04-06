@@ -1,0 +1,58 @@
+get:
+  summary: Fetch single quote shift
+  description: |
+    Endpoint for fetching a single quote shift.
+  tags:
+    - Quote shifts - outgoing
+  parameters:
+    - name: quoteShiftId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    - in: path
+      name: incomingRfqId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: A single quote shift
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/QuoteShift"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+delete:
+  summary: Delete quote shift
+  description: Deletion can only be done if shift is in DRAFT state.
+  tags:
+    - Quote shifts - outgoing
+  parameters:
+    - in: path
+      name: quoteShiftId
+      description: Setting ID
+      required: true
+      schema:
+        type: string
+    - in: path
+      name: incomingRfqId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    201:
+      description: OK
+    400:
+      description: Cannot delete quote shift that has been sent
+    404:
+      description: Not found

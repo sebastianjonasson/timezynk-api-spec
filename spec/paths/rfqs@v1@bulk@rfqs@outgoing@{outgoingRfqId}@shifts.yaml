@@ -1,0 +1,36 @@
+post:
+  summary: Create multiple RfQ shifts
+  description: Bulk request to create multiple RfQ shifts in one call
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/RfqShift"
+    description: RfQ shifts to be added
+    required: true
+  tags:
+    - RfQ shifts - outgoing
+  parameters:
+    - in: path
+      name: outgoingRfqId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: Newly added RfQ shifts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/RfqShift"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

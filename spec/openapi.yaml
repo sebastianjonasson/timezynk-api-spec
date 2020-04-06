@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
   title: Timezynk API
   description: API for Timezynk scheduling system
@@ -30,8 +30,23 @@ tags:
     description: Fetching, updating and creating salary articles
   - name: Settings
     description: Settings are used to store and retreive configuration parameters.
+  - name: RfQs - outgoing
+    description: Outgoing RfQs are requests for quotes that are sent to the companys suppliers.
+  - name: RfQs - incoming
+    description: Incoming RfQs are requests for quotes that are received from the companys clients.
+  - name: RfQ shifts - outgoing
+  - name: RfQ shifts - incoming
+  - name: Quote shifts - outgoing
+  - name: Quote shifts - incoming
+  - name: Quote shift responses - outgoing
+  - name: Quote shift responses - incoming
+  - name: Orders
+  - name: Order Forms
+  - name: Order Clients
+  - name: Order Suppliers
   - name: Experimental
-    description: These APIs are experimental and and may be changed at any time without
+    description:
+      These APIs are experimental and and may be changed at any time without
       warning.
 servers:
   - url: https://api.timezynk.com/api

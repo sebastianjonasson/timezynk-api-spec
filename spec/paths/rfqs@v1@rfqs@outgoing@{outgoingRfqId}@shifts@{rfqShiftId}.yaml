@@ -1,0 +1,32 @@
+get:
+  summary: Fetch single RfQ shift
+  description: |
+    Endpoint for fetching a single RfQ shift.
+  tags:
+    - RfQ shifts - outgoing
+  parameters:
+    - in: path
+      name: outgoingRfqId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    - name: rfqShiftId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: A single RfQ shift
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RfqShift'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

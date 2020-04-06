@@ -1,0 +1,58 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      status:
+        type: string
+        description: Quote shifts state
+        enum:
+          - ACCEPTED
+          - REJECTED
+          - CONFIRMED
+          - REFUSED
+      supplier-id:
+        type: string
+        description: |
+          Id of the company owning the quote shifts.
+        format: ObjectId
+      quote-shift-ids:
+        type: array
+        description: List of quote shift ids.
+        items:
+          type: string
+          format: ObjectId
+      outgoing-rfq-id:
+        type: string
+        description: |
+          Id of the rfq parent this rfq was created from.
+        format: ObjectId
+      incoming-rfq-id:
+        type: string
+        description: |
+          Id of the RfQ.
+        format: ObjectId
+    required:
+      - status
+      - supplier-id
+      - quote-shift-ids
+      - outgoing-rfq-id
+      - incoming-rfq-id
+
+example:
+  # basic
+  id: "5dde7024eded8872705a0000"
+  vid: "5dde71e4c9e77c0001730000"
+  company-id: "5dde6e21c9e77c0001a1e3a7"
+  created: 1574858788000
+  created-by: "5dde6e21c9e77c0001a1e3b0"
+  valid-from: 1574859236203
+  valid-to: 0
+  changed-by: "5dde6e21c9e77c0001a1e3b0"
+  archived: 0
+
+  # specific
+  status: "ACCEPTED"
+  supplier-id: "5dde6e21c9e77c0001a1e3a7"
+  quote-shift-ids: ["5dde7024eded8872705a0011"]
+  outgoing-rfq-id: "5dde7024eded8872705a0001"
+  incoming-rfq-id: "5dde7024eded8872705a0002"

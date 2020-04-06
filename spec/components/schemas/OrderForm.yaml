@@ -1,11 +1,6 @@
 allOf:
   - $ref: '#/components/schemas/BasicObject'
   - properties:
-      id:
-        type: string
-        description: Unique identifier representing a specific order form
-        format: ObjectId
-        readOnly: true
       supplier-id:
         type: string
         description: |
@@ -26,3 +21,19 @@ allOf:
         description: List of additional custom fields related to the order.
         items:
           $ref: '#/components/schemas/OrderFormCustomField'
+
+example:
+  # basic
+  id: "5dde7024eded8872705a0001"
+  vid: "5dde71e4c9e77c0001730001"
+  company-id: "5dde6e21c9e77c0001a1e3a7"
+  created: 1574858788000
+  created-by: "5dde6e21c9e77c0001a1e3b0"
+  valid-from: 1574859236203
+  changed-by: "5dde6e21c9e77c0001a1e3b0"
+
+  # specific
+  supplier-id: ""
+  title: "test form"
+  shift-fields: []
+  fields: []

@@ -1,0 +1,59 @@
+get:
+  summary: List rfq shifts
+  description: |
+    The rfq shifts endpoint returns a list of all outgoing rfq shifts.
+  tags:
+    - RfQ shifts - outgoing
+  parameters:
+      - in: path
+        name: outgoingRfqId
+        required: true
+        schema:
+          type: string
+          format: ObjectId
+  responses:
+    200:
+      description: An array of RfQ shifts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RfqShift'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+post:
+  summary: Create RfQ shift
+  description: |
+    Endpoint for creating a new RfQ shift
+
+    To create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.
+  tags:
+    - RfQ shifts - outgoing
+  parameters:
+    - in: path
+      name: outgoingRfqId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    description: RfQ shift object to be created.
+    required: true
+    content:
+      application/json:
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/RfqShift'
+  responses:
+    200:
+      description: Newly added RfQ shift
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RfqShift'

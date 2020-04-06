@@ -2,13 +2,18 @@
   "name": "bridge-api-spec",
   "version": "2.7.0",
   "dependencies": {
+    "mkdirp": "^0.5.5",
     "swagger-repo": "^2.0.0-rc.15"
   },
   "private": true,
   "scripts": {
     "start": "swagger-repo serve",
     "build": "swagger-repo build -o web_deploy",
+    "watch": "touch /tmp/openapi.yaml && npm install && nodemon -w spec -e yaml --exec \"swagger-repo bundle -b spec -y -o /tmp/openapi.yaml\"",
     "test": "swagger-repo validate",
     "gh-pages": "swagger-repo gh-pages"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.1"
   }
 }

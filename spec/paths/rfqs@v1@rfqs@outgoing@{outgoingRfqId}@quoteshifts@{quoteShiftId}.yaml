@@ -1,0 +1,32 @@
+get:
+  summary: Fetch single quote shift
+  description: |
+    Endpoint for fetching a single quote shift.
+  tags:
+    - Quote shifts - incoming
+  parameters:
+    - name: quoteShiftId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    - name: outgoingRfqId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: A single quote shift
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/QuoteShift'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

@@ -1,0 +1,21 @@
+type: object
+properties:
+  phone:
+    type: string
+    description: Phone number of client
+  email:
+    type: string
+    description: Email of client
+  company:
+    type: string
+    description: Company name
+  name:
+    type: string
+    description: Name of client
+
+
+example:
+  phone: "0123-405060"
+  email: "name@company.com"
+  company: "Company AB"
+  name: "Firstname Surname"

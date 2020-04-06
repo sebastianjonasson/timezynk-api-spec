@@ -1,0 +1,64 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - $ref: '#/components/schemas/BaseShift'
+  - type: object
+    properties:
+      duplicity:
+        type: number
+        description: Maximum (and desired) number of booked users
+        default: 1
+      accepted-quote-shifts:
+        type: array
+        description: List of accepted quote shifts for this RfQ shift
+        readOnly: true
+        items:
+          type: string
+          format: ObjectId
+      confirmed-quote-shifts:
+        type: array
+        description: List of confirmed quote shifts for this RfQ shift
+        readOnly: true
+        items:
+          type: string
+          format: ObjectId
+      shift-id:
+        type: string
+        format: ObjectId
+        description: The corresponding shift-id from which this RfQshift was created.
+      outgoing-rfq-id:
+        type: string
+        format: ObjectId
+        description: ID of order that created the shift
+    required:
+      - outgoing-rfq-id
+      - shift-id
+      - start
+      - end
+
+example:
+  # basic
+  id: "5dde7024eded8872705a0000"
+  vid: "5dde71e4c9e77c0001730000"
+  company-id: "5dde6e21c9e77c0001a1e3a7"
+  created: 1574858788000
+  created-by: "5dde6e21c9e77c0001a1e3b0"
+  valid-from: 1574859236203
+  valid-to: 0
+  changed-by: "5dde6e21c9e77c0001a1e3b0"
+  archived: 0
+
+  # base shift
+  start: "2019-04-30T15:00:00.000"
+  end: "2019-04-30T17:00:00.000"
+  breaks: 
+    - start: "2019-04-30T16:00:00.000"
+      stop: "2019-04-30T16:15:00.000"
+  values: {}
+  group-id: ""
+
+  # specific
+  duplicity: 4
+  accepted-quote-shifts: ["5dde7024eded8872705a0012", "5dde7024eded8872705a0013"]
+  confirmed-quote-shifts: ["5dde7024eded8872705a0014"]
+  shift-id: "5dde7024eded8872705a0012"
+  outgoing-rfq-id: "5dde7024eded8872705a0013"

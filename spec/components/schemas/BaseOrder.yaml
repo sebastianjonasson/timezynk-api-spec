@@ -1,0 +1,31 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - properties: 
+      status:
+        type: string
+        description: Status of the order
+        readOnly: true
+      form-id:
+        type: string
+        description: Id of the order form used to create the order.
+        format: ObjectId
+      form-vid:
+        type: string
+        description: Vid of the order form used to create the order.
+        format: ObjectId
+      original-duplicity:
+        type: number
+        description: Amount of people to be booked for the this order.
+        readOnly: true
+      values:
+        type: object
+        description: |
+          Key-value store for custom fields defined in the order form associated with the order.
+          The key should be set to the `field-template-id`. See `fields` property in Order Form.
+        default: {}
+      shift-dates:
+        type: array
+        description: All dates which where shifts are occuring during the order
+        items:
+          type: string
+        readOnly: true

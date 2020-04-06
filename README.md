@@ -32,3 +32,6 @@ Validates the spec.
 
 #### `npm run gh-pages`
 Deploys docs to GitHub Pages. You don't need to run it manually if you have Travis CI configured.
+
+#### `docker-compose up`
+Mocks api. Responds with hardcoded examples defines in each schema.

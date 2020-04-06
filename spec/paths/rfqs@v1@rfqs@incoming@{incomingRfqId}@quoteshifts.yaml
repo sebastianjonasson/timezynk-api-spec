@@ -1,0 +1,95 @@
+get:
+  summary: List outgoing quote shifts
+  description: |
+    The quote shifts endpoint returns a list of all quote shifts.
+  tags:
+    - Quote shifts - outgoing
+  parameters:
+      - in: path
+        name: incomingRfqId
+        required: true
+        schema:
+          type: string
+          format: ObjectId
+  responses:
+    200:
+      description: An array of quote shifts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/QuoteShift"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+post:
+  summary: Create quote shift
+  description: Endpoint for creating a new quote shift.
+  parameters:
+      - in: path
+        name: incomingRfqId
+        required: true
+        schema:
+          type: string
+          format: ObjectId
+  requestBody:
+    description: Quote shift to be created.
+    required: true
+    content:
+      application/json:
+        schema:
+          properties:
+            rfq-shift-id:
+              type: string
+              format: ObjectId
+              description: The corresponding shift-id from the RfQ.
+            booked-user:
+              type: object
+              description: Suggested user for this shift
+              properties:
+                name:
+                  type: string
+                  description: Name of worker
+                id-no:
+                  type: string
+                  description: National identification number (personnummer) of the worker
+                id:
+                  type: string
+                  format: ObjectId
+                  description: User id of worker
+              required:
+                - name
+                - id-no
+            outgoing-rfq-id:
+              type: string
+              description: |
+                Id of the rfq parent this rfq was created from.
+              format: ObjectId
+            incoming-rfq-id:
+              type: string
+              description: |
+                Id of the RfQ.
+              format: ObjectId
+          required:
+            - rfq-shift-id
+            - booked-user
+            - outgoing-rfq-id
+            - incoming-rfq-id
+            - client-id
+  tags:
+    - Quote shifts - outgoing
+  responses:
+    200:
+      description: Newly added quote shift
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/QuoteShift"
+    400:
+      description: |
+        A valid outgoing rfq is required / Expecting booked users to contain exactly one id

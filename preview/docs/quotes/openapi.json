@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.0.3",
   "info": {
     "title": "Timezynk API",
     "description": "API for Timezynk scheduling system",
@@ -60,14 +60,12 @@
       "description": "Settings are used to store and retreive configuration parameters."
     },
     {
-      "name": "Experimental",
-      "description": "These APIs are experimental and and may be changed at any time without warning."
+      "name": "RfQs - outgoing",
+      "description": "Outgoing RfQs are requests for quotes that are sent to the companys suppliers."
     },
     {
-      "name": "RfQs - outgoing"
-    },
-    {
-      "name": "RfQs - incoming"
+      "name": "RfQs - incoming",
+      "description": "Incoming RfQs are requests for quotes that are received from the companys clients."
     },
     {
       "name": "RfQ shifts - outgoing"
@@ -82,10 +80,26 @@
       "name": "Quote shifts - incoming"
     },
     {
-      "name": "Quote shift response - outgoing"
+      "name": "Quote shift responses - outgoing"
     },
     {
-      "name": "Quote shift response - incoming"
+      "name": "Quote shift responses - incoming"
+    },
+    {
+      "name": "Orders"
+    },
+    {
+      "name": "Order Forms"
+    },
+    {
+      "name": "Order Clients"
+    },
+    {
+      "name": "Order Suppliers"
+    },
+    {
+      "name": "Experimental",
+      "description": "These APIs are experimental and and may be changed at any time without warning."
     }
   ],
   "servers": [
@@ -697,6 +711,75 @@
         "responses": {
           "200": {
             "description": "Delete successful"
+          }
+        }
+      }
+    },
+    "/domain-log/v1": {
+      "get": {
+        "summary": "Fetch changes",
+        "tags": [
+          "Experimental"
+        ],
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "description": "Oldest timestamp to fetch changes for",
+            "schema": {
+              "type": "number",
+              "format": "timestamp"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "Newest timestamp to fetch changes for",
+            "schema": {
+              "type": "number",
+              "format": "timestamp"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "description": "Type of changes to fetch",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "create",
+                "update",
+                "delete"
+              ]
+            }
+          },
+          {
+            "name": "user-id",
+            "in": "query",
+            "required": false,
+            "description": "Fetch changes done by a specific user",
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of changes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LogItem"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1542,6 +1625,64 @@
         }
       }
     },
+    "/orders/v2/clients/confirm/{supplierCode} copy": {
+      "put": {
+        "summary": "Confirm client",
+        "description": "The Confirm Client endpoint allows a user to confirm a supplier invitation from a client.\n",
+        "tags": [
+          "Order Clients"
+        ],
+        "parameters": [
+          {
+            "name": "supplierCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Company Id of Client.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "company-id": {
+                    "type": "string",
+                    "description": "Id of the company for the client.",
+                    "format": "ObjectId"
+                  }
+                },
+                "required": [
+                  "company-id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "* Client could not be added\n* Client already added\n"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/orders/v2/forms": {
       "get": {
         "summary": "List order forms",
@@ -1887,6 +2028,94 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Create order suppliers",
+        "description": "Endpoint for creating an order supplier. When the order supplier is created, an email invitation will be sent to the entered email.\n",
+        "tags": [
+          "Order Suppliers"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderSupplier"
+              }
+            }
+          },
+          "description": "Order supplier to be created.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "An array of order suppliers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderSupplier"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/v2/suppliers/{orderSupplierId}": {
+      "get": {
+        "summary": "Fetch single order supplier",
+        "description": "Endpoint for fetching a single order supplier",
+        "tags": [
+          "Order Suppliers"
+        ],
+        "parameters": [
+          {
+            "name": "orderSupplierId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Single order supplier",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderSupplier"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Order supplier not found"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/orders/v2/suppliers/confirm/{supplierCode}": {
@@ -1907,9 +2136,32 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "Company Id of Supplier.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "company-id": {
+                    "type": "string",
+                    "description": "Id of the company for the supplier.",
+                    "format": "ObjectId"
+                  }
+                },
+                "required": [
+                  "company-id"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "* Supplier could not be added\n* Supplier already added\n"
           },
           "default": {
             "description": "Unexpected error",
@@ -2317,7 +2569,7 @@
     "/rfqs/v1/bulk/rfqs/incoming/{incomingRfqId}/quoteshifts": {
       "post": {
         "summary": "Create multiple quote shifts",
-        "description": "Endpoint for creating an array of new quote shifts. SPEC UPDATE - client-id",
+        "description": "Endpoint for creating an array of new quote shifts.",
         "parameters": [
           {
             "in": "path",
@@ -2393,7 +2645,7 @@
           }
         },
         "tags": [
-          "Quote shifts - outgoing NEW"
+          "Quote shifts - outgoing"
         ],
         "responses": {
           "200": {
@@ -2428,7 +2680,7 @@
     "/rfqs/v1/bulk/rfqs/outgoing/{outgoingRfqId}/shifts": {
       "post": {
         "summary": "Create multiple RfQ shifts",
-        "description": "SPEC UPDATE - duplicity removed, shift-id required.\n",
+        "description": "Bulk request to create multiple RfQ shifts in one call",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2444,7 +2696,7 @@
           "required": true
         },
         "tags": [
-          "Outgoing RfQ shifts UPDATE"
+          "RfQ shifts - outgoing"
         ],
         "parameters": [
           {
@@ -2470,328 +2722,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quoteshiftresponses/incoming": {
-      "get": {
-        "summary": "Fetch quote shifts responses",
-        "description": "Endpoint returns an array of all quote shifts responses.\n",
-        "tags": [
-          "Quote shifts response - incoming NEW"
-        ],
-        "responses": {
-          "200": {
-            "description": "An array of quote shift responses",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QuoteShiftsResponse"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quoteshiftresponses/incoming/{incomingResponseId}": {
-      "get": {
-        "summary": "Fetch single quote shifts response",
-        "description": "Endpoint for fetching a single quote shifts response.\n",
-        "tags": [
-          "Quote shifts response - incoming NEW"
-        ],
-        "parameters": [
-          {
-            "name": "incomingResponseId",
-            "in": "path",
-            "description": "The quote shifts response id",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A single quote shifts response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QuoteShiftsResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote not found"
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quoteshiftresponses/incoming/{incomingResponseId}/confirm": {
-      "post": {
-        "summary": "Confirm quote shifts response",
-        "description": "Endpoint for a supplier to confirm a quote shift response.",
-        "tags": [
-          "Quote shifts response - incoming NEW"
-        ],
-        "parameters": [
-          {
-            "name": "incomingResponseId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Updated quote shifts response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QuoteShiftsResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote not found"
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quoteshiftresponses/incoming/{incomingResponseId}/refuse": {
-      "post": {
-        "summary": "Refuse quote shifts response",
-        "description": "Endpoint for a supplier to refuse a quote shift response.",
-        "tags": [
-          "Quote shifts response - incoming NEW"
-        ],
-        "parameters": [
-          {
-            "name": "incomingResponseId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Updated quote shifts response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QuoteShiftsResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote not found"
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quoteshiftresponses/outgoing": {
-      "get": {
-        "summary": "Fetch quote shifts responses",
-        "description": "Endpoint returns an array of all quote shifts responses.\n",
-        "tags": [
-          "Quote shifts response - outgoing NEW"
-        ],
-        "responses": {
-          "200": {
-            "description": "An array of quote shift responses",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QuoteShiftsResponse"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Create quote shifts response",
-        "description": "Endpoint for a client to respond to a set of quote shifts.",
-        "tags": [
-          "Quote shifts response - outgoing NEW"
-        ],
-        "requestBody": {
-          "description": "RfQ parent object to be created.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "description": "Quote shifts state",
-                    "enum": [
-                      "ACCEPTED",
-                      "REJECTED"
-                    ]
-                  },
-                  "supplier-id": {
-                    "type": "string",
-                    "description": "Id of the company owning the quote shifts.\n",
-                    "format": "ObjectId"
-                  },
-                  "quote-shift-ids": {
-                    "type": "array",
-                    "description": "List of quote shift ids.",
-                    "items": {
-                      "type": "string",
-                      "format": "ObjectId"
-                    }
-                  },
-                  "outgoing-rfq-id": {
-                    "type": "string",
-                    "description": "Id of the rfq parent this rfq was created from.\n",
-                    "format": "ObjectId"
-                  },
-                  "incoming-rfq-id": {
-                    "type": "string",
-                    "description": "Id of the RfQ.\n",
-                    "format": "ObjectId"
-                  }
-                },
-                "required": [
-                  "status",
-                  "supplier-id",
-                  "quote-shift-ids",
-                  "outgoing-rfq-id",
-                  "incoming-rfq-id"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Quote shift response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QuoteShiftsResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote shifts response not found"
-          }
-        }
-      }
-    },
-    "/rfqs/v1/quoteshiftresponses/outgoing/{outgoingResponseId}": {
-      "get": {
-        "summary": "Fetch single quote shifts response",
-        "description": "Endpoint for fetching a single quote shifts response.\n",
-        "tags": [
-          "Quote shifts response - outgoing NEW"
-        ],
-        "parameters": [
-          {
-            "name": "outgoingResponseId",
-            "in": "path",
-            "description": "The quote shifts response id",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "ObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A single quote shifts response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QuoteShiftsResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Quote not found"
           },
           "default": {
             "description": "Unexpected error",
@@ -2840,12 +2770,230 @@
         }
       }
     },
+    "/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses": {
+      "get": {
+        "summary": "Fetch quote shifts responses",
+        "description": "Endpoint returns an array of all quote shifts responses.\n",
+        "tags": [
+          "Quote shift responses - incoming"
+        ],
+        "parameters": [
+          {
+            "name": "incomingRfqId",
+            "in": "path",
+            "description": "The quote shifts response id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of quote shift responses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuoteShiftsResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses/{incomingResponseId}": {
+      "get": {
+        "summary": "Fetch single quote shifts response",
+        "description": "Endpoint for fetching a single quote shifts response.\n",
+        "tags": [
+          "Quote shift responses - incoming"
+        ],
+        "parameters": [
+          {
+            "name": "incomingRfqId",
+            "in": "path",
+            "description": "The quote shifts response id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          },
+          {
+            "name": "incomingResponseId",
+            "in": "path",
+            "description": "The quote shifts response id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single quote shifts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote not found"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses/{incomingResponseId}/confirm": {
+      "post": {
+        "summary": "Confirm quote shifts response",
+        "description": "Endpoint for a supplier to confirm a quote shift response.\n\nSide effects:\n* Incoming rfq set to CONFIRMED iff ACCEPTED linked quote shift responses = 0.\n* Linked quote shifts in rfq shift accepted list moved to confirmed list.\n* (When an rfq shift duplicity = confirmed quote shifts, set other quote shifts to REJECTED.)\n* Set linked quote shifts to CONFIRMED.\n",
+        "tags": [
+          "Quote shift responses - incoming"
+        ],
+        "parameters": [
+          {
+            "name": "incomingRfqId",
+            "in": "path",
+            "description": "The quote shifts response id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          },
+          {
+            "name": "incomingResponseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated quote shifts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote not found"
+          },
+          "409": {
+            "description": "Quote shift response does not have status ACCEPTED"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses/{incomingResponseId}/refuse": {
+      "post": {
+        "summary": "Refuse quote shifts response",
+        "description": "Endpoint for a supplier to refuse a quote shift response.\n\nSide effects:\n* Collect all quote shift responses for incoming rfq.\n  * When responses with status ACCEPTED = 0:\n    * if responses with status CONFIRMED = 0: set incoming rfq to REFUSED.\n    * else: set status to CONFIRMED.\n* Linked quote shifts are removed from rfq shift accepted lists.\n* Set linked quote shifts to REFUSED.\n",
+        "tags": [
+          "Quote shift responses - incoming"
+        ],
+        "parameters": [
+          {
+            "name": "incomingRfqId",
+            "in": "path",
+            "description": "The quote shifts response id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          },
+          {
+            "name": "incomingResponseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated quote shifts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote not found"
+          },
+          "409": {
+            "description": "Quote shift response does not have status ACCEPTED"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshifts": {
       "get": {
         "summary": "List outgoing quote shifts",
         "description": "The quote shifts endpoint returns a list of all quote shifts.\n",
         "tags": [
-          "Quote shifts - outgoing NEW"
+          "Quote shifts - outgoing"
         ],
         "parameters": [
           {
@@ -2886,7 +3034,7 @@
       },
       "post": {
         "summary": "Create quote shift",
-        "description": "Endpoint for creating a new quote shift. SPEC UPDATE - client-id",
+        "description": "Endpoint for creating a new quote shift.",
         "parameters": [
           {
             "in": "path",
@@ -2956,7 +3104,7 @@
           }
         },
         "tags": [
-          "Quote shifts - outgoing NEW"
+          "Quote shifts - outgoing"
         ],
         "responses": {
           "200": {
@@ -2980,7 +3128,7 @@
         "summary": "Fetch single quote shift",
         "description": "Endpoint for fetching a single quote shift.\n",
         "tags": [
-          "Quote shifts - outgoing NEW"
+          "Quote shifts - outgoing"
         ],
         "parameters": [
           {
@@ -3029,7 +3177,7 @@
         "summary": "Delete quote shift",
         "description": "Deletion can only be done if shift is in DRAFT state.",
         "tags": [
-          "Quote shifts - outgoing NEW"
+          "Quote shifts - outgoing"
         ],
         "parameters": [
           {
@@ -3089,7 +3237,7 @@
           }
         ],
         "tags": [
-          "Quote shifts - outgoing NEW"
+          "Quote shifts - outgoing"
         ],
         "responses": {
           "201": {
@@ -3107,9 +3255,9 @@
     "/rfqs/v1/rfqs/incoming/{incomingRfqId}/shifts": {
       "get": {
         "summary": "List rfq shifts",
-        "description": "The rfq shifts endpoint returns a list of all incoming rfq shifts.\n\nUPDATE - status removed. Added duplicity, accepted-quote-shifts, confirmed-quote-shifts.\n",
+        "description": "The rfq shifts endpoint returns a list of all incoming rfq shifts.\n",
         "tags": [
-          "RfQ shifts - incoming UPDATE"
+          "RfQ shifts - incoming"
         ],
         "parameters": [
           {
@@ -3154,7 +3302,7 @@
         "summary": "Fetch single RfQ shift",
         "description": "Endpoint for fetching a single RfQ shift.\n",
         "tags": [
-          "RfQ shifts - incoming UPDATE"
+          "RfQ shifts - incoming"
         ],
         "parameters": [
           {
@@ -3365,6 +3513,7 @@
       },
       "put": {
         "summary": "Update outgoing RfQ",
+        "description": "Send updates to an outgoing RfQ that has not been SENT. Only updates to \"expires\" are allowed otherwise.\n\nSide effects:\n* If \"expires\" is updated, linked incoming RfQ's will also have \"expires\" updated.\n",
         "parameters": [
           {
             "name": "outgoingRfqId",
@@ -3400,11 +3549,197 @@
               }
             }
           },
+          "400": {
+            "description": "This property cannot be changed after outgoing RfQ has been sent."
+          },
           "404": {
             "description": "outgoing RfQ not found"
           },
-          "405": {
-            "description": "This property cannot be changed after outgoing RfQ has been sent."
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshiftresponses": {
+      "get": {
+        "summary": "Fetch quote shift responses",
+        "description": "Endpoint returns an array of all quote shift responses.\n",
+        "tags": [
+          "Quote shift responses - outgoing"
+        ],
+        "parameters": [
+          {
+            "name": "outgoingRfqId",
+            "in": "path",
+            "description": "The quote shifts response id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of quote shift responses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuoteShiftsResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create quote shift response",
+        "description": "Endpoint for a client to respond to a set of quote shifts.\n\nSide effects:\n* When ACCEPTED, linked quote shifts will be added to the list of accepted quote shifts for respective rfq shifts.\n* Linked quote shifts statuses are updated with the same status.\n* When ACCEPTED, incoming rfq gets same status.\n",
+        "tags": [
+          "Quote shift responses - outgoing"
+        ],
+        "parameters": [
+          {
+            "name": "outgoingRfqId",
+            "in": "path",
+            "description": "The quote shifts response id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "RfQ parent object to be created.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "description": "Quote shifts state",
+                    "enum": [
+                      "ACCEPTED",
+                      "REJECTED"
+                    ]
+                  },
+                  "supplier-id": {
+                    "type": "string",
+                    "description": "Id of the company owning the quote shifts.\n",
+                    "format": "ObjectId"
+                  },
+                  "quote-shift-ids": {
+                    "type": "array",
+                    "description": "List of quote shift ids.",
+                    "items": {
+                      "type": "string",
+                      "format": "ObjectId"
+                    }
+                  },
+                  "outgoing-rfq-id": {
+                    "type": "string",
+                    "description": "Id of the rfq parent this rfq was created from.\n",
+                    "format": "ObjectId"
+                  },
+                  "incoming-rfq-id": {
+                    "type": "string",
+                    "description": "Id of the RfQ.\n",
+                    "format": "ObjectId"
+                  }
+                },
+                "required": [
+                  "status",
+                  "supplier-id",
+                  "quote-shift-ids",
+                  "outgoing-rfq-id",
+                  "incoming-rfq-id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Quote shift response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "* Outgoing rfq id not valid\n* Status not \"ACCEPTED\" or \"REJECTED\"\n* Quote shift or rfq shift not found\n* Accepted and confirmed quote shifts are more than rfq shift duplicity\n"
+          }
+        }
+      }
+    },
+    "/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshiftresponses/{outgoingresponseId}": {
+      "get": {
+        "summary": "Fetch single quote shifts response",
+        "description": "Endpoint for fetching a single quote shifts response.\n",
+        "tags": [
+          "Quote shift responses - outgoing"
+        ],
+        "parameters": [
+          {
+            "name": "outgoingRfqId",
+            "in": "path",
+            "description": "The quote shifts response id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          },
+          {
+            "name": "outgoingresponseId",
+            "in": "path",
+            "description": "The quote shifts response id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single quote shifts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteShiftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quote not found"
           },
           "default": {
             "description": "Unexpected error",
@@ -3422,9 +3757,9 @@
     "/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshifts": {
       "get": {
         "summary": "List incoming quote shifts",
-        "description": "The quote shifts endpoint returns a list of all quote shifts.\nSPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.\n",
+        "description": "The quote shifts endpoint returns a list of all quote shifts.\n",
         "tags": [
-          "Quote shifts - incoming NEW"
+          "Quote shifts - incoming"
         ],
         "parameters": [
           {
@@ -3467,9 +3802,9 @@
     "/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshifts/{quoteShiftId}": {
       "get": {
         "summary": "Fetch single quote shift",
-        "description": "Endpoint for fetching a single quote shift.\nSPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.\n",
+        "description": "Endpoint for fetching a single quote shift.\n",
         "tags": [
-          "Quote shifts - incoming NEW"
+          "Quote shifts - incoming"
         ],
         "parameters": [
           {
@@ -3567,9 +3902,9 @@
     "/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/shifts": {
       "get": {
         "summary": "List rfq shifts",
-        "description": "The rfq shifts endpoint returns a list of all outgoing rfq shifts.\n\nUPDATE - status removed. Added duplicity, accepted-quote-shifts, confirmed-quote-shifts.\n",
+        "description": "The rfq shifts endpoint returns a list of all outgoing rfq shifts.\n",
         "tags": [
-          "RfQ shifts - outgoing UPDATE"
+          "RfQ shifts - outgoing"
         ],
         "parameters": [
           {
@@ -3610,9 +3945,9 @@
       },
       "post": {
         "summary": "Create RfQ shift",
-        "description": "Endpoint for creating a new RfQ shift\n\nTo create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.\n\nSPEC UPDATE - duplicity added, shift-id required\n",
+        "description": "Endpoint for creating a new RfQ shift\n\nTo create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.\n",
         "tags": [
-          "RfQ shifts - outgoing UPDATE"
+          "RfQ shifts - outgoing"
         ],
         "parameters": [
           {
@@ -3657,9 +3992,9 @@
     "/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/shifts/{rfqShiftId}": {
       "get": {
         "summary": "Fetch single RfQ shift",
-        "description": "Endpoint for fetching a single RfQ shift.\n\nUPDATE - rfq shift now contains status.\n",
+        "description": "Endpoint for fetching a single RfQ shift.\n",
         "tags": [
-          "RfQ shifts - outgoing UPDATE"
+          "RfQ shifts - outgoing"
         ],
         "parameters": [
           {
@@ -4760,10 +5095,15 @@
             "format": "ObjectId"
           },
           "archived": {
-            "type": "number",
-            "description": "Timestamp in milliseconds for when the object was archived, or null if it is still active"
+            "type": "integer",
+            "description": "Timestamp in milliseconds for when the object was archived, or null if it is still active",
+            "nullable": true,
+            "example": null
           }
-        }
+        },
+        "required": [
+          "id"
+        ]
       },
       "Break": {
         "type": "object",
@@ -5257,6 +5597,76 @@
               "export-data"
             ]
           }
+        ]
+      },
+      "LogItem": {
+        "type": "object",
+        "properties": {
+          "log-info": {
+            "type": "object",
+            "required": [
+              "id",
+              "type",
+              "tstamp",
+              "user-id",
+              "collection",
+              "company-id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "ObjectId",
+                "description": "Unique ID for this change"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of change",
+                "enum": [
+                  "create",
+                  "update",
+                  "delete"
+                ]
+              },
+              "tstamp": {
+                "type": "number",
+                "format": "timestamp",
+                "description": "Timestamp for this change in milliseconds since the Unix Epoch"
+              },
+              "user-id": {
+                "type": "string",
+                "format": "ObjectId",
+                "description": "ID of the user who did the change"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection that contains the changed document"
+              },
+              "company-id": {
+                "type": "string",
+                "format": "ObjectId",
+                "description": "Company ID that owns the changed document"
+              }
+            }
+          },
+          "other": {
+            "type": "string",
+            "description": "All properties from the created, changed or deleted source document"
+          },
+          "original": {
+            "type": "string",
+            "description": "All properties from the created, changed or deleted source document"
+          },
+          "document": {
+            "type": "string",
+            "description": "All properties from the created, changed or deleted source document"
+          },
+          "properties": {
+            "type": "string",
+            "description": "All properties from the created, changed or deleted source document"
+          }
+        },
+        "required": [
+          "log-info"
         ]
       },
       "Order": {
@@ -6044,9 +6454,6 @@
             "$ref": "#/components/schemas/BasicObject"
           },
           {
-            "$ref": "#/components/schemas/BaseShift"
-          },
-          {
             "type": "object",
             "properties": {
               "duplicity": {
@@ -6091,11 +6498,32 @@
                 "default": "active",
                 "readOnly": true
               },
+              "group-id": {
+                "type": "string",
+                "nullable": true,
+                "format": "ObjectId",
+                "description": "Common group ID for grouping several shifts together",
+                "example": null
+              },
               "mirror-shift-id": {
                 "type": "string",
                 "format": "ObjectId",
                 "description": "The corresponding shift-id for the client or supplier when this shift is part of an order",
                 "readOnly": true
+              },
+              "relations": {
+                "type": "object",
+                "properties": {
+                  "incoming-order": {
+                    "$ref": "#/components/schemas/ShiftRelation"
+                  },
+                  "outgoing-order": {
+                    "$ref": "#/components/schemas/ShiftRelation"
+                  },
+                  "outgoing-rfq": {
+                    "$ref": "#/components/schemas/ShiftRelation"
+                  }
+                }
               }
             },
             "required": [
@@ -6235,6 +6663,19 @@
             "items": {
               "$ref": "#/components/schemas/Shift"
             }
+          }
+        }
+      },
+      "ShiftRelation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "ObjectId"
+          },
+          "shift-id": {
+            "type": "string",
+            "format": "ObjectId"
           }
         }
       },

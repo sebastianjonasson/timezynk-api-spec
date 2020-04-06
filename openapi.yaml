@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
   title: Timezynk API
   description: API for Timezynk scheduling system
@@ -30,6 +30,20 @@ tags:
     description: 'Fetching, updating and creating salary articles'
   - name: Settings
     description: Settings are used to store and retreive configuration parameters.
+  - name: RfQs - outgoing
+    description: Outgoing RfQs are requests for quotes that are sent to the companys suppliers.
+  - name: RfQs - incoming
+    description: Incoming RfQs are requests for quotes that are received from the companys clients.
+  - name: RfQ shifts - outgoing
+  - name: RfQ shifts - incoming
+  - name: Quote shifts - outgoing
+  - name: Quote shifts - incoming
+  - name: Quote shift responses - outgoing
+  - name: Quote shift responses - incoming
+  - name: Orders
+  - name: Order Forms
+  - name: Order Clients
+  - name: Order Suppliers
   - name: Experimental
     description: These APIs are experimental and and may be changed at any time without warning.
 servers:
@@ -993,6 +1007,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  '/orders/v2/clients/confirm/{supplierCode} copy':
+    put:
+      summary: Confirm client
+      description: |
+        The Confirm Client endpoint allows a user to confirm a supplier invitation from a client.
+      tags:
+        - Order Clients
+      parameters:
+        - name: supplierCode
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: Company Id of Client.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                company-id:
+                  type: string
+                  description: Id of the company for the client.
+                  format: ObjectId
+              required:
+                - company-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: |
+            * Client could not be added
+            * Client already added
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /orders/v2/forms:
     get:
       summary: List order forms
@@ -1217,6 +1271,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    post:
+      summary: Create order suppliers
+      description: |
+        Endpoint for creating an order supplier. When the order supplier is created, an email invitation will be sent to the entered email.
+      tags:
+        - Order Suppliers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderSupplier'
+        description: Order supplier to be created.
+        required: true
+      responses:
+        '200':
+          description: An array of order suppliers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderSupplier'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/orders/v2/suppliers/{orderSupplierId}':
+    get:
+      summary: Fetch single order supplier
+      description: Endpoint for fetching a single order supplier
+      tags:
+        - Order Suppliers
+      parameters:
+        - name: orderSupplierId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Single order supplier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderSupplier'
+        '404':
+          description: Order supplier not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   '/orders/v2/suppliers/confirm/{supplierCode}':
     put:
       summary: Confirm supplier
@@ -1231,9 +1341,26 @@ paths:
           schema:
             type: string
             format: ObjectId
+      requestBody:
+        description: Company Id of Supplier.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                company-id:
+                  type: string
+                  description: Id of the company for the supplier.
+                  format: ObjectId
+              required:
+                - company-id
       responses:
         '200':
           description: OK
+        '400':
+          description: |
+            * Supplier could not be added
+            * Supplier already added
         default:
           description: Unexpected error
           content:
@@ -1481,6 +1608,1014 @@ paths:
                 $ref: '#/components/schemas/Registry'
         '404':
           description: Registry not found
+  '/rfqs/v1/bulk/rfqs/incoming/{incomingRfqId}/quoteshifts':
+    post:
+      summary: Create multiple quote shifts
+      description: Endpoint for creating an array of new quote shifts.
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: Quote shifts to be added
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                properties:
+                  rfq-shift-id:
+                    type: string
+                    format: ObjectId
+                    description: The corresponding shift-id from the RfQ.
+                  booked-users:
+                    type: array
+                    description: A list containing exactly one user id.
+                    items:
+                      type: string
+                      format: ObjectId
+                  booked-user:
+                    type: object
+                    description: Suggested user for this shift
+                    properties:
+                      name:
+                        type: string
+                        description: Name of worker
+                      id-no:
+                        type: string
+                        description: National identification number (personnummer) of the worker
+                    required:
+                      - name
+                      - id-no
+                  outgoing-rfq-id:
+                    type: string
+                    description: |
+                      Id of the rfq parent this rfq was created from.
+                    format: ObjectId
+                  incoming-rfq-id:
+                    type: string
+                    description: |
+                      Id of the RfQ.
+                    format: ObjectId
+                required:
+                  - rfq-shift-id
+                  - booked-users
+                  - booked-user
+                  - outgoing-rfq-id
+                  - incoming-rfq-id
+                  - client-id
+      tags:
+        - Quote shifts - outgoing
+      responses:
+        '200':
+          description: Newly added quote shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteShift'
+        '400':
+          description: |
+            A valid outgoing rfq is required. / Expecting booked users to contain exactly one id.
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/bulk/rfqs/outgoing/{outgoingRfqId}/shifts':
+    post:
+      summary: Create multiple RfQ shifts
+      description: Bulk request to create multiple RfQ shifts in one call
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RfqShift'
+        description: RfQ shifts to be added
+        required: true
+      tags:
+        - RfQ shifts - outgoing
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Newly added RfQ shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /rfqs/v1/rfqs/incoming:
+    get:
+      summary: Fetch RfQs
+      description: |
+        The RfQs endpoint returns an array of all incoming RfQs.
+      tags:
+        - RfQs - incoming
+      responses:
+        '200':
+          description: An array of RfQs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rfq'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses':
+    get:
+      summary: Fetch quote shifts responses
+      description: |
+        Endpoint returns an array of all quote shifts responses.
+      tags:
+        - Quote shift responses - incoming
+      parameters:
+        - name: incomingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of quote shift responses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteShiftsResponse'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses/{incomingResponseId}':
+    get:
+      summary: Fetch single quote shifts response
+      description: |
+        Endpoint for fetching a single quote shifts response.
+      tags:
+        - Quote shift responses - incoming
+      parameters:
+        - name: incomingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: incomingResponseId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single quote shifts response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShiftsResponse'
+        '404':
+          description: Quote not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses/{incomingResponseId}/confirm':
+    post:
+      summary: Confirm quote shifts response
+      description: |
+        Endpoint for a supplier to confirm a quote shift response.
+
+        Side effects:
+        * Incoming rfq set to CONFIRMED iff ACCEPTED linked quote shift responses = 0.
+        * Linked quote shifts in rfq shift accepted list moved to confirmed list.
+        * (When an rfq shift duplicity = confirmed quote shifts, set other quote shifts to REJECTED.)
+        * Set linked quote shifts to CONFIRMED.
+      tags:
+        - Quote shift responses - incoming
+      parameters:
+        - name: incomingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: incomingResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Updated quote shifts response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShiftsResponse'
+        '404':
+          description: Quote not found
+        '409':
+          description: Quote shift response does not have status ACCEPTED
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses/{incomingResponseId}/refuse':
+    post:
+      summary: Refuse quote shifts response
+      description: |
+        Endpoint for a supplier to refuse a quote shift response.
+
+        Side effects:
+        * Collect all quote shift responses for incoming rfq.
+          * When responses with status ACCEPTED = 0:
+            * if responses with status CONFIRMED = 0: set incoming rfq to REFUSED.
+            * else: set status to CONFIRMED.
+        * Linked quote shifts are removed from rfq shift accepted lists.
+        * Set linked quote shifts to REFUSED.
+      tags:
+        - Quote shift responses - incoming
+      parameters:
+        - name: incomingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: incomingResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Updated quote shifts response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShiftsResponse'
+        '404':
+          description: Quote not found
+        '409':
+          description: Quote shift response does not have status ACCEPTED
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshifts':
+    get:
+      summary: List outgoing quote shifts
+      description: |
+        The quote shifts endpoint returns a list of all quote shifts.
+      tags:
+        - Quote shifts - outgoing
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of quote shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create quote shift
+      description: Endpoint for creating a new quote shift.
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: Quote shift to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                rfq-shift-id:
+                  type: string
+                  format: ObjectId
+                  description: The corresponding shift-id from the RfQ.
+                booked-user:
+                  type: object
+                  description: Suggested user for this shift
+                  properties:
+                    name:
+                      type: string
+                      description: Name of worker
+                    id-no:
+                      type: string
+                      description: National identification number (personnummer) of the worker
+                    id:
+                      type: string
+                      format: ObjectId
+                      description: User id of worker
+                  required:
+                    - name
+                    - id-no
+                outgoing-rfq-id:
+                  type: string
+                  description: |
+                    Id of the rfq parent this rfq was created from.
+                  format: ObjectId
+                incoming-rfq-id:
+                  type: string
+                  description: |
+                    Id of the RfQ.
+                  format: ObjectId
+              required:
+                - rfq-shift-id
+                - booked-user
+                - outgoing-rfq-id
+                - incoming-rfq-id
+                - client-id
+      tags:
+        - Quote shifts - outgoing
+      responses:
+        '200':
+          description: Newly added quote shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShift'
+        '400':
+          description: |
+            A valid outgoing rfq is required / Expecting booked users to contain exactly one id
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshifts/{quoteShiftId}':
+    get:
+      summary: Fetch single quote shift
+      description: |
+        Endpoint for fetching a single quote shift.
+      tags:
+        - Quote shifts - outgoing
+      parameters:
+        - name: quoteShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single quote shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete quote shift
+      description: Deletion can only be done if shift is in DRAFT state.
+      tags:
+        - Quote shifts - outgoing
+      parameters:
+        - in: path
+          name: quoteShiftId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '201':
+          description: OK
+        '400':
+          description: Cannot delete quote shift that has been sent
+        '404':
+          description: Not found
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshifts/{quoteShiftId}/send':
+    post:
+      summary: Send quote shift
+      description: |
+        Endpoint for sending quote shift to scheduler.
+      parameters:
+        - name: quoteShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Quote shifts - outgoing
+      responses:
+        '201':
+          description: OK
+        '404':
+          description: Not found
+        '409':
+          description: Already sent
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/shifts':
+    get:
+      summary: List rfq shifts
+      description: |
+        The rfq shifts endpoint returns a list of all incoming rfq shifts.
+      tags:
+        - RfQ shifts - incoming
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of RfQ shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/shifts/{rfqShiftId}':
+    get:
+      summary: Fetch single RfQ shift
+      description: |
+        Endpoint for fetching a single RfQ shift.
+      tags:
+        - RfQ shifts - incoming
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: rfqShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single RfQ shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{rfqId}':
+    get:
+      summary: Fetch single RfQ
+      description: Endpoint for fetching a single RfQ
+      tags:
+        - RfQs - incoming
+      parameters:
+        - name: rfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single RfQ object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rfq'
+        '404':
+          description: RfQ not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /rfqs/v1/rfqs/outgoing:
+    get:
+      summary: Fetch Outgoing RfQs
+      description: |
+        The Outgoing RfQs endpoint returns an array of all outgoing rfq parents.
+      tags:
+        - RfQs - outgoing
+      responses:
+        '200':
+          description: An array of rfq parents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OutgoingRfq'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create outgoing RfQ
+      description: |
+        Endpoint for creating a new request for quotes
+
+        To create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your outgoing RFQ object.
+      requestBody:
+        description: Outgoing RfQ object to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/OutgoingRfq'
+                - required:
+                    - form-id
+                    - form-vid
+                    - client-id
+                    - supplier-id
+                    - values
+      tags:
+        - RfQs - outgoing
+      responses:
+        '200':
+          description: Newly added outgoing RfQ object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingRfq'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}':
+    get:
+      summary: Fetch single outgoing RfQ
+      description: |
+        Endpoint for fetching a single outgoing RfQ.
+      tags:
+        - RfQs - outgoing
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single outgoing RfQ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingRfq'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update outgoing RfQ
+      description: |
+        Send updates to an outgoing RfQ that has not been SENT. Only updates to "expires" are allowed otherwise.
+
+        Side effects:
+        * If "expires" is updated, linked incoming RfQ's will also have "expires" updated.
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutgoingRfq'
+        required: true
+      tags:
+        - RfQs - outgoing
+      responses:
+        '200':
+          description: Updated outgoing RfQ object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingRfq'
+        '400':
+          description: This property cannot be changed after outgoing RfQ has been sent.
+        '404':
+          description: outgoing RfQ not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshiftresponses':
+    get:
+      summary: Fetch quote shift responses
+      description: |
+        Endpoint returns an array of all quote shift responses.
+      tags:
+        - Quote shift responses - outgoing
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of quote shift responses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteShiftsResponse'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create quote shift response
+      description: |
+        Endpoint for a client to respond to a set of quote shifts.
+
+        Side effects:
+        * When ACCEPTED, linked quote shifts will be added to the list of accepted quote shifts for respective rfq shifts.
+        * Linked quote shifts statuses are updated with the same status.
+        * When ACCEPTED, incoming rfq gets same status.
+      tags:
+        - Quote shift responses - outgoing
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: RfQ parent object to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                status:
+                  type: string
+                  description: Quote shifts state
+                  enum:
+                    - ACCEPTED
+                    - REJECTED
+                supplier-id:
+                  type: string
+                  description: |
+                    Id of the company owning the quote shifts.
+                  format: ObjectId
+                quote-shift-ids:
+                  type: array
+                  description: List of quote shift ids.
+                  items:
+                    type: string
+                    format: ObjectId
+                outgoing-rfq-id:
+                  type: string
+                  description: |
+                    Id of the rfq parent this rfq was created from.
+                  format: ObjectId
+                incoming-rfq-id:
+                  type: string
+                  description: |
+                    Id of the RfQ.
+                  format: ObjectId
+              required:
+                - status
+                - supplier-id
+                - quote-shift-ids
+                - outgoing-rfq-id
+                - incoming-rfq-id
+      responses:
+        '200':
+          description: Quote shift response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShiftsResponse'
+        '400':
+          description: |
+            * Outgoing rfq id not valid
+            * Status not "ACCEPTED" or "REJECTED"
+            * Quote shift or rfq shift not found
+            * Accepted and confirmed quote shifts are more than rfq shift duplicity
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshiftresponses/{outgoingresponseId}':
+    get:
+      summary: Fetch single quote shifts response
+      description: |
+        Endpoint for fetching a single quote shifts response.
+      tags:
+        - Quote shift responses - outgoing
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: outgoingresponseId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single quote shifts response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShiftsResponse'
+        '404':
+          description: Quote not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshifts':
+    get:
+      summary: List incoming quote shifts
+      description: |
+        The quote shifts endpoint returns a list of all quote shifts.
+      tags:
+        - Quote shifts - incoming
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of quote shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshifts/{quoteShiftId}':
+    get:
+      summary: Fetch single quote shift
+      description: |
+        Endpoint for fetching a single quote shift.
+      tags:
+        - Quote shifts - incoming
+      parameters:
+        - name: quoteShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single quote shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/send':
+    post:
+      summary: Send RfQs
+      description: |
+        Endpoint for sending RfQs to suppliers.
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: List of suppliers.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: List of suppliers to create RfQs for.
+              properties:
+                supplier-ids:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+              required:
+                - supplier-ids
+      tags:
+        - RfQs - outgoing
+      responses:
+        '201':
+          description: OK
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/shifts':
+    get:
+      summary: List rfq shifts
+      description: |
+        The rfq shifts endpoint returns a list of all outgoing rfq shifts.
+      tags:
+        - RfQ shifts - outgoing
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of RfQ shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create RfQ shift
+      description: |
+        Endpoint for creating a new RfQ shift
+
+        To create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.
+      tags:
+        - RfQ shifts - outgoing
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: RfQ shift object to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/RfqShift'
+      responses:
+        '200':
+          description: Newly added RfQ shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqShift'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/shifts/{rfqShiftId}':
+    get:
+      summary: Fetch single RfQ shift
+      description: |
+        Endpoint for fetching a single RfQ shift.
+      tags:
+        - RfQ shifts - outgoing
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: rfqShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single RfQ shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /settings/v1/company:
     get:
       summary: Get company settings
@@ -2072,6 +3207,65 @@ components:
       required:
         - id
         - title
+    BaseOrder:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - properties:
+            status:
+              type: string
+              description: Status of the order
+              readOnly: true
+            form-id:
+              type: string
+              description: Id of the order form used to create the order.
+              format: ObjectId
+            form-vid:
+              type: string
+              description: Vid of the order form used to create the order.
+              format: ObjectId
+            original-duplicity:
+              type: number
+              description: Amount of people to be booked for the this order.
+              readOnly: true
+            values:
+              type: object
+              description: |
+                Key-value store for custom fields defined in the order form associated with the order.
+                The key should be set to the `field-template-id`. See `fields` property in Order Form.
+              default: {}
+            shift-dates:
+              type: array
+              description: All dates which where shifts are occuring during the order
+              items:
+                type: string
+              readOnly: true
+    BaseShift:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            start:
+              type: string
+              format: local-date-time
+              pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+              description: 'Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
+            end:
+              type: string
+              format: local-date-time
+              pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+              description: 'End of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
+            breaks:
+              type: array
+              description: List of breaks
+              items:
+                $ref: '#/components/schemas/Break'
+            values:
+              type: object
+              description: Values for custom registry fields
+            group-id:
+              type: string
+              format: ObjectId
+              description: Common group ID for grouping several shifts together
     BasicObject:
       type: object
       properties:
@@ -2137,6 +3331,26 @@ components:
       required:
         - start
         - end
+    Client:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: Phone number of client
+        email:
+          type: string
+          description: Email of client
+        company:
+          type: string
+          description: Company name
+        name:
+          type: string
+          description: Name of client
+      example:
+        phone: 0123-405060
+        email: name@company.com
+        company: Company AB
+        name: Firstname Surname
     DateSelector:
       type: object
       properties:
@@ -2512,12 +3726,20 @@ components:
         - log-info
     Order:
       allOf:
-        - $ref: '#/components/schemas/BasicObject'
+        - $ref: '#/components/schemas/BaseOrder'
         - properties:
-            status:
+            message:
               type: string
-              description: Status of the order
-              readOnly: true
+              description: Message entered by the client when creating the order.
+            client-id:
+              type: string
+              description: |
+                Id of the company owning the request
+                Should almost always be set to the current user's company-id.
+              format: ObjectId
+            client:
+              $ref: '#/components/schemas/Client'
+              description: Name and contact defails of the client owning the request.
             order-ref-id:
               type: string
               description: Id referncing supplier- and client-orders. Only for internal use.
@@ -2527,27 +3749,6 @@ components:
               type: string
               description: The order number.
               readOnly: true
-            form-id:
-              type: string
-              description: Id of the order form used to create the order.
-              format: ObjectId
-            form-vid:
-              type: string
-              description: Vid of the order form used to create the order.
-              format: ObjectId
-            original-duplicity:
-              type: number
-              description: Amount of people to be booked for the this order.
-              readOnly: true
-            client:
-              type: object
-              description: Name and contact defails of the client requesting the order.
-            client-id:
-              type: string
-              description: |
-                Id of the company requesting the order
-                Should almost always be set to the current user's company-id.
-              format: ObjectId
             supplier-id:
               type: string
               description: |
@@ -2555,21 +3756,6 @@ components:
                 When creating an order, the `supplier-id` is found in the order form associated with the order to be created.
                 For interal orders set `supplier-id` to the same value as `client-id`
               format: ObjectId
-            message:
-              type: string
-              description: Message entered by the client when creating the order.
-            values:
-              type: object
-              description: |
-                Key-value store for custom fields defined in the order form associated with the order.
-                The key should be set to the `field-template-id`. See `fields` property in Order Form.
-              default: {}
-            shift-dates:
-              type: array
-              description: All dates which where shifts are occuring during the order
-              items:
-                type: string
-              readOnly: true
           required:
             - form-id
             - form-vid
@@ -2611,11 +3797,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
         - properties:
-            id:
-              type: string
-              description: Unique identifier representing a specific order form
-              format: ObjectId
-              readOnly: true
             supplier-id:
               type: string
               description: |
@@ -2636,6 +3817,18 @@ components:
               description: List of additional custom fields related to the order.
               items:
                 $ref: '#/components/schemas/OrderFormCustomField'
+      example:
+        id: 5dde7024eded8872705a0001
+        vid: 5dde71e4c9e77c0001730001
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788000
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        supplier-id: ''
+        title: test form
+        shift-fields: []
+        fields: []
     OrderFormCustomField:
       allOf:
         - $ref: '#/components/schemas/OrderFormField'
@@ -2717,6 +3910,64 @@ components:
           items:
             type: string
             format: ObjectId
+      example:
+        id: 5dde7024eded8872705aabcd
+        contact-name: Firstname Surname
+        contact-phone: 0123-12343
+        contact-email: name@example.com
+        supplier-title: SupplierTitle
+        order-forms:
+          - 5dde7024eded8872705a0123
+    OutgoingRfq:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - $ref: '#/components/schemas/BaseOrder'
+        - properties:
+            status:
+              type: string
+              description: Quote shift status
+              enum:
+                - OPEN
+                - SENT
+              default: OPEN
+              readOnly: true
+            expires:
+              type: number
+              description: Timestamp in milliseconds for when the rfq expires
+            client:
+              $ref: '#/components/schemas/Client'
+              description: Name and contact defails of the client owning the request.
+            rfq-no:
+              type: string
+              description: The RfQ number
+              format: ObjectId
+              readOnly: true
+      example:
+        id: 5dde7024eded8872705a0001
+        vid: 5dde71e4c9e77c0001730001
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        valid-to: 0
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        archived: 0
+        status: OPEN
+        form-id: 5dde7024eded8872705a1ff7
+        form-vid: 5dde71e4c9e77c000173dd03
+        original-duplicity: 3
+        values: {}
+        shift-dates:
+          - '2019-11-29'
+          - '2019-11-30'
+          - '2019-11-28'
+        expires: 1558604010307
+        client:
+          phone: 0123-405060
+          email: name@company.com
+          company: Company AB
+          name: Firstname Surname
+        rfq-no: '13'
     PermissionsObject:
       type: object
       properties:
@@ -2739,6 +3990,147 @@ components:
           description: 'Value can be anything, both primitive types and arrays and objects.'
       required:
         - id
+    QuoteShift:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - $ref: '#/components/schemas/BaseShift'
+        - type: object
+          properties:
+            status:
+              type: string
+              description: Quote shift status
+              enum:
+                - DRAFT
+                - SENT
+              default: DRAFT
+              readOnly: true
+            client-id:
+              type: string
+              description: |
+                Id of the company owning the RfQ.
+              format: ObjectId
+            outgoing-rfq-id:
+              type: string
+              description: |
+                Id of the rfq parent this rfq was created from.
+              format: ObjectId
+            incoming-rfq-id:
+              type: string
+              description: |
+                Id of the RfQ.
+              format: ObjectId
+            rfq-shift-id:
+              type: string
+              format: ObjectId
+              description: The corresponding shift-id from the RfQ.
+            booked-users:
+              type: array
+              description: A list containing exactly one user id.
+              items:
+                type: string
+                format: ObjectId
+            booked-user:
+              type: object
+              description: Suggested user for this shift
+              properties:
+                name:
+                  type: string
+                  description: Name of worker
+                id-no:
+                  type: string
+                  description: National identification number (personnummer) of the worker
+              required:
+                - name
+                - id-no
+          required:
+            - rfq-shift-id
+            - booked-users
+            - booked-user
+            - outgoing-rfq-id
+            - incoming-rfq-id
+      example:
+        id: 5dde7024eded8872705a0000
+        vid: 5dde71e4c9e77c0001730000
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788000
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        valid-to: 0
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        archived: 0
+        start: '2019-04-30T15:00:00.000'
+        end: '2019-04-30T17:00:00.000'
+        breaks:
+          - start: '2019-04-30T16:00:00.000'
+            stop: '2019-04-30T16:15:00.000'
+        values: {}
+        group-id: ''
+        status: DRAFT
+        client-id: 5dde6e21c9e77c0001a1e3a7
+        outgoing-rfq-id: 5dde7024eded8872705a0001
+        incoming-rfq-id: 5dde7024eded8872705a0002
+        rfq-shift-id: 5dde7024eded8872705a0011
+        booked-users:
+          - 5dde7024eded8872705a0012
+        booked-user:
+          name: Firstname Surname
+          id-no: 851103-1234
+    QuoteShiftsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            status:
+              type: string
+              description: Quote shifts state
+              enum:
+                - ACCEPTED
+                - REJECTED
+                - CONFIRMED
+                - REFUSED
+            supplier-id:
+              type: string
+              description: |
+                Id of the company owning the quote shifts.
+              format: ObjectId
+            quote-shift-ids:
+              type: array
+              description: List of quote shift ids.
+              items:
+                type: string
+                format: ObjectId
+            outgoing-rfq-id:
+              type: string
+              description: |
+                Id of the rfq parent this rfq was created from.
+              format: ObjectId
+            incoming-rfq-id:
+              type: string
+              description: |
+                Id of the RfQ.
+              format: ObjectId
+          required:
+            - status
+            - supplier-id
+            - quote-shift-ids
+            - outgoing-rfq-id
+            - incoming-rfq-id
+      example:
+        id: 5dde7024eded8872705a0000
+        vid: 5dde71e4c9e77c0001730000
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788000
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        valid-to: 0
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        archived: 0
+        status: ACCEPTED
+        supplier-id: 5dde6e21c9e77c0001a1e3a7
+        quote-shift-ids:
+          - 5dde7024eded8872705a0011
+        outgoing-rfq-id: 5dde7024eded8872705a0001
+        incoming-rfq-id: 5dde7024eded8872705a0002
     Registry:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
@@ -2775,6 +4167,117 @@ components:
           required:
             - title
             - registry-id
+    Rfq:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - $ref: '#/components/schemas/BaseOrder'
+        - $ref: '#/components/schemas/OutgoingRfq'
+        - properties:
+            client-id:
+              type: string
+              description: |
+                Id of the company owning the RfQ.
+              format: ObjectId
+            outgoing-rfq-id:
+              type: string
+              description: |
+                Id of the rfq parent this rfq was created from.
+              format: ObjectId
+          required:
+            - form-id
+            - form-vid
+            - outgoing-rfq-id
+            - client-id
+            - values
+      example:
+        id: 5dde7024eded8872705a0002
+        vid: 5dde71e4c9e77c0001730002
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788000
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        valid-to: 0
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        archived: 0
+        form-id: 5dde7024eded8872705a1ff7
+        form-vid: 5dde71e4c9e77c000173dd03
+        original-duplicity: 3
+        values: {}
+        shift-dates:
+          - '2019-11-29'
+          - '2019-11-30'
+          - '2019-11-28'
+        expires: 1233545
+        client:
+          phone: 0123-405060
+          email: name@company.com
+          company: Company AB
+          name: Firstname Surname
+        rfq-no: '13'
+        client-id: 5dde7024eded8872705a0017
+        outgoing-rfq-id: 5dde7024eded8872705a0001
+    RfqShift:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - $ref: '#/components/schemas/BaseShift'
+        - type: object
+          properties:
+            duplicity:
+              type: number
+              description: Maximum (and desired) number of booked users
+              default: 1
+            accepted-quote-shifts:
+              type: array
+              description: List of accepted quote shifts for this RfQ shift
+              readOnly: true
+              items:
+                type: string
+                format: ObjectId
+            confirmed-quote-shifts:
+              type: array
+              description: List of confirmed quote shifts for this RfQ shift
+              readOnly: true
+              items:
+                type: string
+                format: ObjectId
+            shift-id:
+              type: string
+              format: ObjectId
+              description: The corresponding shift-id from which this RfQshift was created.
+            outgoing-rfq-id:
+              type: string
+              format: ObjectId
+              description: ID of order that created the shift
+          required:
+            - outgoing-rfq-id
+            - shift-id
+            - start
+            - end
+      example:
+        id: 5dde7024eded8872705a0000
+        vid: 5dde71e4c9e77c0001730000
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788000
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        valid-to: 0
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        archived: 0
+        start: '2019-04-30T15:00:00.000'
+        end: '2019-04-30T17:00:00.000'
+        breaks:
+          - start: '2019-04-30T16:00:00.000'
+            stop: '2019-04-30T16:15:00.000'
+        values: {}
+        group-id: ''
+        duplicity: 4
+        accepted-quote-shifts:
+          - 5dde7024eded8872705a0012
+          - 5dde7024eded8872705a0013
+        confirmed-quote-shifts:
+          - 5dde7024eded8872705a0014
+        shift-id: 5dde7024eded8872705a0012
+        outgoing-rfq-id: 5dde7024eded8872705a0013
     SalaryArticle:
       allOf:
         - $ref: '#/components/schemas/BaseArticle'
@@ -2793,21 +4296,19 @@ components:
         - $ref: '#/components/schemas/BasicObject'
         - type: object
           properties:
-            start:
+            duplicity:
+              type: number
+              description: Maximum (and desired) number of booked users
+              default: 1
+            withhold:
+              type: boolean
+              description: Hide shift from users making it visible for managers only
+              readOnly: true
+            order-id:
               type: string
-              format: local-date-time
-              pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
-              description: 'Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
-            end:
-              type: string
-              format: local-date-time
-              pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
-              description: 'End of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
-            breaks:
-              type: array
-              description: List of breaks
-              items:
-                $ref: '#/components/schemas/Break'
+              format: ObjectId
+              description: ID of order that created the shift
+              readOnly: true
             booked-users:
               type: array
               description: List of booked users
@@ -2819,17 +4320,6 @@ components:
               type: number
               readOnly: true
               description: Number of booked users
-            duplicity:
-              type: number
-              description: Maximum (and desired) number of booked users
-              default: 1
-            values:
-              type: object
-              description: Values for custom registry fields
-            withhold:
-              type: boolean
-              description: Hide shift from users making it visible for managers only
-              readOnly: true
             status:
               type: string
               description: Shift status
@@ -2846,18 +4336,21 @@ components:
               format: ObjectId
               description: Common group ID for grouping several shifts together
               example: null
-            order-id:
-              type: string
-              format: ObjectId
-              description: ID of order that created the shift
-              readOnly: true
             mirror-shift-id:
               type: string
               format: ObjectId
               description: The corresponding shift-id for the client or supplier when this shift is part of an order
               readOnly: true
+            relations:
+              type: object
+              properties:
+                incoming-order:
+                  $ref: '#/components/schemas/ShiftRelation'
+                outgoing-order:
+                  $ref: '#/components/schemas/ShiftRelation'
+                outgoing-rfq:
+                  $ref: '#/components/schemas/ShiftRelation'
           required:
-            - id
             - start
             - end
     ShiftBookingRequest:
@@ -2953,6 +4446,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Shift'
+    ShiftRelation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: ObjectId
+        shift-id:
+          type: string
+          format: ObjectId
     ShiftUnpublishRequest:
       type: object
       properties:

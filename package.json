@@ -2,6 +2,7 @@
   "name": "bridge-api-spec",
   "version": "2.7.0",
   "dependencies": {
+    "mkdirp": "^0.5.5",
     "swagger-repo": "^2.0.0-rc.15"
   },
   "private": true,

@@ -2,9 +2,8 @@ get:
   summary: List incoming quote shifts
   description: |
     The quote shifts endpoint returns a list of all quote shifts.
-    SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
   tags:
-    - Quote shifts - incoming NEW
+    - Quote shifts - incoming
   parameters:
     - name: outgoingRfqId
       in: path

@@ -2,10 +2,8 @@ get:
   summary: Fetch single RfQ shift
   description: |
     Endpoint for fetching a single RfQ shift.
-
-    UPDATE - rfq shift now contains status.
   tags:
-    - RfQ shifts - outgoing UPDATE
+    - RfQ shifts - outgoing
   parameters:
     - in: path
       name: outgoingRfqId

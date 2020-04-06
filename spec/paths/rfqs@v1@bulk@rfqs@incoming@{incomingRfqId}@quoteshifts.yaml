@@ -1,6 +1,6 @@
 post:
   summary: Create multiple quote shifts
-  description: Endpoint for creating an array of new quote shifts. SPEC UPDATE - client-id
+  description: Endpoint for creating an array of new quote shifts.
   parameters:
   - in: path
     name: incomingRfqId
@@ -57,7 +57,7 @@ post:
               - incoming-rfq-id
               - client-id
   tags:
-    - Quote shifts - outgoing NEW
+    - Quote shifts - outgoing
   responses:
     200:
       description: Newly added quote shifts

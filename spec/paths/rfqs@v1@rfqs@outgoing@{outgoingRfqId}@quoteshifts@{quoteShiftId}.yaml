@@ -2,9 +2,8 @@ get:
   summary: Fetch single quote shift
   description: |
     Endpoint for fetching a single quote shift.
-    SPEC UPDATE -  Add status, client-id, outgoing-rfq-id and booked-user to quoteShift. Rename rfq-id to incoming-rfq-id. Remove booked.
   tags:
-    - Quote shifts - incoming NEW
+    - Quote shifts - incoming
   parameters:
     - name: quoteShiftId
       in: path

@@ -4,6 +4,14 @@ get:
     Endpoint returns an array of all quote shift responses.
   tags:
     - Quote shift responses - outgoing
+  parameters:
+    - name: outgoingRfqId
+      in: path
+      description: The quote shifts response id
+      required: true
+      schema:
+        type: string
+        format: ObjectId
   responses:
     200:
       description: An array of quote shift responses
@@ -36,6 +44,14 @@ post:
     * When ACCEPTED, incoming rfq gets same status.
   tags:
     - Quote shift responses - outgoing
+  parameters:
+    - name: outgoingRfqId
+      in: path
+      description: The quote shifts response id
+      required: true
+      schema:
+        type: string
+        format: ObjectId
   requestBody:
     description: RfQ parent object to be created.
     required: true

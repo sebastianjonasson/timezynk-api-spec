@@ -1,5 +1,5 @@
 allOf:
-  - $ref: "#/components/schemas/BasicObject.yaml"
+  - $ref: '#/components/schemas/BasicObject'
   - type: object
     properties:
       start:

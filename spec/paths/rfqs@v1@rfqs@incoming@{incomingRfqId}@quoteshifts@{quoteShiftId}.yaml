@@ -3,7 +3,7 @@ get:
   description: |
     Endpoint for fetching a single quote shift.
   tags:
-    - Quote shifts - outgoing NEW
+    - Quote shifts - outgoing
   parameters:
     - name: quoteShiftId
       in: path
@@ -35,7 +35,7 @@ delete:
   summary: Delete quote shift
   description: Deletion can only be done if shift is in DRAFT state.
   tags:
-    - Quote shifts - outgoing NEW
+    - Quote shifts - outgoing
   parameters:
     - in: path
       name: quoteShiftId

@@ -5,6 +5,13 @@ get:
   tags:
     - Quote shift responses - incoming
   parameters:
+    - name: incomingRfqId
+      in: path
+      description: The quote shifts response id
+      required: true
+      schema:
+        type: string
+        format: ObjectId
     - name: incomingResponseId
       in: path
       description: The quote shifts response id

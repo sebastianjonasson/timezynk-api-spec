@@ -1,7 +1,6 @@
 post:
   summary: Create multiple RfQ shifts
-  description: |
-    SPEC UPDATE - duplicity removed, shift-id required.
+  description: Bulk request to create multiple RfQ shifts in one call
   requestBody:
     content:
       application/json:
@@ -12,7 +11,7 @@ post:
     description: RfQ shifts to be added
     required: true
   tags:
-    - Outgoing RfQ shifts UPDATE
+    - RfQ shifts - outgoing
   parameters:
     - in: path
       name: outgoingRfqId

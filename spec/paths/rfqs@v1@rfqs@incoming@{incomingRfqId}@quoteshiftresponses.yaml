@@ -4,6 +4,14 @@ get:
     Endpoint returns an array of all quote shifts responses.
   tags:
     - Quote shift responses - incoming
+  parameters:
+    - name: incomingRfqId
+      in: path
+      description: The quote shifts response id
+      required: true
+      schema:
+        type: string
+        format: ObjectId
   responses:
     200:
       description: An array of quote shift responses

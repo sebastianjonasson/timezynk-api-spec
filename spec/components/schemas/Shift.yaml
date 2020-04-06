@@ -42,25 +42,20 @@ allOf:
         format: ObjectId
         description: Common group ID for grouping several shifts together
         example: null
-      order-id:
-        type: string
-        format: ObjectId
-        description: ID of order that created the shift
-        readOnly: true
       mirror-shift-id:
         type: string
         format: ObjectId
         description: The corresponding shift-id for the client or supplier when this shift is part of an order
         readOnly: true
-      # relations:
-      #   type: object
-      #   properties:
-      #     incoming-order:
-      #       $ref: "#/components/schemas/ShiftRelation"
-      #     outgoing-order:
-      #       $ref: "#/components/schemas/ShiftRelation"
-      #     outgoing-rfq:
-      #       $ref: "#/components/schemas/ShiftRelation"
+      relations:
+        type: object
+        properties:
+          incoming-order:
+            $ref: "#/components/schemas/ShiftRelation"
+          outgoing-order:
+            $ref: "#/components/schemas/ShiftRelation"
+          outgoing-rfq:
+            $ref: "#/components/schemas/ShiftRelation"
     required:
       - start
       - end

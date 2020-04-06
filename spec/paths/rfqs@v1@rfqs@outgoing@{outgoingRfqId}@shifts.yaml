@@ -2,10 +2,8 @@ get:
   summary: List rfq shifts
   description: |
     The rfq shifts endpoint returns a list of all outgoing rfq shifts.
-
-    UPDATE - status removed. Added duplicity, accepted-quote-shifts, confirmed-quote-shifts.
   tags:
-    - RfQ shifts - outgoing UPDATE
+    - RfQ shifts - outgoing
   parameters:
       - in: path
         name: outgoingRfqId
@@ -35,10 +33,8 @@ post:
     Endpoint for creating a new RfQ shift
 
     To create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.
-
-    SPEC UPDATE - duplicity added, shift-id required
   tags:
-    - RfQ shifts - outgoing UPDATE
+    - RfQ shifts - outgoing
   parameters:
     - in: path
       name: outgoingRfqId

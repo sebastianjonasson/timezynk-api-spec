@@ -3,7 +3,7 @@ get:
   description: |
     The quote shifts endpoint returns a list of all quote shifts.
   tags:
-    - Quote shifts - outgoing NEW
+    - Quote shifts - outgoing
   parameters:
       - in: path
         name: incomingRfqId
@@ -29,7 +29,7 @@ get:
 
 post:
   summary: Create quote shift
-  description: Endpoint for creating a new quote shift. SPEC UPDATE - client-id
+  description: Endpoint for creating a new quote shift.
   parameters:
       - in: path
         name: incomingRfqId
@@ -82,7 +82,7 @@ post:
             - incoming-rfq-id
             - client-id
   tags:
-    - Quote shifts - outgoing NEW
+    - Quote shifts - outgoing
   responses:
     200:
       description: Newly added quote shift

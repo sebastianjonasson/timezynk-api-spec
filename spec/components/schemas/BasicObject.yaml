@@ -40,5 +40,9 @@ properties:
     readOnly: true
     format: ObjectId
   archived:
-    type: number
+    type: integer
     description: Timestamp in milliseconds for when the object was archived, or null if it is still active
+    nullable: true
+    example: null
+required:
+  - id

@@ -4375,6 +4375,103 @@
         }
       }
     },
+    "/settings/v1/retention-policy/{registryId}": {
+      "get": {
+        "summary": "Get retention policy",
+        "description": "Given a registry id, get number of days until an archived entity is deleted, including domainlog entries.",
+        "tags": [
+          "Registry"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "registryId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retention policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Registry id"
+                    },
+                    "retention-limit-days": {
+                      "type": "integer",
+                      "description": "Number of days"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "5dde7024eded8872705a0000",
+                  "retention-limit-days": 90
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Set retention policy",
+        "description": "Given a registry id, set the number of days until an archived entity is deleted, including domainlog entries.",
+        "tags": [
+          "Registry"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "registryId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "retention-limit-days": {
+                    "type": "integer",
+                    "description": "Number of days"
+                  }
+                },
+                "required": [
+                  "retention-limit-days"
+                ]
+              },
+              "example": {
+                "retention-limit-days": 90
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Retention limit is not a positive integer"
+          }
+        }
+      }
+    },
     "/shifts": {
       "get": {
         "summary": "Fetch planned shifts",

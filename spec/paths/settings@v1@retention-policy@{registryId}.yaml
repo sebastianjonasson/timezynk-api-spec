@@ -22,7 +22,7 @@ get:
                 type: string
                 description: Registry id
               retention-limit-days:
-                type: int
+                type: integer
                 description: Number of days
           example:
             id: "5dde7024eded8872705a0000"
@@ -48,7 +48,7 @@ put:
           type: object
           properties:
             retention-limit-days:
-              type: int
+              type: integer
               description: Number of days
           required:
             - retention-limit-days

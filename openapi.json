@@ -6331,6 +6331,10 @@
                 "type": "string",
                 "description": "Human-readable registry description"
               },
+              "icon": {
+                "type": "string",
+                "description": "Icon name"
+              },
               "read-only": {
                 "type": "boolean",
                 "description": "Mark this registry as read-only, to prevent changes from the front-end"

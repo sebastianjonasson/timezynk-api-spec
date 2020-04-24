@@ -16,6 +16,8 @@ tags:
     description: 'Fetching, updating and creating invoices articles'
   - name: User
     description: Calls for fetching and updating the system users.
+  - name: Work hours
+    description: Calls for setting up work hours schedules and employment contracts
   - name: Shift
     description: Calls for fetching and updating scheduled shifts.
   - name: Time Reports

@@ -1318,6 +1318,173 @@
         }
       }
     },
+    "/level-entries": {
+      "get": {
+        "summary": "Fetch level entries",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "user-id",
+            "description": "Filter to only one user",
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "tags": [
+          "Work hours"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of shifts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LevelEntry"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create level entry",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LevelEntry"
+              }
+            }
+          },
+          "description": "Invoice to be added",
+          "required": true
+        },
+        "tags": [
+          "Work hours"
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added level entry object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LevelEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          }
+        }
+      }
+    },
+    "/level-entries/{levelEntryId}": {
+      "get": {
+        "summary": "Fetch level entry",
+        "parameters": [
+          {
+            "name": "levelEntryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "tags": [
+          "Work hours"
+        ],
+        "responses": {
+          "200": {
+            "description": "Level entry object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LevelEntry"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Level entry not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update level entry",
+        "parameters": [
+          {
+            "name": "levelEntryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LevelEntry"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Work hours"
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated level entry object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LevelEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          },
+          "404": {
+            "description": "Level entry not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete level entry",
+        "parameters": [
+          {
+            "name": "levelEntryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "ObjectId"
+            }
+          }
+        ],
+        "tags": [
+          "Work hours"
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete successful"
+          }
+        }
+      }
+    },
     "/oauth2/v1/tokeninfo": {
       "get": {
         "summary": "Token info",
@@ -5697,6 +5864,38 @@
               "weight",
               "export-data"
             ]
+          }
+        ]
+      },
+      "LevelEntry": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "set-credit-to": {
+                "description": "Force the time credit to this value. Used for positive balances.",
+                "type": "number"
+              },
+              "set-debit-to": {
+                "description": "Force the time debit to this value. Used for negative balances.",
+                "type": "number"
+              },
+              "date": {
+                "description": "Date",
+                "type": "string",
+                "format": "ISO Date",
+                "example": "2020-04-24"
+              },
+              "user-id": {
+                "description": "User ID",
+                "type": "string",
+                "format": "ObjectId",
+                "example": "5ea2c7964169b4ada9d6c7c8"
+              }
+            }
           }
         ]
       },

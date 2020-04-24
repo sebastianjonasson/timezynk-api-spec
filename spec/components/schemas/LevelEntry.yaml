@@ -1,0 +1,20 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      set-credit-to:
+        description: Force the time credit to this value. Used for positive balances.
+        type: number
+      set-debit-to:
+        description: Force the time debit to this value. Used for negative balances.
+        type: number
+      date:
+        description: Date
+        type: string
+        format: ISO Date
+        example: '2020-04-24'
+      user-id:
+        description: User ID
+        type: string
+        format: ObjectId
+        example: '5ea2c7964169b4ada9d6c7c8'

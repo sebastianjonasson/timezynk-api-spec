@@ -58,5 +58,7 @@ delete:
   tags:
     - Shift
   responses:
-    "200":
+    200:
       description: Delete successful
+    400:
+      description: Linked to timereport

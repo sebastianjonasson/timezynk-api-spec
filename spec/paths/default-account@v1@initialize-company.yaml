@@ -1,0 +1,31 @@
+post:
+  summary: Initialize company
+  description: |
+    Initialize default account for the company
+  requestBody:
+    description: Default account setup.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          description: Data of the default account setup form for initializing a new company.
+          properties:
+            company:
+              type: string
+            mobile:
+              type: string
+            user-name:
+              type: string
+            active-modules:
+              type: array
+              items:
+                type: string
+                # format: ObjectId
+          required:
+            - active-modules
+  tags:
+    - Default-account
+  responses:
+    200:
+      description: "OK"

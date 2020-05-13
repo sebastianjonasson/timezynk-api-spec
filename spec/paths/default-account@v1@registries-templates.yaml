@@ -1,0 +1,22 @@
+post:
+  summary: Registries templates
+  description: |
+    Initialize registries for the company by selected template
+  requestBody:
+    description: Default registries template.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          description: Number of the default registries template.
+          properties:
+            template:
+              type: number
+          required:
+            - template
+  tags:
+    - Default-account
+  responses:
+    200:
+      description: "OK"

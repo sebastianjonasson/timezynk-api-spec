@@ -1,0 +1,22 @@
+post:
+  summary: salary integration
+  description: |
+    Set default salary integration
+  requestBody:
+    description: Default salary integration.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          description: Integration module for the default settings.
+          properties:
+            integration-module:
+              type: string
+          required:
+            - integration-module
+  tags:
+    - Default-account
+  responses:
+    200:
+      description: "OK"

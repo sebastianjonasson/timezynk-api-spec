@@ -1,0 +1,22 @@
+post:
+  summary: Invoice integration
+  description: |
+    Set default invoice integration
+  requestBody:
+    description: Default invoice integration.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          description: Integration module for the default settings.
+          properties:
+            integration-module:
+              type: string
+          required:
+            - integration-module
+  tags:
+    - Default-account
+  responses:
+    200:
+      description: "OK"

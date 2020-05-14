@@ -1,22 +1,15 @@
-post:
+get:
   summary: Registries templates
   description: |
-    Initialize registries for the company by selected template
-  requestBody:
-    description: Default registries template.
-    required: true
-    content:
-      application/json:
-        schema:
-          type: object
-          description: Number of the default registries template.
-          properties:
-            template:
-              type: number
-          required:
-            - template
+    Get registries templates for default account
   tags:
-    - Default-account
+    - Default-account  
   responses:
     200:
-      description: "OK"
+      description: An array of registries templates
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/RegistryTemplate"

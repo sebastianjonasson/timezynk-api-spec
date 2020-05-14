@@ -1,0 +1,14 @@
+type: object
+properties:
+  id:
+    type: string
+    format: ObjectID
+  template:
+    type: string
+    description: Template name
+  description:
+    type: string
+    description: Template description text
+  image:
+    type: string
+    description: Link to the template image

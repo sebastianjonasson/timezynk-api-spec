@@ -2,6 +2,8 @@ post:
   summary: Initialize company
   description: |
     Initialize default account for the company
+  tags:
+    - Default-account
   requestBody:
     description: Default account setup.
     required: true
@@ -11,21 +13,19 @@ post:
           type: object
           description: Data of the default account setup form for initializing a new company.
           properties:
-            company:
+            registry-template:
               type: string
-            mobile:
+              format: ObjectId
+            salary-integration:
               type: string
-            user-name:
+              format: ObjectId
+            invoice-integration:
               type: string
-            active-modules:
-              type: array
-              items:
-                type: string
-                # format: ObjectId
+              format: ObjectId
           required:
-            - active-modules
-  tags:
-    - Default-account
+            - registry-template
+            - salary-integration
+            - invoice-integration
   responses:
     200:
-      description: "OK"
+      description: "Default account has been successfully initialized"

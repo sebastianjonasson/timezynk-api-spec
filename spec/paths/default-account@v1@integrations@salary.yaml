@@ -1,22 +1,15 @@
-post:
-  summary: salary integration
+get:
+  summary: Salary integrations
   description: |
-    Set default salary integration
-  requestBody:
-    description: Default salary integration.
-    required: true
-    content:
-      application/json:
-        schema:
-          type: object
-          description: Integration module for the default settings.
-          properties:
-            integration-module:
-              type: string
-          required:
-            - integration-module
+    Get possible integrations options for default setup
   tags:
-    - Default-account
+    - Default-account  
   responses:
     200:
-      description: "OK"
+      description: An array of integration modules
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/IntegrationModule"

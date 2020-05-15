@@ -3101,6 +3101,8 @@ paths:
       responses:
         '200':
           description: Delete successful
+        '400':
+          description: Linked to timereport
   /timereports:
     get:
       summary: Fetch time reports

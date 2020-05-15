@@ -723,6 +723,9 @@
       "post": {
         "summary": "Initialize company",
         "description": "Initialize default account for the company\n",
+        "tags": [
+          "Default-account"
+        ],
         "requestBody": {
           "description": "Default account setup.",
           "required": true,
@@ -732,137 +735,103 @@
                 "type": "object",
                 "description": "Data of the default account setup form for initializing a new company.",
                 "properties": {
-                  "company": {
-                    "type": "string"
+                  "registry-template": {
+                    "type": "string",
+                    "format": "ObjectId"
                   },
-                  "mobile": {
-                    "type": "string"
+                  "salary-integration": {
+                    "type": "string",
+                    "format": "ObjectId"
                   },
-                  "user-name": {
-                    "type": "string"
-                  },
-                  "active-modules": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
+                  "invoice-integration": {
+                    "type": "string",
+                    "format": "ObjectId"
                   }
                 },
                 "required": [
-                  "active-modules"
+                  "registry-template",
+                  "salary-integration",
+                  "invoice-integration"
                 ]
               }
             }
           }
         },
-        "tags": [
-          "Default-account"
-        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Default account has been successfully initialized"
           }
         }
       }
     },
     "/default-account/v1/integrations/invoice": {
-      "post": {
-        "summary": "Invoice integration",
-        "description": "Set default invoice integration\n",
-        "requestBody": {
-          "description": "Default invoice integration.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "description": "Integration module for the default settings.",
-                "properties": {
-                  "integration-module": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "integration-module"
-                ]
-              }
-            }
-          }
-        },
+      "get": {
+        "summary": "Invoice integrations",
+        "description": "Get possible integrations options for default setup\n",
         "tags": [
           "Default-account"
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "An array of integration modules",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntegrationModule"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/default-account/v1/integrations/salary": {
-      "post": {
-        "summary": "salary integration",
-        "description": "Set default salary integration\n",
-        "requestBody": {
-          "description": "Default salary integration.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "description": "Integration module for the default settings.",
-                "properties": {
-                  "integration-module": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "integration-module"
-                ]
-              }
-            }
-          }
-        },
+      "get": {
+        "summary": "Salary integrations",
+        "description": "Get possible integrations options for default setup\n",
         "tags": [
           "Default-account"
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "An array of integration modules",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntegrationModule"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/default-account/v1/registries-templates": {
-      "post": {
+      "get": {
         "summary": "Registries templates",
-        "description": "Initialize registries for the company by selected template\n",
-        "requestBody": {
-          "description": "Default registries template.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "description": "Number of the default registries template.",
-                "properties": {
-                  "template": {
-                    "type": "number"
-                  }
-                },
-                "required": [
-                  "template"
-                ]
-              }
-            }
-          }
-        },
+        "description": "Get registries templates for default account\n",
         "tags": [
           "Default-account"
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "An array of registries templates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RegistryTemplate"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -5719,6 +5688,23 @@
           "type"
         ]
       },
+      "IntegrationModule": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "ObjectID"
+          },
+          "module": {
+            "type": "string",
+            "description": "Name of the integration"
+          },
+          "image": {
+            "type": "string",
+            "description": "Link to the integration partner logo"
+          }
+        }
+      },
       "Invoice": {
         "allOf": [
           {
@@ -6728,6 +6714,27 @@
             ]
           }
         ]
+      },
+      "RegistryTemplate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "ObjectID"
+          },
+          "template": {
+            "type": "string",
+            "description": "Template name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Template description text"
+          },
+          "image": {
+            "type": "string",
+            "description": "Link to the template image"
+          }
+        }
       },
       "Rfq": {
         "allOf": [

@@ -431,6 +431,8 @@ paths:
       summary: Initialize company
       description: |
         Initialize default account for the company
+      tags:
+        - Default-account
       requestBody:
         description: Default account setup.
         required: true
@@ -440,92 +442,70 @@ paths:
               type: object
               description: Data of the default account setup form for initializing a new company.
               properties:
-                company:
+                registry-template:
                   type: string
-                mobile:
+                  format: ObjectId
+                salary-integration:
                   type: string
-                user-name:
+                  format: ObjectId
+                invoice-integration:
                   type: string
-                active-modules:
-                  type: array
-                  items:
-                    type: string
+                  format: ObjectId
               required:
-                - active-modules
-      tags:
-        - Default-account
+                - registry-template
+                - salary-integration
+                - invoice-integration
       responses:
         '200':
-          description: OK
+          description: Default account has been successfully initialized
   /default-account/v1/integrations/invoice:
-    post:
-      summary: Invoice integration
+    get:
+      summary: Invoice integrations
       description: |
-        Set default invoice integration
-      requestBody:
-        description: Default invoice integration.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              description: Integration module for the default settings.
-              properties:
-                integration-module:
-                  type: string
-              required:
-                - integration-module
+        Get possible integrations options for default setup
       tags:
         - Default-account
       responses:
         '200':
-          description: OK
+          description: An array of integration modules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IntegrationModule'
   /default-account/v1/integrations/salary:
-    post:
-      summary: salary integration
+    get:
+      summary: Salary integrations
       description: |
-        Set default salary integration
-      requestBody:
-        description: Default salary integration.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              description: Integration module for the default settings.
-              properties:
-                integration-module:
-                  type: string
-              required:
-                - integration-module
+        Get possible integrations options for default setup
       tags:
         - Default-account
       responses:
         '200':
-          description: OK
+          description: An array of integration modules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IntegrationModule'
   /default-account/v1/registries-templates:
-    post:
+    get:
       summary: Registries templates
       description: |
-        Initialize registries for the company by selected template
-      requestBody:
-        description: Default registries template.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              description: Number of the default registries template.
-              properties:
-                template:
-                  type: number
-              required:
-                - template
+        Get registries templates for default account
       tags:
         - Default-account
       responses:
         '200':
-          description: OK
+          description: An array of registries templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RegistryTemplate'
   /domain-log/v1:
     get:
       summary: Fetch changes
@@ -3729,6 +3709,18 @@ components:
       required:
         - id
         - type
+    IntegrationModule:
+      type: object
+      properties:
+        id:
+          type: string
+          format: ObjectID
+        module:
+          type: string
+          description: Name of the integration
+        image:
+          type: string
+          description: Link to the integration partner logo
     Invoice:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
@@ -4460,6 +4452,21 @@ components:
           required:
             - title
             - registry-id
+    RegistryTemplate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: ObjectID
+        template:
+          type: string
+          description: Template name
+        description:
+          type: string
+          description: Template description text
+        image:
+          type: string
+          description: Link to the template image
     Rfq:
       allOf:
         - $ref: '#/components/schemas/BasicObject'

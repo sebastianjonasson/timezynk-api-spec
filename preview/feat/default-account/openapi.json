@@ -5691,13 +5691,13 @@
       "IntegrationModule": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "ObjectID"
-          },
-          "module": {
+          "name": {
             "type": "string",
             "description": "Name of the integration"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of integration (salary/invoice)"
           },
           "image": {
             "type": "string",

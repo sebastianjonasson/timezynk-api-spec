@@ -724,7 +724,7 @@
         "summary": "Initialize company",
         "description": "Initialize default account for the company\n",
         "tags": [
-          "Default-account"
+          "Sign up"
         ],
         "requestBody": {
           "description": "Default account setup.",
@@ -740,12 +740,10 @@
                     "format": "ObjectId"
                   },
                   "salary-integration": {
-                    "type": "string",
-                    "format": "ObjectId"
+                    "type": "string"
                   },
                   "invoice-integration": {
-                    "type": "string",
-                    "format": "ObjectId"
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -769,7 +767,7 @@
         "summary": "Invoice integrations",
         "description": "Get possible integrations options for default setup\n",
         "tags": [
-          "Default-account"
+          "Sign up"
         ],
         "responses": {
           "200": {
@@ -793,7 +791,7 @@
         "summary": "Salary integrations",
         "description": "Get possible integrations options for default setup\n",
         "tags": [
-          "Default-account"
+          "Sign up"
         ],
         "responses": {
           "200": {
@@ -817,7 +815,7 @@
         "summary": "Registries templates",
         "description": "Get registries templates for default account\n",
         "tags": [
-          "Default-account"
+          "Sign up"
         ],
         "responses": {
           "200": {
@@ -6720,7 +6718,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "format": "ObjectID"
+            "format": "ObjectId"
           },
           "template": {
             "type": "string",

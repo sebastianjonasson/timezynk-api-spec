@@ -432,7 +432,7 @@ paths:
       description: |
         Initialize default account for the company
       tags:
-        - Default-account
+        - Sign up
       requestBody:
         description: Default account setup.
         required: true
@@ -447,10 +447,8 @@ paths:
                   format: ObjectId
                 salary-integration:
                   type: string
-                  format: ObjectId
                 invoice-integration:
                   type: string
-                  format: ObjectId
               required:
                 - registry-template
                 - salary-integration
@@ -464,7 +462,7 @@ paths:
       description: |
         Get possible integrations options for default setup
       tags:
-        - Default-account
+        - Sign up
       responses:
         '200':
           description: An array of integration modules
@@ -480,7 +478,7 @@ paths:
       description: |
         Get possible integrations options for default setup
       tags:
-        - Default-account
+        - Sign up
       responses:
         '200':
           description: An array of integration modules
@@ -496,7 +494,7 @@ paths:
       description: |
         Get registries templates for default account
       tags:
-        - Default-account
+        - Sign up
       responses:
         '200':
           description: An array of registries templates
@@ -4457,7 +4455,7 @@ components:
       properties:
         id:
           type: string
-          format: ObjectID
+          format: ObjectId
         template:
           type: string
           description: Template name

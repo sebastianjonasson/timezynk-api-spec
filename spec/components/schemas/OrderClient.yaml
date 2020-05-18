@@ -1,19 +1,23 @@
 allOf:
-  - $ref: '#/components/schemas/BasicObject'
-  - properties: 
+  - $ref: "#/components/schemas/BasicObject"
+  - properties:
       email:
         type: string
         description: The order client's email.
       client-company-id:
         type: string
         format: ObjectId
-        description: Id to representing the client's company-id
+        description: Id representing the client's company-id.
+      supplier-company-id:
+        type: string
+        format: ObjectId
+        description: Id representing a supplier's company-id, if set.
       client-title:
         type: string
-        description: Title of the order client
+        description: Title of the order client.
       supplier-title:
         type: string
-        description: Title of the order supplier
+        description: Title of the order supplier.
       order-forms:
         type: array
         description: List of order form ids which the client has access to view.
@@ -26,3 +30,22 @@ allOf:
       supplier-code:
         type: string
         description: The supplier code is used to invite new clients. The code can only be used once, and to be able the user as a client, the email is required to match the invited users email.
+
+example:
+  id: "5dde7024eded8872705aabcd"
+  vid: "5dde7024eded8872705aabce"
+  company-id: "5dde7024eded8872705aabcf"
+  created: 1558604010307
+  created-by: "string"
+  valid-from: 1558604030403
+  valid-to: 0
+  changed-by: "string"
+  archived: null
+  email: "name@example.com"
+  client-company-id: "5dde7024eded8872705aabd1"
+  supplier-company-id: null
+  client-title: "Client title"
+  supplier-title: "Supplier title"
+  order-forms: ["5dde7024eded8872705a0123"]
+  values: {}
+  supplier-code: "5dde7024eded8872705aabd2"

@@ -1,0 +1,5034 @@
+openapi: 3.0.3
+info:
+  title: Timezynk API
+  description: API for Timezynk scheduling system
+  version: 2.7.0
+security:
+  - TZApiAuth: []
+tags:
+  - name: Auth
+    description: Endpoints for authentication and configuration
+  - name: Availability
+    description: Fetching and updating availability
+  - name: Invoice
+    description: 'Fetching, updating and creating invoices'
+  - name: Invoice articles
+    description: 'Fetching, updating and creating invoices articles'
+  - name: User
+    description: Calls for fetching and updating the system users.
+  - name: Work hours
+    description: Calls for setting up work hours schedules and employment contracts
+  - name: Shift
+    description: Calls for fetching and updating scheduled shifts.
+  - name: Time Reports
+    description: Time reports are the actual worked time as reported by the user.
+  - name: Registry
+    description: The registry handles custom data lists and their definitions.
+  - name: Registry Data
+    description: Data contained in a registry.
+  - name: Fields
+    description: The fields are used to specify the format for a specific registry instance.
+  - name: Salary articles
+    description: 'Fetching, updating and creating salary articles'
+  - name: Settings
+    description: Settings are used to store and retreive configuration parameters.
+  - name: RfQs - outgoing
+    description: Outgoing RfQs are requests for quotes that are sent to the companys suppliers.
+  - name: RfQs - incoming
+    description: Incoming RfQs are requests for quotes that are received from the companys clients.
+  - name: RfQ shifts - outgoing
+  - name: RfQ shifts - incoming
+  - name: Quote shifts - outgoing
+  - name: Quote shifts - incoming
+  - name: Quote shift responses - outgoing
+  - name: Quote shift responses - incoming
+  - name: Orders
+  - name: Order Forms
+  - name: Order Clients
+  - name: Order Suppliers
+  - name: Experimental
+    description: These APIs are experimental and and may be changed at any time without warning.
+servers:
+  - url: 'https://api.timezynk.com/api'
+paths:
+  /articles/invoice:
+    get:
+      summary: Fetch invoice articles
+      tags:
+        - Invoice articles
+      responses:
+        '200':
+          description: Array of invoice articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceArticle'
+    post:
+      summary: Create invoice article
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceArticle'
+        description: Invoice article to be added
+        required: true
+      tags:
+        - Invoice articles
+      responses:
+        '200':
+          description: Newly added invoice article object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceArticle'
+        '400':
+          description: Validation failed
+  '/articles/invoice/{articleId}':
+    get:
+      summary: Fetch invoice article
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Invoice articles
+      responses:
+        '200':
+          description: Invoice article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceArticle'
+    put:
+      summary: Update invoice article
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceArticle'
+        description: Invoice article changes
+        required: true
+      tags:
+        - Invoice articles
+      responses:
+        '200':
+          description: Updated invoice article object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceArticle'
+        '400':
+          description: Validation failed
+  /articles/salary:
+    get:
+      summary: Fetch salary articles
+      tags:
+        - Salary articles
+      responses:
+        '200':
+          description: Array of salary articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SalaryArticle'
+    post:
+      summary: Create salary article
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SalaryArticle'
+        description: Salary article to be added
+        required: true
+      tags:
+        - Salary articles
+      responses:
+        '200':
+          description: Newly added salary article object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalaryArticle'
+        '400':
+          description: Validation failed
+  '/articles/salary/{articleId}':
+    get:
+      summary: Fetch salary article
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Salary articles
+      responses:
+        '200':
+          description: Salary article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalaryArticle'
+    put:
+      summary: Update salary article
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SalaryArticle'
+        description: Salary article changes
+        required: true
+      tags:
+        - Salary articles
+      responses:
+        '200':
+          description: Updated salary article object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalaryArticle'
+        '400':
+          description: Validation failed
+  /availability:
+    get:
+      summary: Fetch availability
+      tags:
+        - Availability
+      parameters:
+        - $ref: '#/components/parameters/startParam'
+        - $ref: '#/components/parameters/endParam'
+        - $ref: '#/components/parameters/criteriaParam'
+        - in: query
+          name: user-id
+          description: Find availability for the given user id
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of availabilities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Availability'
+    post:
+      summary: Create availability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Availability'
+        description: Availability to be added
+        required: true
+      tags:
+        - Availability
+      responses:
+        '200':
+          description: Newly added availability object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Availability'
+        '400':
+          description: Validation failed
+  '/availability/{availabilityId}':
+    get:
+      summary: Fetch planned availability
+      parameters:
+        - name: availabilityId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Availability
+      responses:
+        '200':
+          description: Availability object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Availability'
+        '404':
+          description: Availability not found
+    put:
+      summary: Update planned availability
+      parameters:
+        - name: availabilityId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Availability'
+        required: true
+      tags:
+        - Availability
+      responses:
+        '200':
+          description: Updated availability object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Availability'
+        '400':
+          description: Validation failed
+        '404':
+          description: Availability not found
+    delete:
+      summary: Delete planned availability
+      parameters:
+        - name: availabilityId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Availability
+      responses:
+        '200':
+          description: Delete successful
+  /booked-shifts:
+    put:
+      summary: Book and unbook users on shifts
+      tags:
+        - Shift
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShiftBookingRequest'
+        required: true
+      responses:
+        '200':
+          description: Bookings completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftBookingResponse'
+  /bulk/articles/invoice:
+    post:
+      summary: Create multiple invoice articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/InvoiceArticle'
+        description: Invoice articles to be added
+        required: true
+      tags:
+        - Invoice articles
+      responses:
+        '200':
+          description: Newly added invoice article objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceArticle'
+        '400':
+          description: Validation failed
+  /bulk/articles/salary:
+    post:
+      summary: Create multiple salary articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SalaryArticle'
+        description: Salary articles to be added
+        required: true
+      tags:
+        - Salary articles
+      responses:
+        '200':
+          description: Newly added salary article objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SalaryArticle'
+        '400':
+          description: Validation failed
+  /bulk/invoice-rows:
+    post:
+      summary: Create multiple invoice rows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/InvoiceRow'
+        description: Invoice rows to be added
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Newly added invoice rows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceRow'
+        '400':
+          description: Validation failed
+    delete:
+      summary: Delete multiple invoice rows
+      parameters:
+        - name: invoice-id
+          in: query
+          required: true
+          description: Invoice ID to delete rows for
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Delete successful
+  /domain-log/v1:
+    get:
+      summary: Fetch changes
+      tags:
+        - Experimental
+      parameters:
+        - name: from
+          in: query
+          required: true
+          description: Oldest timestamp to fetch changes for
+          schema:
+            type: number
+            format: timestamp
+        - name: to
+          in: query
+          required: false
+          description: Newest timestamp to fetch changes for
+          schema:
+            type: number
+            format: timestamp
+        - name: type
+          in: query
+          required: false
+          description: Type of changes to fetch
+          schema:
+            type: string
+            enum:
+              - create
+              - update
+              - delete
+        - name: user-id
+          in: query
+          required: false
+          description: Fetch changes done by a specific user
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of changes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LogItem'
+  /experimental/blocked-inquiries:
+    get:
+      summary: Find blocked inquiries
+      description: Find open inquiries that are blocked by overlapping or adjacent shifts.
+      tags:
+        - Experimental
+      responses:
+        '200':
+          description: List blocked inquiries with blocking info
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: ObjectId
+                      description: Inquiry ID
+                    shift-id:
+                      type: string
+                      format: ObjectId
+                    user-id:
+                      type: string
+                      format: ObjectId
+                    duplicity:
+                      type: number
+                      description: Maximum (and desired) number of booked users
+                    booked-users:
+                      type: array
+                      items:
+                        type: string
+                        format: ObjectId
+                    overlapping-shift-ids:
+                      type: array
+                      items:
+                        type: string
+                        format: ObjectId
+                    adjacent-shift-ids:
+                      type: array
+                      items:
+                        type: string
+                        format: ObjectId
+                    overlapping-availability:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: ObjectId
+                          available:
+                            type: boolean
+                            description: 'True if user is available, false if not available.'
+                          start:
+                            type: string
+                            format: local-date-time
+                            pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+                            description: 'Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
+                          end:
+                            type: string
+                            format: local-date-time
+                            pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+                            description: 'End of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
+        '404':
+          description: No blocked inquiries found
+  /fields:
+    get:
+      summary: Index available registry field types
+      tags:
+        - Fields
+      responses:
+        '200':
+          description: |
+            A list of all valid registry field types. One of these must be the basis for creating a new custom registry field.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FieldType'
+  /invoices-export:
+    get:
+      summary: Fetch invoice exports
+      tags:
+        - Invoice
+      parameters:
+        - name: target
+          in: query
+          description: Target to search for
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: State to search for
+          schema:
+            type: string
+            enum:
+              - pending
+              - failed
+              - completed
+              - download
+        - name: invoice-id
+          in: query
+          description: Invoice ID to search for
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of invoice exports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceExport'
+    post:
+      summary: Create single invoice export
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceExport'
+        description: Invoice to be added
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Newly added invoice export
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceExport'
+        '400':
+          description: Validation failed
+  /invoices-rows:
+    get:
+      summary: Fetch invoice rows
+      tags:
+        - Invoice
+      parameters:
+        - name: invoice-id
+          in: query
+          required: true
+          description: Invoice to fetch the rows for
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of invoice rows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceRow'
+    post:
+      summary: Create single invoice row
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceRow'
+        description: Invoice to be added
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Newly added invoice row
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceRow'
+        '400':
+          description: Validation failed
+  '/invoices-rows/{rowId}':
+    get:
+      summary: Fetch invoice row
+      parameters:
+        - name: rowId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceRow'
+        '404':
+          description: Invoice not found
+    put:
+      summary: Update invoice row
+      parameters:
+        - name: rowId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceRow'
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Updated invoice row object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceRow'
+        '400':
+          description: Validation failed
+        '404':
+          description: Invoice not found
+    delete:
+      summary: Delete invoice row
+      parameters:
+        - name: rowId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Delete successful
+  /invoices:
+    get:
+      summary: Fetch invoices
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Array of invoices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+    post:
+      summary: Create invoices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+        description: Invoice to be added
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Newly added invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '400':
+          description: Validation failed
+  '/invoices/{invoiceId}':
+    get:
+      summary: Fetch invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Invoice not found
+    put:
+      summary: Update invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+        required: true
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Updated invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '400':
+          description: Validation failed
+        '404':
+          description: Invoice not found
+    delete:
+      summary: Delete invoice
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Delete successful
+  /level-entries:
+    get:
+      summary: Fetch level entries
+      parameters:
+        - in: query
+          name: user-id
+          description: Filter to only one user
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Work hours
+      responses:
+        '200':
+          description: Array of shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LevelEntry'
+    post:
+      summary: Create level entry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LevelEntry'
+        description: Invoice to be added
+        required: true
+      tags:
+        - Work hours
+      responses:
+        '200':
+          description: Newly added level entry object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LevelEntry'
+        '400':
+          description: Validation failed
+  '/level-entries/{levelEntryId}':
+    get:
+      summary: Fetch level entry
+      parameters:
+        - name: levelEntryId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Work hours
+      responses:
+        '200':
+          description: Level entry object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LevelEntry'
+        '404':
+          description: Level entry not found
+    put:
+      summary: Update level entry
+      parameters:
+        - name: levelEntryId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LevelEntry'
+        required: true
+      tags:
+        - Work hours
+      responses:
+        '200':
+          description: Updated level entry object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LevelEntry'
+        '400':
+          description: Validation failed
+        '404':
+          description: Level entry not found
+    delete:
+      summary: Delete level entry
+      parameters:
+        - name: levelEntryId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Work hours
+      responses:
+        '200':
+          description: Delete successful
+  /oauth2/v1/tokeninfo:
+    get:
+      summary: Token info
+      description: Decode your authentication token and check current roles and user.
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: Authentication token information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenInfo'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /oauth2/v1/userinfo:
+    get:
+      summary: User info
+      description: OpenID Connect User Info endpoint. Returns decoded standardized claims.
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: User claims
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /orders/v2/client-forms:
+    get:
+      summary: |
+        [Client] Fetch forms
+      description: Endpoint for fetching order forms for a client.
+      tags:
+        - Order Forms
+      responses:
+        '200':
+          description: Single order client form item
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderForm'
+        '404':
+          description: Order client not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/orders/v2/client-forms/{orderFormId}':
+    get:
+      summary: |
+        [Client] Fetch single form
+      description: Endpoint for fetching a signel order form for a client.
+      tags:
+        - Order Forms
+      parameters:
+        - name: orderFormId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of order client forms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderForm'
+        '404':
+          description: Order client not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /orders/v2/clients:
+    get:
+      summary: List order clients
+      description: |
+        The Order Clients endpoint returns a list of all invited and active order clients.
+      tags:
+        - Order Clients
+      responses:
+        '200':
+          description: An array of order clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderClient'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create order clients
+      description: |
+        Endpoint for creating an order client. When the order client is created, an email invitation will be sent to the entered email.
+      tags:
+        - Order Clients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderClient'
+        description: Order client to be created.
+        required: true
+      responses:
+        '200':
+          description: An array of order clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderClient'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/orders/v2/clients/{orderClientId}':
+    get:
+      summary: Fetch single order client
+      description: Endpoint for fetching a single order client
+      tags:
+        - Order Clients
+      parameters:
+        - name: orderClientId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Single order client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderClient'
+        '404':
+          description: Order client not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/orders/v2/clients/{orderClientId}/send-invite':
+    post:
+      summary: Send invite email
+      description: Endpoint for sending an invitation email to a created order client.
+      tags:
+        - Order Clients
+      parameters:
+        - name: orderClientId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of order client forms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderForm'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/orders/v2/clients/confirm/{supplierCode} copy':
+    put:
+      summary: Confirm client
+      description: |
+        The Confirm Client endpoint allows a user to confirm a supplier invitation from a client.
+      tags:
+        - Order Clients
+      parameters:
+        - name: supplierCode
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: Company Id of Client.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                company-id:
+                  type: string
+                  description: Id of the company for the client.
+                  format: ObjectId
+              required:
+                - company-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: |
+            * Client could not be added
+            * Client already added
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /orders/v2/forms:
+    get:
+      summary: List order forms
+      description: |
+        The Order Forms endpoint returns a list of all created order forms.
+      tags:
+        - Order Forms
+      responses:
+        '200':
+          description: An array of order froms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderForm'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/orders/v2/forms/{orderFormId}':
+    get:
+      summary: Fetch single order form
+      description: Endpoint for fetching a single order form
+      tags:
+        - Order Forms
+      parameters:
+        - name: orderFormId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Single order form
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderForm'
+        '404':
+          description: Order form not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /orders/v2/orders:
+    get:
+      summary: Index orders
+      description: |
+        The Orders endpoint returns an array of all created orders.
+      tags:
+        - Orders
+      responses:
+        '200':
+          description: An array of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create order
+      description: |
+        Endpoint for creating a new order
+
+        To create an order you first need to fetch an Order Form. You should then use `id`, `vid`, `supplier-id`, and `fields` to build your Order object.
+      requestBody:
+        description: Order object to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Order'
+                - properties:
+                    shifts:
+                      type: array
+                      description: List of shifts to be created for this order.
+                      items:
+                        $ref: '#/components/schemas/Shift'
+      tags:
+        - Orders
+      responses:
+        '200':
+          description: Newly added order object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+  '/orders/v2/orders/{orderId}':
+    get:
+      summary: Fetch single order
+      description: Endpoint for fetching a single user
+      tags:
+        - Orders
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single order object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found
+  '/orders/v2/orders/{orderId}/{status}':
+    put:
+      summary: Update order status
+      description: Endpoint for updating a single order's status.
+      tags:
+        - Orders
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: status
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - new
+              - seen
+              - accepted
+              - approved
+              - client-approved
+              - done
+              - rejected
+      responses:
+        '200':
+          description: A single order object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found
+  /orders/v2/orders/incoming:
+    get:
+      summary: Index incoming orders
+      description: |
+        The Orders endpoint returns an array of all incoming orders.
+      tags:
+        - Orders
+      responses:
+        '200':
+          description: An array of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /orders/v2/orders/outgoing:
+    get:
+      summary: Index outgoing orders
+      description: |
+        The Orders endpoint returns an array of all outoing orders.
+      tags:
+        - Orders
+      responses:
+        '200':
+          description: An array of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /orders/v2/suppliers:
+    get:
+      summary: List available suppliers
+      description: |
+        The Order Suppliers endpoint returns a list of all available to place orders from.
+      tags:
+        - Order Suppliers
+      responses:
+        '200':
+          description: An array of order suppliers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderSupplier'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create order suppliers
+      description: |
+        Endpoint for creating an order supplier. When the order supplier is created, an email invitation will be sent to the entered email.
+      tags:
+        - Order Suppliers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderSupplier'
+        description: Order supplier to be created.
+        required: true
+      responses:
+        '200':
+          description: An array of order suppliers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderSupplier'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/orders/v2/suppliers/{orderSupplierId}':
+    get:
+      summary: Fetch single order supplier
+      description: Endpoint for fetching a single order supplier
+      tags:
+        - Order Suppliers
+      parameters:
+        - name: orderSupplierId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Single order supplier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderSupplier'
+        '404':
+          description: Order supplier not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/orders/v2/suppliers/{orderSupplierId}/send-invite':
+    post:
+      summary: Send invite email
+      description: Endpoint for sending an invitation email to a created order supplier.
+      tags:
+        - Order Suppliers
+      parameters:
+        - name: orderSupplierId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of order supplier forms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderForm'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/orders/v2/suppliers/confirm/{supplierCode}':
+    put:
+      summary: Confirm supplier
+      description: |
+        The Confirm Supplier endpoint allows a user to confirm a client invitation from a supplier.
+      tags:
+        - Order Suppliers
+      parameters:
+        - name: supplierCode
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: Company Id of Supplier.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                company-id:
+                  type: string
+                  description: Id of the company for the supplier.
+                  format: ObjectId
+              required:
+                - company-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: |
+            * Supplier could not be added
+            * Supplier already added
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /published-shifts:
+    put:
+      summary: Publish shifts
+      tags:
+        - Shift
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShiftPublishRequest'
+        required: true
+      responses:
+        '200':
+          description: Bookings completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftPublishResponse'
+    delete:
+      summary: Unpublish shifts
+      tags:
+        - Shift
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShiftUnpublishRequest'
+        required: true
+      responses:
+        '200':
+          description: Bookings completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftPublishResponse'
+  /registry-data:
+    get:
+      summary: List all registry data
+      tags:
+        - Registry Data
+      parameters:
+        - in: query
+          name: registry-id
+          description: Only return data for registry with this ID.
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: List of registry data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RegistryData'
+    post:
+      summary: Create new registry data
+      tags:
+        - Registry Data
+      parameters:
+        - in: query
+          name: preprocess
+          description: 'Preprocess data before saving, setting any calculated fields.'
+          schema:
+            type: string
+            enum:
+              - 'true'
+      requestBody:
+        $ref: '#/components/requestBodies/RegistryData'
+      responses:
+        '200':
+          description: Created registry data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryData'
+        '400':
+          description: Validation failed
+  '/registry-data/{registryDataId}':
+    get:
+      summary: Get single registry data
+      tags:
+        - Registry Data
+      parameters:
+        - in: path
+          name: registryDataId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Registry data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryData'
+        '404':
+          description: Not found
+    put:
+      summary: Update registry data
+      tags:
+        - Registry Data
+      parameters:
+        - in: path
+          name: registryDataId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - in: query
+          name: preprocess
+          description: 'Preprocess data before saving, setting any calculated fields.'
+          schema:
+            type: string
+            enum:
+              - 'true'
+      requestBody:
+        $ref: '#/components/requestBodies/RegistryData'
+      responses:
+        '200':
+          description: Updated registry data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryData'
+        '400':
+          description: Validation failed
+        '404':
+          description: Not found
+  /registry-fields:
+    get:
+      summary: List custom registry fields
+      tags:
+        - Fields
+      parameters:
+        - in: query
+          name: registry-id
+          description: Only return data for registry with this ID.
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A list of all custom registry fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Field'
+    post:
+      summary: Create a new custom registry field
+      tags:
+        - Fields
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Field'
+        required: true
+      responses:
+        '200':
+          description: Newly created registry field
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Field'
+        '400':
+          description: Validation failed
+  /registry:
+    get:
+      summary: Index available registers
+      tags:
+        - Registry
+      responses:
+        '200':
+          description: List of all custom registers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Registry'
+    post:
+      summary: Create new custom registry
+      tags:
+        - Registry
+      requestBody:
+        $ref: '#/components/requestBodies/Registry'
+      responses:
+        '200':
+          description: Newly created registry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registry'
+        '400':
+          description: Validation failed
+  '/registry/{registryId}':
+    get:
+      summary: Get single custom registry
+      tags:
+        - Registry
+      parameters:
+        - in: path
+          name: registryId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Requested registry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registry'
+        '404':
+          description: Registry not found
+    put:
+      summary: Update custom registry
+      tags:
+        - Registry
+      parameters:
+        - in: path
+          name: registryId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        $ref: '#/components/requestBodies/Registry'
+      responses:
+        '200':
+          description: Updated registry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registry'
+        '404':
+          description: Registry not found
+  '/rfqs/v1/bulk/rfqs/incoming/{incomingRfqId}/quoteshifts':
+    post:
+      summary: Create multiple quote shifts
+      description: Endpoint for creating an array of new quote shifts.
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: Quote shifts to be added
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                properties:
+                  rfq-shift-id:
+                    type: string
+                    format: ObjectId
+                    description: The corresponding shift-id from the RfQ.
+                  booked-users:
+                    type: array
+                    description: A list containing exactly one user id.
+                    items:
+                      type: string
+                      format: ObjectId
+                  booked-user:
+                    type: object
+                    description: Suggested user for this shift
+                    properties:
+                      name:
+                        type: string
+                        description: Name of worker
+                      id-no:
+                        type: string
+                        description: National identification number (personnummer) of the worker
+                    required:
+                      - name
+                      - id-no
+                  outgoing-rfq-id:
+                    type: string
+                    description: |
+                      Id of the rfq parent this rfq was created from.
+                    format: ObjectId
+                  incoming-rfq-id:
+                    type: string
+                    description: |
+                      Id of the RfQ.
+                    format: ObjectId
+                required:
+                  - rfq-shift-id
+                  - booked-users
+                  - booked-user
+                  - outgoing-rfq-id
+                  - incoming-rfq-id
+                  - client-id
+      tags:
+        - Quote shifts - outgoing
+      responses:
+        '200':
+          description: Newly added quote shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteShift'
+        '400':
+          description: |
+            A valid outgoing rfq is required. / Expecting booked users to contain exactly one id.
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/bulk/rfqs/outgoing/{outgoingRfqId}/shifts':
+    post:
+      summary: Create multiple RfQ shifts
+      description: Bulk request to create multiple RfQ shifts in one call
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RfqShift'
+        description: RfQ shifts to be added
+        required: true
+      tags:
+        - RfQ shifts - outgoing
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Newly added RfQ shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /rfqs/v1/rfqs/incoming:
+    get:
+      summary: Fetch RfQs
+      description: |
+        The RfQs endpoint returns an array of all incoming RfQs.
+      tags:
+        - RfQs - incoming
+      responses:
+        '200':
+          description: An array of RfQs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rfq'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses':
+    get:
+      summary: Fetch quote shifts responses
+      description: |
+        Endpoint returns an array of all quote shifts responses.
+      tags:
+        - Quote shift responses - incoming
+      parameters:
+        - name: incomingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of quote shift responses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteShiftsResponse'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses/{incomingResponseId}':
+    get:
+      summary: Fetch single quote shifts response
+      description: |
+        Endpoint for fetching a single quote shifts response.
+      tags:
+        - Quote shift responses - incoming
+      parameters:
+        - name: incomingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: incomingResponseId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single quote shifts response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShiftsResponse'
+        '404':
+          description: Quote not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses/{incomingResponseId}/confirm':
+    post:
+      summary: Confirm quote shifts response
+      description: |
+        Endpoint for a supplier to confirm a quote shift response.
+
+        Side effects:
+        * Incoming rfq set to CONFIRMED iff ACCEPTED linked quote shift responses = 0.
+        * Linked quote shifts in rfq shift accepted list moved to confirmed list.
+        * (When an rfq shift duplicity = confirmed quote shifts, set other quote shifts to REJECTED.)
+        * Set linked quote shifts to CONFIRMED.
+      tags:
+        - Quote shift responses - incoming
+      parameters:
+        - name: incomingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: incomingResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Updated quote shifts response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShiftsResponse'
+        '404':
+          description: Quote not found
+        '409':
+          description: Quote shift response does not have status ACCEPTED
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshiftresponses/{incomingResponseId}/refuse':
+    post:
+      summary: Refuse quote shifts response
+      description: |
+        Endpoint for a supplier to refuse a quote shift response.
+
+        Side effects:
+        * Collect all quote shift responses for incoming rfq.
+          * When responses with status ACCEPTED = 0:
+            * if responses with status CONFIRMED = 0: set incoming rfq to REFUSED.
+            * else: set status to CONFIRMED.
+        * Linked quote shifts are removed from rfq shift accepted lists.
+        * Set linked quote shifts to REFUSED.
+      tags:
+        - Quote shift responses - incoming
+      parameters:
+        - name: incomingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: incomingResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Updated quote shifts response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShiftsResponse'
+        '404':
+          description: Quote not found
+        '409':
+          description: Quote shift response does not have status ACCEPTED
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshifts':
+    get:
+      summary: List outgoing quote shifts
+      description: |
+        The quote shifts endpoint returns a list of all quote shifts.
+      tags:
+        - Quote shifts - outgoing
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of quote shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create quote shift
+      description: Endpoint for creating a new quote shift.
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: Quote shift to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                rfq-shift-id:
+                  type: string
+                  format: ObjectId
+                  description: The corresponding shift-id from the RfQ.
+                booked-user:
+                  type: object
+                  description: Suggested user for this shift
+                  properties:
+                    name:
+                      type: string
+                      description: Name of worker
+                    id-no:
+                      type: string
+                      description: National identification number (personnummer) of the worker
+                    id:
+                      type: string
+                      format: ObjectId
+                      description: User id of worker
+                  required:
+                    - name
+                    - id-no
+                outgoing-rfq-id:
+                  type: string
+                  description: |
+                    Id of the rfq parent this rfq was created from.
+                  format: ObjectId
+                incoming-rfq-id:
+                  type: string
+                  description: |
+                    Id of the RfQ.
+                  format: ObjectId
+              required:
+                - rfq-shift-id
+                - booked-user
+                - outgoing-rfq-id
+                - incoming-rfq-id
+                - client-id
+      tags:
+        - Quote shifts - outgoing
+      responses:
+        '200':
+          description: Newly added quote shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShift'
+        '400':
+          description: |
+            A valid outgoing rfq is required / Expecting booked users to contain exactly one id
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshifts/{quoteShiftId}':
+    get:
+      summary: Fetch single quote shift
+      description: |
+        Endpoint for fetching a single quote shift.
+      tags:
+        - Quote shifts - outgoing
+      parameters:
+        - name: quoteShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single quote shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete quote shift
+      description: Deletion can only be done if shift is in DRAFT state.
+      tags:
+        - Quote shifts - outgoing
+      parameters:
+        - in: path
+          name: quoteShiftId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '201':
+          description: OK
+        '400':
+          description: Cannot delete quote shift that has been sent
+        '404':
+          description: Not found
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/quoteshifts/{quoteShiftId}/send':
+    post:
+      summary: Send quote shift
+      description: |
+        Endpoint for sending quote shift to scheduler.
+      parameters:
+        - name: quoteShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Quote shifts - outgoing
+      responses:
+        '201':
+          description: OK
+        '404':
+          description: Not found
+        '409':
+          description: Already sent
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/shifts':
+    get:
+      summary: List rfq shifts
+      description: |
+        The rfq shifts endpoint returns a list of all incoming rfq shifts.
+      tags:
+        - RfQ shifts - incoming
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of RfQ shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{incomingRfqId}/shifts/{rfqShiftId}':
+    get:
+      summary: Fetch single RfQ shift
+      description: |
+        Endpoint for fetching a single RfQ shift.
+      tags:
+        - RfQ shifts - incoming
+      parameters:
+        - in: path
+          name: incomingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: rfqShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single RfQ shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/incoming/{rfqId}':
+    get:
+      summary: Fetch single RfQ
+      description: Endpoint for fetching a single RfQ
+      tags:
+        - RfQs - incoming
+      parameters:
+        - name: rfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single RfQ object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rfq'
+        '404':
+          description: RfQ not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /rfqs/v1/rfqs/outgoing:
+    get:
+      summary: Fetch Outgoing RfQs
+      description: |
+        The Outgoing RfQs endpoint returns an array of all outgoing rfq parents.
+      tags:
+        - RfQs - outgoing
+      responses:
+        '200':
+          description: An array of rfq parents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OutgoingRfq'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create outgoing RfQ
+      description: |
+        Endpoint for creating a new request for quotes
+
+        To create an RfQ you first need to fetch an order form. You should then use `id`, `vid` and `fields` to build your outgoing RFQ object.
+      requestBody:
+        description: Outgoing RfQ object to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/OutgoingRfq'
+                - required:
+                    - form-id
+                    - form-vid
+                    - client-id
+                    - supplier-id
+                    - values
+      tags:
+        - RfQs - outgoing
+      responses:
+        '200':
+          description: Newly added outgoing RfQ object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingRfq'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}':
+    get:
+      summary: Fetch single outgoing RfQ
+      description: |
+        Endpoint for fetching a single outgoing RfQ.
+      tags:
+        - RfQs - outgoing
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single outgoing RfQ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingRfq'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update outgoing RfQ
+      description: |
+        Send updates to an outgoing RfQ that has not been SENT. Only updates to "expires" are allowed otherwise.
+
+        Side effects:
+        * If "expires" is updated, linked incoming RfQ's will also have "expires" updated.
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutgoingRfq'
+        required: true
+      tags:
+        - RfQs - outgoing
+      responses:
+        '200':
+          description: Updated outgoing RfQ object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingRfq'
+        '400':
+          description: This property cannot be changed after outgoing RfQ has been sent.
+        '404':
+          description: outgoing RfQ not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshiftresponses':
+    get:
+      summary: Fetch quote shift responses
+      description: |
+        Endpoint returns an array of all quote shift responses.
+      tags:
+        - Quote shift responses - outgoing
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of quote shift responses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteShiftsResponse'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create quote shift response
+      description: |
+        Endpoint for a client to respond to a set of quote shifts.
+
+        Side effects:
+        * When ACCEPTED, linked quote shifts will be added to the list of accepted quote shifts for respective rfq shifts.
+        * Linked quote shifts statuses are updated with the same status.
+        * When ACCEPTED, incoming rfq gets same status.
+      tags:
+        - Quote shift responses - outgoing
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: RfQ parent object to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                status:
+                  type: string
+                  description: Quote shifts state
+                  enum:
+                    - ACCEPTED
+                    - REJECTED
+                supplier-id:
+                  type: string
+                  description: |
+                    Id of the company owning the quote shifts.
+                  format: ObjectId
+                quote-shift-ids:
+                  type: array
+                  description: List of quote shift ids.
+                  items:
+                    type: string
+                    format: ObjectId
+                outgoing-rfq-id:
+                  type: string
+                  description: |
+                    Id of the rfq parent this rfq was created from.
+                  format: ObjectId
+                incoming-rfq-id:
+                  type: string
+                  description: |
+                    Id of the RfQ.
+                  format: ObjectId
+              required:
+                - status
+                - supplier-id
+                - quote-shift-ids
+                - outgoing-rfq-id
+                - incoming-rfq-id
+      responses:
+        '200':
+          description: Quote shift response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShiftsResponse'
+        '400':
+          description: |
+            * Outgoing rfq id not valid
+            * Status not "ACCEPTED" or "REJECTED"
+            * Quote shift or rfq shift not found
+            * Accepted and confirmed quote shifts are more than rfq shift duplicity
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshiftresponses/{outgoingresponseId}':
+    get:
+      summary: Fetch single quote shifts response
+      description: |
+        Endpoint for fetching a single quote shifts response.
+      tags:
+        - Quote shift responses - outgoing
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: outgoingresponseId
+          in: path
+          description: The quote shifts response id
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single quote shifts response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShiftsResponse'
+        '404':
+          description: Quote not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshifts':
+    get:
+      summary: List incoming quote shifts
+      description: |
+        The quote shifts endpoint returns a list of all quote shifts.
+      tags:
+        - Quote shifts - incoming
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of quote shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/quoteshifts/{quoteShiftId}':
+    get:
+      summary: Fetch single quote shift
+      description: |
+        Endpoint for fetching a single quote shift.
+      tags:
+        - Quote shifts - incoming
+      parameters:
+        - name: quoteShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single quote shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/send':
+    post:
+      summary: Send RfQs
+      description: |
+        Endpoint for sending RfQs to suppliers.
+      parameters:
+        - name: outgoingRfqId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: List of suppliers.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: List of suppliers to create RfQs for.
+              properties:
+                supplier-ids:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+              required:
+                - supplier-ids
+      tags:
+        - RfQs - outgoing
+      responses:
+        '201':
+          description: OK
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/shifts':
+    get:
+      summary: List rfq shifts
+      description: |
+        The rfq shifts endpoint returns a list of all outgoing rfq shifts.
+      tags:
+        - RfQ shifts - outgoing
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: An array of RfQ shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create RfQ shift
+      description: |
+        Endpoint for creating a new RfQ shift
+
+        To create an RfQ shift you first need to create an outgoing RfQ. You should then use `id` build your RFQ shift object.
+      tags:
+        - RfQ shifts - outgoing
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        description: RfQ shift object to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/RfqShift'
+      responses:
+        '200':
+          description: Newly added RfQ shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqShift'
+  '/rfqs/v1/rfqs/outgoing/{outgoingRfqId}/shifts/{rfqShiftId}':
+    get:
+      summary: Fetch single RfQ shift
+      description: |
+        Endpoint for fetching a single RfQ shift.
+      tags:
+        - RfQ shifts - outgoing
+      parameters:
+        - in: path
+          name: outgoingRfqId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+        - name: rfqShiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single RfQ shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RfqShift'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /settings/v1/company:
+    get:
+      summary: Get company settings
+      description: Fetch all stored settings for the users company.
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: Setting values
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
+    post:
+      summary: Create company setting
+      description: 'Requires `manager` role or `write:company` scope.'
+      tags:
+        - Settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Preference'
+        description: Preference to add
+        required: true
+      responses:
+        '200':
+          description: Newly added preference object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '400':
+          description: Validation failed
+  '/settings/v1/company/{settingId}':
+    get:
+      summary: Get company setting
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stored value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
+    put:
+      summary: Update company setting
+      description: 'Requires `manager` role or `write:company` scope.'
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Preference'
+      responses:
+        '200':
+          description: Updated setting value
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Not found
+    delete:
+      summary: Delete company setting
+      description: 'Requires `manager` role or `write:company` scope.'
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Preference object with setting id as key and value null
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
+  /settings/v1/personal:
+    get:
+      summary: Get personal settings
+      description: Fetch all stored settings for the user.
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: Settings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
+    post:
+      summary: Create personal setting
+      tags:
+        - Settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Preference'
+        description: Preference to add
+        required: true
+      responses:
+        '200':
+          description: Newly added preference object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '400':
+          description: Validation failed
+  '/settings/v1/personal/{settingId}':
+    get:
+      summary: Get personal setting
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stored value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
+    put:
+      summary: Update personal setting
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Preference'
+      responses:
+        '200':
+          description: Updated setting value
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Not found
+    delete:
+      summary: Delete personal setting
+      tags:
+        - Settings
+      parameters:
+        - in: path
+          name: settingId
+          description: Setting ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Preference object with setting id as key and value null
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
+        '404':
+          description: Not found
+  '/settings/v1/retention-policy/{registryId}':
+    get:
+      summary: Get retention policy
+      description: 'Given a registry id, get number of days until an archived entity is deleted, including domainlog entries.'
+      tags:
+        - Registry
+      parameters:
+        - in: path
+          name: registryId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Retention policy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Registry id
+                  retention-limit-days:
+                    type: integer
+                    description: Number of days
+              example:
+                id: 5dde7024eded8872705a0000
+                retention-limit-days: 90
+        '404':
+          description: Not found
+    put:
+      summary: Set retention policy
+      description: 'Given a registry id, set the number of days until an archived entity is deleted, including domainlog entries.'
+      tags:
+        - Registry
+      parameters:
+        - in: path
+          name: registryId
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                retention-limit-days:
+                  type: integer
+                  description: Number of days
+              required:
+                - retention-limit-days
+            example:
+              retention-limit-days: 90
+        required: true
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Retention limit is not a positive integer
+  /shifts:
+    get:
+      summary: Fetch planned shifts
+      parameters:
+        - $ref: '#/components/parameters/startParam'
+        - $ref: '#/components/parameters/endParam'
+        - $ref: '#/components/parameters/criteriaParam'
+        - in: query
+          name: booked-users
+          description: Find shifts where the given user id is booked
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: Array of shifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shift'
+    post:
+      summary: Create planned shift
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shift'
+        description: Shift to be added
+        required: true
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: Newly added shift object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shift'
+        '400':
+          description: Validation failed
+  '/shifts/{shiftId}':
+    get:
+      summary: Fetch planned shift
+      parameters:
+        - name: shiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: Shift object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shift'
+        '404':
+          description: Shift not found
+    put:
+      summary: Update planned shift
+      parameters:
+        - name: shiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shift'
+        required: true
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: Updated shift object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shift'
+        '400':
+          description: Validation failed
+        '404':
+          description: Shift not found
+    delete:
+      summary: Delete planned shift
+      parameters:
+        - name: shiftId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: Delete successful
+        '400':
+          description: Linked to timereport
+  /timereports:
+    get:
+      summary: Fetch time reports
+      tags:
+        - Time Reports
+      parameters:
+        - $ref: '#/components/parameters/startParam'
+        - $ref: '#/components/parameters/endParam'
+        - $ref: '#/components/parameters/criteriaParam'
+        - in: query
+          name: user-id
+          description: Find time reports for the given user id
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of time reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Timereport'
+    post:
+      summary: Create new time report
+      tags:
+        - Time Reports
+      requestBody:
+        $ref: '#/components/requestBodies/Timereport'
+      responses:
+        '200':
+          description: Created time report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timereport'
+        '400':
+          description: Validation failed
+  '/timereports/{reportId}':
+    get:
+      summary: Fetch time report
+      tags:
+        - Time Reports
+      parameters:
+        - in: path
+          name: reportId
+          description: Time report id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Time report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timereport'
+        '404':
+          description: Not found
+    put:
+      summary: Update time report
+      tags:
+        - Time Reports
+      parameters:
+        - in: path
+          name: reportId
+          description: Time report id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Timereport'
+      responses:
+        '200':
+          description: Updated time report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timereport'
+        '400':
+          description: Validation failed
+        '404':
+          description: Not found
+  /users:
+    get:
+      summary: Users
+      description: |
+        The Users endpoint returns information about all the registered users for this company.
+      parameters:
+        - name: role
+          in: query
+          description: Search by user role
+          required: false
+          schema:
+            type: string
+      tags:
+        - User
+      responses:
+        '200':
+          description: An array of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create user
+      description: Add a new user to the company
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: User object to be added to the company
+        required: true
+      tags:
+        - User
+      responses:
+        '200':
+          description: Newly added user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  '/users/{userId}':
+    get:
+      summary: Fetch single user
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: A single user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+    put:
+      summary: Update user
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: The updated user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+components:
+  schemas:
+    Availability:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            title:
+              type: string
+              description: Title describing this availability
+            start:
+              type: string
+              format: local-date-time
+              pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+              description: 'Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
+            end:
+              type: string
+              format: local-date-time
+              pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+              description: 'End of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
+            user-id:
+              type: string
+              description: User ID
+              format: ObjectId
+            available:
+              type: boolean
+              description: Does this mark the user as available or not available.
+            read-only:
+              type: boolean
+              description: True if this availability is created via an integration and should not be changed.
+              readOnly: true
+            meta:
+              type: object
+              description: Field that an integration might use to store meta-data about the availability
+          required:
+            - start
+            - end
+            - user-id
+            - available
+    BaseArticle:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID
+          format: ObjectId
+          readOnly: true
+        title:
+          type: string
+          description: Title describing the article
+          example: Qualified overtime
+        currency:
+          type: string
+          description: Article currency in ISO 4217 format
+          example: USD
+        price:
+          type: number
+          description: Price in specified currency
+          example: 19.99
+        price-settings:
+          type: object
+          description: Settings for calculation and interpretation of price
+        unit:
+          type: string
+          description: 'Article unit. Hours, pieces, kilometers, etc.'
+          example: h
+        factor:
+          type: number
+          description: Factor to multiply the article with after its nominal value has been calculated
+          example: 0.5
+        calculation:
+          type: string
+          enum:
+            - shifts
+            - shifts_no_users
+            - dates
+            - days
+            - field
+          description: |
+            Controls how the article value is calculated by the agreement engine.
+             * `null` or `undefined` - Use reported hours
+             * `shifts` - Count the number of shifts that generated the article and divide the value over all applicable users
+             * `shifts_no_users` - Count the number of shifts that generated the article and give each user the full count
+             * `dates` - Count the number of distinct dates spanned by the reports
+             * `days` - Find the minumum number of 24-hours periods required to fill the reported time spanned
+             * `field` - Fetch the value from a numeric field
+        calculation-settings:
+          type: object
+          description: Settings for calculation and interpretation of article count
+        archived:
+          type: number
+          description: 'Timestamp in milliseconds for when the object was archived, or null if it is still active'
+          example: null
+      required:
+        - id
+        - title
+    BaseOrder:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - properties:
+            status:
+              type: string
+              description: Status of the order
+              readOnly: true
+            form-id:
+              type: string
+              description: Id of the order form used to create the order.
+              format: ObjectId
+            form-vid:
+              type: string
+              description: Vid of the order form used to create the order.
+              format: ObjectId
+            original-duplicity:
+              type: number
+              description: Amount of people to be booked for the this order.
+              readOnly: true
+            values:
+              type: object
+              description: |
+                Key-value store for custom fields defined in the order form associated with the order.
+                The key should be set to the `field-template-id`. See `fields` property in Order Form.
+              default: {}
+            shift-dates:
+              type: array
+              description: All dates which where shifts are occuring during the order
+              items:
+                type: string
+              readOnly: true
+    BaseShift:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            start:
+              type: string
+              format: local-date-time
+              pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+              description: 'Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
+            end:
+              type: string
+              format: local-date-time
+              pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+              description: 'End of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
+            breaks:
+              type: array
+              description: List of breaks
+              items:
+                $ref: '#/components/schemas/Break'
+            values:
+              type: object
+              description: Values for custom registry fields
+            group-id:
+              type: string
+              format: ObjectId
+              description: Common group ID for grouping several shifts together
+    BasicObject:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID
+          format: ObjectId
+          readOnly: true
+        vid:
+          type: string
+          description: Unique identifier representing a specific version of an item
+          format: ObjectId
+          readOnly: true
+        company-id:
+          type: string
+          description: Id of the company who owns this item.
+          format: ObjectId
+          readOnly: true
+        created:
+          type: number
+          description: Timestamp in milliseconds for when the object was created
+          example: 1558604010307
+          readOnly: true
+        created-by:
+          type: string
+          description: User ID the the user that created the object.
+          readOnly: true
+          format: ObjectId
+        valid-from:
+          type: number
+          description: Timestamp in milliseconds for when the object was last changed
+          example: 1558604030403
+          readOnly: true
+        valid-to:
+          type: number
+          format: timestamp
+          readOnly: true
+        changed-by:
+          type: string
+          description: User ID the the user that last changed the object.
+          readOnly: true
+          format: ObjectId
+        archived:
+          type: integer
+          description: 'Timestamp in milliseconds for when the object was archived, or null if it is still active'
+          nullable: true
+          example: null
+      required:
+        - id
+    Break:
+      type: object
+      properties:
+        start:
+          type: string
+          format: local-date-time
+          pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+          description: 'Start of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
+        end:
+          type: string
+          format: local-date-time
+          pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+          description: 'End of shift without time zone (i.e. 2019-04-30T15:41:00.000)'
+      required:
+        - start
+        - end
+    Client:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: Phone number of client
+        email:
+          type: string
+          description: Email of client
+        company:
+          type: string
+          description: Company name
+        name:
+          type: string
+          description: Name of client
+      example:
+        phone: 0123-405060
+        email: name@company.com
+        company: Company AB
+        name: Firstname Surname
+    DateSelector:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date
+          description: Start of matching interval
+        end:
+          type: string
+          format: date
+          description: End of matching interval
+        criteria:
+          type: string
+          description: Define how to match the interval
+          enum:
+            - intersects
+            - start-in
+          default: start-in
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        error:
+          type: string
+          description: Error message
+        trace:
+          type: string
+          description: Optional stack trace
+      required:
+        - code
+    Field:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            title:
+              type: string
+              description: Human-readable field title
+            registry-id:
+              type: string
+              format: ObjectId
+              description: Field belongs to this registry
+            field-id:
+              type: string
+              description: Reference to Field Type ID
+            field-type:
+              type: string
+              description: Field storage type
+            field-section:
+              type: string
+              description: Field section ID
+            weight:
+              type: number
+              description: 'Sort order for this field. Lower weight floats on top, higher weight sinks.'
+            required:
+              type: boolean
+              description: Is this field required?
+            public:
+              type: boolean
+              description: |
+                Allow everyone to see this field value and also show it in deeply linked presentations.
+            protected:
+              type: boolean
+              description: Field should only the editable by and visible for managers.
+            readonly:
+              type: boolean
+              description: Field is read-only
+            override:
+              type: string
+              description: This field definition overrides a field with this ID.
+            values:
+              type: object
+              description: Type specific values
+            settings:
+              type: object
+              description: Type specific settings
+          required:
+            - title
+            - registry-id
+            - field-id
+            - field-type
+            - weight
+    FieldType:
+      type: object
+      description: FieldType describes the different interpretations a custom field can have.
+      properties:
+        id:
+          type: string
+          description: Unique field type ID
+          readOnly: true
+        type:
+          type: string
+          description: Field storage type
+        section:
+          type: string
+          description: Field section ID
+        title:
+          type: string
+          description: Localized field type title
+        default:
+          description: Default value
+        max-length:
+          type: number
+          description: Maximum length of value stored in this field
+      required:
+        - id
+        - type
+    Invoice:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            start-date:
+              type: string
+              format: local-date
+              pattern: '^\d{4}-\d{2}-\d{2}$'
+              description: First day of invoiced interval
+            end-date:
+              type: string
+              format: local-date
+              pattern: '^\d{4}-\d{2}-\d{2}$'
+              description: Last day of invoiced interval
+            invoice-date:
+              type: string
+              format: local-date
+              pattern: '^\d{4}-\d{2}-\d{2}$'
+              description: 'The invoice date (date invoice was created, sent or booked).'
+            due-date:
+              type: string
+              format: local-date
+              pattern: '^\d{4}-\d{2}-\d{2}$'
+              description: Date when invoice is due for payment
+            currency:
+              type: string
+              description: Currency in ISO 4217 format
+              example: USD
+            total:
+              type: number
+              description: Total invoice amount
+            invoice-text:
+              type: string
+              description: Longer multi-line message to the invoice receiver
+            order-no:
+              type: string
+              description: Order number or code
+            invoice-no:
+              type: string
+              description: Invoice number or code. Upon successful transfer Timezynk sets the invoice-no to the invoice number provided by third-party service.
+            read-only:
+              type: boolean
+              description: 'When read-only is set to true, the invoice can no longer be edited. Only cancel and delete action can be performed. Timezynk sets read-only as true upon successful transfer to third-party service.'
+            canceled:
+              type: boolean
+              description: True if the invoice is canceled
+            export-data:
+              type: object
+              description: Structed invoice head data. Exact content dependent on target invoicing software.
+              properties:
+                generic:
+                  type: object
+                  description: invoice head data applicable to most target systems
+                  properties:
+                    customer-no:
+                      type: string
+                      description: Customer number or ID
+                    customer-name:
+                      type: string
+                      description: Customer name
+                    your-reference:
+                      type: string
+                      description: Your reference
+                    our-reference:
+                      type: string
+                      description: Our reference
+                    address-1:
+                      type: string
+                      description: Address line 1
+                    address-2:
+                      type: string
+                      description: Address line 2
+                    zip-code:
+                      type: string
+                      description: Address zip code
+                    city:
+                      type: string
+                      description: Address city
+                    country:
+                      type: string
+                      description: Address country
+          required:
+            - invoice-date
+            - export-data
+    InvoiceArticle:
+      allOf:
+        - $ref: '#/components/schemas/BaseArticle'
+        - type: object
+          properties:
+            sku:
+              type: string
+              description: Invoice article SKU (article code)
+              example: 001-21
+            discount:
+              type: number
+              description: Discount in fractions to apply  (0.1 means 10% discount)
+              example: 0.1
+            house-work:
+              type: boolean
+              description: Set to true if article is tax-deductible as house work
+              example: false
+    InvoiceExport:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            invoice-id:
+              type: string
+              description: Unique shift ID
+              format: ObjectId
+            target:
+              type: string
+              description: Target system for export
+              example: eAccounting
+            target-version:
+              type: string
+              description: Version of target system
+            target-invoice-id:
+              type: string
+              description: Invoice ID assigned by target system
+              example: 42
+            state:
+              type: string
+              description: State of export
+              enum:
+                - pending
+                - failed
+                - completed
+                - download
+            error-code:
+              type: string
+              description: 'Error code, if state equals "failed"'
+            error-message:
+              type: string
+              description: 'Error message, if state equals "failed"'
+          required:
+            - invoice-id
+            - target
+            - state
+    InvoiceRow:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            invoice-id:
+              type: string
+              description: Unique shift ID
+              format: ObjectId
+            weight:
+              type: number
+              description: 'Lighter rows float to the top of the invoice, heavier rows sink.'
+            sku:
+              type: string
+              description: SKU (article number)
+            description:
+              type: string
+              description: Date when invoice is due for payment
+            count:
+              type: number
+              description: Count
+            unit:
+              type: string
+              description: Unit of measurement
+              example: hours
+            price:
+              type: number
+              description: Price per item
+            currency:
+              type: string
+              description: 'Currency in ISO 4217 format, must match invoice head'
+              example: USD
+            discount:
+              type: number
+              description: 'Discount, in fraction. 0.05 == 5%.'
+              example: 0.05
+            house-work:
+              type: boolean
+              description: True if the invoice row concerns tax deductible house work
+              example: false
+            duration:
+              type: number
+              description: Duration in hours of underlying time report. Used for statistics only.
+              example: 2.5
+            report-ids:
+              type: array
+              description: IDs of underlying time reports that generated this row.
+              items:
+                type: string
+                format: ObjectId
+                example: 5bf6d703571d013b348713cb
+            export-data:
+              type: object
+              description: Structed invoice row data. Exact content dependent on target invoicing software.
+              properties:
+                generic:
+                  type: object
+                  description: invoice row data applicable to most target systems
+                  properties:
+                    cost-center:
+                      type: string
+                      description: Cost center for book-keeping this row
+                      example: 28
+                    project-code:
+                      type: string
+                      description: Project code for book-keeping this row
+                      example: PL/I
+          required:
+            - invoice-id
+            - weight
+            - export-data
+    LevelEntry:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            set-credit-to:
+              description: Force the time credit to this value. Used for positive balances.
+              type: number
+            set-debit-to:
+              description: Force the time debit to this value. Used for negative balances.
+              type: number
+            date:
+              description: Date
+              type: string
+              format: ISO Date
+              example: '2020-04-24'
+            user-id:
+              description: User ID
+              type: string
+              format: ObjectId
+              example: 5ea2c7964169b4ada9d6c7c8
+    LogItem:
+      type: object
+      properties:
+        log-info:
+          type: object
+          required:
+            - id
+            - type
+            - tstamp
+            - user-id
+            - collection
+            - company-id
+          properties:
+            id:
+              type: string
+              format: ObjectId
+              description: Unique ID for this change
+            type:
+              type: string
+              description: Type of change
+              enum:
+                - create
+                - update
+                - delete
+            tstamp:
+              type: number
+              format: timestamp
+              description: Timestamp for this change in milliseconds since the Unix Epoch
+            user-id:
+              type: string
+              format: ObjectId
+              description: ID of the user who did the change
+            collection:
+              type: string
+              description: Name of the collection that contains the changed document
+            company-id:
+              type: string
+              format: ObjectId
+              description: Company ID that owns the changed document
+        other:
+          type: string
+          description: 'All properties from the created, changed or deleted source document'
+        original:
+          type: string
+          description: 'All properties from the created, changed or deleted source document'
+        document:
+          type: string
+          description: 'All properties from the created, changed or deleted source document'
+        properties:
+          type: string
+          description: 'All properties from the created, changed or deleted source document'
+      required:
+        - log-info
+    Order:
+      allOf:
+        - $ref: '#/components/schemas/BaseOrder'
+        - properties:
+            message:
+              type: string
+              description: Message entered by the client when creating the order.
+            client-id:
+              type: string
+              description: |
+                Id of the company owning the request
+                Should almost always be set to the current user's company-id.
+              format: ObjectId
+            client:
+              $ref: '#/components/schemas/Client'
+              description: Name and contact defails of the client owning the request.
+            order-ref-id:
+              type: string
+              description: Id referncing supplier- and client-orders. Only for internal use.
+              format: ObjectId
+              readOnly: true
+            order-no:
+              type: string
+              description: The order number.
+              readOnly: true
+            supplier-id:
+              type: string
+              description: |
+                Id of the company supplying the order.
+                When creating an order, the `supplier-id` is found in the order form associated with the order to be created.
+                For interal orders set `supplier-id` to the same value as `client-id`
+              format: ObjectId
+          required:
+            - form-id
+            - form-vid
+            - client-id
+            - supplier-id
+            - shifts
+            - values
+            - email
+    OrderClient:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - properties:
+            email:
+              type: string
+              description: The order client's email.
+            client-company-id:
+              type: string
+              format: ObjectId
+              description: Id representing the client's company-id.
+            supplier-company-id:
+              type: string
+              format: ObjectId
+              description: 'Id representing a supplier''s company-id, if set.'
+            client-title:
+              type: string
+              description: Title of the order client.
+            supplier-title:
+              type: string
+              description: Title of the order supplier.
+            order-forms:
+              type: array
+              description: List of order form ids which the client has access to view.
+              items:
+                type: string
+                format: ObjectId
+            values:
+              type: object
+              description: Client specific values which can be inherited into an order if specified in the order form.
+            supplier-code:
+              type: string
+              description: 'The supplier code is used to invite new clients. The code can only be used once, and to be able the user as a client, the email is required to match the invited users email.'
+      example:
+        id: 5dde7024eded8872705aabcd
+        vid: 5dde7024eded8872705aabce
+        company-id: 5dde7024eded8872705aabcf
+        created: 1558604010307
+        created-by: string
+        valid-from: 1558604030403
+        valid-to: 0
+        changed-by: string
+        archived: null
+        email: name@example.com
+        client-company-id: 5dde7024eded8872705aabd1
+        supplier-company-id: null
+        client-title: Client title
+        supplier-title: Supplier title
+        order-forms:
+          - 5dde7024eded8872705a0123
+        values: {}
+        supplier-code: 5dde7024eded8872705aabd2
+    OrderForm:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - properties:
+            supplier-id:
+              type: string
+              description: |
+                Id of the company supplying the order form.
+                Should be used to set `order.supplier-id` when creating a new order.
+              format: ObjectId
+              readOnly: true
+            title:
+              type: string
+              description: Name of the order form
+            shift-fields:
+              type: array
+              description: List of shifts fields related to the order.
+              items:
+                $ref: '#/components/schemas/OrderFormShiftField'
+            fields:
+              type: array
+              description: List of additional custom fields related to the order.
+              items:
+                $ref: '#/components/schemas/OrderFormCustomField'
+      example:
+        id: 5dde7024eded8872705a0001
+        vid: 5dde71e4c9e77c0001730001
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788000
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        supplier-id: ''
+        title: test form
+        shift-fields: []
+        fields: []
+    OrderFormCustomField:
+      allOf:
+        - $ref: '#/components/schemas/OrderFormField'
+        - properties:
+            field-template-id:
+              type: string
+              format: ObjectId
+              description: Id of the registry field type used
+          required:
+            - field-template-id
+    OrderFormField:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier representing a specific custom field
+          format: ObjectId
+          readOnly: true
+        field-type:
+          type: string
+          description: Field storage type
+        required:
+          type: boolean
+          description: Is this field required?
+        public:
+          type: boolean
+          description: |
+            Allow the client to see this field.
+        protected:
+          type: boolean
+          description: Field should only the editable by and visible for the supplier.
+        readonly:
+          type: boolean
+          description: Field is read-only
+        values:
+          type: object
+          description: Type specific values
+        settings:
+          type: object
+          description: Type specific settings
+        title:
+          type: string
+          description: Human-readable field title
+      required:
+        - title
+    OrderFormShiftField:
+      allOf:
+        - $ref: '#/components/schemas/OrderFormField'
+        - properties:
+            field-id:
+              type: string
+              format: ObjectId
+              description: Id of the field instance
+          required:
+            - field-id
+    OrderSupplier:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'Unique identifier representing a specific Supplier. If supplier-company-id is set, that value is returned instead of the object id.'
+          format: ObjectId
+          readOnly: true
+        vid:
+          type: string
+          description: Unique identifier representing a specific version of an item
+          format: ObjectId
+          readOnly: true
+        company-id:
+          type: string
+          format: ObjectId
+          description: Id of the company who owns this item.
+        archived:
+          type: integer
+          description: 'Timestamp in milliseconds for when the object was archived, or null if it is still active'
+          nullable: true
+        supplier-company-id:
+          type: string
+          format: ObjectId
+          description: Id representing the supplier's company-id.
+        client-company-id:
+          type: string
+          format: ObjectId
+          description: 'Id representing a client''s company-id, if set.'
+        contact-name:
+          type: string
+          description: The suppliers's contact name.
+        contact-phone:
+          type: string
+          description: The suppliers's contact phone.
+        contact-email:
+          type: string
+          description: The suppliers's contact email.
+        supplier-title:
+          type: string
+          description: Title of the supplier.
+        client-title:
+          type: string
+          description: Title of the order client.
+        order-forms:
+          type: array
+          description: List of order form ids which the client has access to view.
+          items:
+            type: string
+            format: ObjectId
+        values:
+          type: object
+          description: Supplier specific values which can be inherited into an order if specified in the order form.
+        supplier-code:
+          type: string
+          description: 'The supplier code is used to invite new suppliers. The code can only be used once, and to be able the user as a client, the email is required to match the invited users email.'
+      example:
+        id: 5dde7024eded8872705aabcd
+        vid: 5dde7024eded8872705aabce
+        company-id: 5dde7024eded8872705aabcf
+        created: 1558604010307
+        created-by: string
+        valid-from: 1558604030403
+        changed-by: string
+        archived: null
+        email: name@example.com
+        client-company-id: null
+        supplier-company-id: 5dde7024eded8872705aabd1
+        contact-name: Firstname Surname
+        contact-phone: 0123-12343
+        contact-email: name@example.com
+        client-title: Client title
+        supplier-title: SupplierTitle
+        order-forms:
+          - 5dde7024eded8872705a0123
+        values: {}
+        supplier-code: 5dde7024eded8872705aabd2
+    OutgoingRfq:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - $ref: '#/components/schemas/BaseOrder'
+        - properties:
+            status:
+              type: string
+              description: Quote shift status
+              enum:
+                - OPEN
+                - SENT
+              default: OPEN
+              readOnly: true
+            expires:
+              type: number
+              description: Timestamp in milliseconds for when the rfq expires
+            client:
+              $ref: '#/components/schemas/Client'
+              description: Name and contact defails of the client owning the request.
+            rfq-no:
+              type: string
+              description: The RfQ number
+              format: ObjectId
+              readOnly: true
+      example:
+        id: 5dde7024eded8872705a0001
+        vid: 5dde71e4c9e77c0001730001
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        valid-to: 0
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        archived: 0
+        status: OPEN
+        form-id: 5dde7024eded8872705a1ff7
+        form-vid: 5dde71e4c9e77c000173dd03
+        original-duplicity: 3
+        values: {}
+        shift-dates:
+          - '2019-11-29'
+          - '2019-11-30'
+          - '2019-11-28'
+        expires: 1558604010307
+        client:
+          phone: 0123-405060
+          email: name@company.com
+          company: Company AB
+          name: Firstname Surname
+        rfq-no: '13'
+    PermissionsObject:
+      type: object
+      properties:
+        schedule:
+          type: string
+          format: CombinationID
+          description: Tag combination required for being scheduled. See User/combinations.
+        report:
+          type: string
+          format: CombinationID
+          description: Tag combination required for creating independent time reports. See User/combinations.
+    Preference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Setting ID
+        value:
+          type: object
+          description: 'Value can be anything, both primitive types and arrays and objects.'
+      required:
+        - id
+    QuoteShift:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - $ref: '#/components/schemas/BaseShift'
+        - type: object
+          properties:
+            status:
+              type: string
+              description: Quote shift status
+              enum:
+                - DRAFT
+                - SENT
+              default: DRAFT
+              readOnly: true
+            client-id:
+              type: string
+              description: |
+                Id of the company owning the RfQ.
+              format: ObjectId
+            outgoing-rfq-id:
+              type: string
+              description: |
+                Id of the rfq parent this rfq was created from.
+              format: ObjectId
+            incoming-rfq-id:
+              type: string
+              description: |
+                Id of the RfQ.
+              format: ObjectId
+            rfq-shift-id:
+              type: string
+              format: ObjectId
+              description: The corresponding shift-id from the RfQ.
+            booked-users:
+              type: array
+              description: A list containing exactly one user id.
+              items:
+                type: string
+                format: ObjectId
+            booked-user:
+              type: object
+              description: Suggested user for this shift
+              properties:
+                name:
+                  type: string
+                  description: Name of worker
+                id-no:
+                  type: string
+                  description: National identification number (personnummer) of the worker
+              required:
+                - name
+                - id-no
+          required:
+            - rfq-shift-id
+            - booked-users
+            - booked-user
+            - outgoing-rfq-id
+            - incoming-rfq-id
+      example:
+        id: 5dde7024eded8872705a0000
+        vid: 5dde71e4c9e77c0001730000
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788000
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        valid-to: 0
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        archived: 0
+        start: '2019-04-30T15:00:00.000'
+        end: '2019-04-30T17:00:00.000'
+        breaks:
+          - start: '2019-04-30T16:00:00.000'
+            stop: '2019-04-30T16:15:00.000'
+        values: {}
+        group-id: ''
+        status: DRAFT
+        client-id: 5dde6e21c9e77c0001a1e3a7
+        outgoing-rfq-id: 5dde7024eded8872705a0001
+        incoming-rfq-id: 5dde7024eded8872705a0002
+        rfq-shift-id: 5dde7024eded8872705a0011
+        booked-users:
+          - 5dde7024eded8872705a0012
+        booked-user:
+          name: Firstname Surname
+          id-no: 851103-1234
+    QuoteShiftsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            status:
+              type: string
+              description: Quote shifts state
+              enum:
+                - ACCEPTED
+                - REJECTED
+                - CONFIRMED
+                - REFUSED
+            supplier-id:
+              type: string
+              description: |
+                Id of the company owning the quote shifts.
+              format: ObjectId
+            quote-shift-ids:
+              type: array
+              description: List of quote shift ids.
+              items:
+                type: string
+                format: ObjectId
+            outgoing-rfq-id:
+              type: string
+              description: |
+                Id of the rfq parent this rfq was created from.
+              format: ObjectId
+            incoming-rfq-id:
+              type: string
+              description: |
+                Id of the RfQ.
+              format: ObjectId
+          required:
+            - status
+            - supplier-id
+            - quote-shift-ids
+            - outgoing-rfq-id
+            - incoming-rfq-id
+      example:
+        id: 5dde7024eded8872705a0000
+        vid: 5dde71e4c9e77c0001730000
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788000
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        valid-to: 0
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        archived: 0
+        status: ACCEPTED
+        supplier-id: 5dde6e21c9e77c0001a1e3a7
+        quote-shift-ids:
+          - 5dde7024eded8872705a0011
+        outgoing-rfq-id: 5dde7024eded8872705a0001
+        incoming-rfq-id: 5dde7024eded8872705a0002
+    Registry:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            title:
+              type: string
+              description: Localized registry title
+            description:
+              type: string
+              description: Human-readable registry description
+            icon:
+              type: string
+              description: Icon name
+            read-only:
+              type: boolean
+              description: 'Mark this registry as read-only, to prevent changes from the front-end'
+          required:
+            - title
+    RegistryData:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            title:
+              type: string
+              description: Human-readable title
+            registry-id:
+              type: string
+              format: ObjectId
+              description: Data belongs to this registry
+            permissions:
+              $ref: '#/components/schemas/PermissionsObject'
+            values:
+              type: object
+              description: Values for custom fields
+          required:
+            - title
+            - registry-id
+    Rfq:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - $ref: '#/components/schemas/BaseOrder'
+        - $ref: '#/components/schemas/OutgoingRfq'
+        - properties:
+            client-id:
+              type: string
+              description: |
+                Id of the company owning the RfQ.
+              format: ObjectId
+            outgoing-rfq-id:
+              type: string
+              description: |
+                Id of the rfq parent this rfq was created from.
+              format: ObjectId
+          required:
+            - form-id
+            - form-vid
+            - outgoing-rfq-id
+            - client-id
+            - values
+      example:
+        id: 5dde7024eded8872705a0002
+        vid: 5dde71e4c9e77c0001730002
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788000
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        valid-to: 0
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        archived: 0
+        form-id: 5dde7024eded8872705a1ff7
+        form-vid: 5dde71e4c9e77c000173dd03
+        original-duplicity: 3
+        values: {}
+        shift-dates:
+          - '2019-11-29'
+          - '2019-11-30'
+          - '2019-11-28'
+        expires: 1233545
+        client:
+          phone: 0123-405060
+          email: name@company.com
+          company: Company AB
+          name: Firstname Surname
+        rfq-no: '13'
+        client-id: 5dde7024eded8872705a0017
+        outgoing-rfq-id: 5dde7024eded8872705a0001
+    RfqShift:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - $ref: '#/components/schemas/BaseShift'
+        - type: object
+          properties:
+            duplicity:
+              type: number
+              description: Maximum (and desired) number of booked users
+              default: 1
+            accepted-quote-shifts:
+              type: array
+              description: List of accepted quote shifts for this RfQ shift
+              readOnly: true
+              items:
+                type: string
+                format: ObjectId
+            confirmed-quote-shifts:
+              type: array
+              description: List of confirmed quote shifts for this RfQ shift
+              readOnly: true
+              items:
+                type: string
+                format: ObjectId
+            shift-id:
+              type: string
+              format: ObjectId
+              description: The corresponding shift-id from which this RfQshift was created.
+            outgoing-rfq-id:
+              type: string
+              format: ObjectId
+              description: ID of order that created the shift
+          required:
+            - outgoing-rfq-id
+            - shift-id
+            - start
+            - end
+      example:
+        id: 5dde7024eded8872705a0000
+        vid: 5dde71e4c9e77c0001730000
+        company-id: 5dde6e21c9e77c0001a1e3a7
+        created: 1574858788000
+        created-by: 5dde6e21c9e77c0001a1e3b0
+        valid-from: 1574859236203
+        valid-to: 0
+        changed-by: 5dde6e21c9e77c0001a1e3b0
+        archived: 0
+        start: '2019-04-30T15:00:00.000'
+        end: '2019-04-30T17:00:00.000'
+        breaks:
+          - start: '2019-04-30T16:00:00.000'
+            stop: '2019-04-30T16:15:00.000'
+        values: {}
+        group-id: ''
+        duplicity: 4
+        accepted-quote-shifts:
+          - 5dde7024eded8872705a0012
+          - 5dde7024eded8872705a0013
+        confirmed-quote-shifts:
+          - 5dde7024eded8872705a0014
+        shift-id: 5dde7024eded8872705a0012
+        outgoing-rfq-id: 5dde7024eded8872705a0013
+    SalaryArticle:
+      allOf:
+        - $ref: '#/components/schemas/BaseArticle'
+        - type: object
+          properties:
+            code:
+              type: string
+              description: Salary article code
+              example: OB1
+            average-cost:
+              type: number
+              description: Average cost in article currency
+              example: 12.5
+    Shift:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            duplicity:
+              type: number
+              description: Maximum (and desired) number of booked users
+              default: 1
+            withhold:
+              type: boolean
+              description: Hide shift from users making it visible for managers only
+              readOnly: true
+            order-id:
+              type: string
+              format: ObjectId
+              description: ID of order that created the shift
+              readOnly: true
+            booked-users:
+              type: array
+              description: List of booked users
+              readOnly: true
+              items:
+                type: string
+                format: ObjectId
+            booked:
+              type: number
+              readOnly: true
+              description: Number of booked users
+            status:
+              type: string
+              description: Shift status
+              enum:
+                - active
+                - inactive
+                - duplicate
+                - order-outgoing
+              default: active
+              readOnly: true
+            group-id:
+              type: string
+              nullable: true
+              format: ObjectId
+              description: Common group ID for grouping several shifts together
+              example: null
+            mirror-shift-id:
+              type: string
+              format: ObjectId
+              description: The corresponding shift-id for the client or supplier when this shift is part of an order
+              readOnly: true
+            relations:
+              type: object
+              properties:
+                incoming-order:
+                  $ref: '#/components/schemas/ShiftRelation'
+                outgoing-order:
+                  $ref: '#/components/schemas/ShiftRelation'
+                outgoing-rfq:
+                  $ref: '#/components/schemas/ShiftRelation'
+          required:
+            - start
+            - end
+    ShiftBookingRequest:
+      type: object
+      properties:
+        shift-selector:
+          type: object
+          properties:
+            ids:
+              type: array
+              description: Shift IDs
+              items:
+                type: string
+                format: ObjectId
+            interval:
+              $ref: '#/components/schemas/DateSelector'
+            rolling-id:
+              type: string
+              format: ObjectId
+            rolling-shift-id:
+              type: string
+              format: ObjectId
+        not-booked-user-ids:
+          type: array
+          description: User IDs that should not be booked on these shifts
+          items:
+            type: string
+            format: ObjectId
+        booked-user-ids:
+          type: array
+          description: 'User IDs that should be booked on these shift, sorted in the order they should be booked'
+          items:
+            type: string
+            format: ObjectId
+        conflict-policy:
+          type: string
+          description: How to proceed if a user is already booked on an overlapping shift.
+          enum:
+            - skip
+            - move
+            - double-book
+          default: skip
+      required:
+        - shift-selector
+    ShiftBookingResponse:
+      type: object
+      properties:
+        updated-shifts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Shift'
+        unresolved-conflicts:
+          type: array
+          items:
+            type: object
+            properties:
+              user-id:
+                type: string
+                format: ObjectId
+              requested-shift-id:
+                type: string
+                format: ObjectId
+              conflict-shift-ids:
+                type: array
+                items:
+                  type: string
+                  format: ObjectId
+    ShiftPublishRequest:
+      type: object
+      properties:
+        shift-selector:
+          type: object
+          description: Shifts matching selector will be ensured to be published.
+          properties:
+            ids:
+              type: array
+              description: Shift IDs
+              items:
+                type: string
+                format: ObjectId
+            interval:
+              $ref: '#/components/schemas/DateSelector'
+            rolling-id:
+              type: string
+              format: ObjectId
+            rolling-shift-id:
+              type: string
+              format: ObjectId
+    ShiftPublishResponse:
+      type: object
+      properties:
+        updated-shifts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Shift'
+    ShiftRelation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: ObjectId
+        shift-id:
+          type: string
+          format: ObjectId
+    ShiftUnpublishRequest:
+      type: object
+      properties:
+        shift-selector:
+          type: object
+          description: Shifts matching selector will be ensured to be unpublished.
+          properties:
+            ids:
+              type: array
+              description: Shift IDs
+              items:
+                type: string
+                format: ObjectId
+            interval:
+              $ref: '#/components/schemas/DateSelector'
+            rolling-id:
+              type: string
+              format: ObjectId
+            rolling-shift-id:
+              type: string
+              format: ObjectId
+    Timereport:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            start:
+              type: string
+              format: local-date-time
+              pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+              description: 'Start of time report without time zone (i.e. 2019-04-30T15:41:00.000)'
+            end:
+              type: string
+              format: local-date-time
+              pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$'
+              description: 'End of time report without time zone (i.e. 2019-04-30T15:41:00.000)'
+            breaks:
+              type: array
+              description: List of breaks
+              items:
+                $ref: '#/components/schemas/Break'
+            user-id:
+              type: string
+              description: User ID
+              format: ObjectId
+            shift-id:
+              type: string
+              description: Reported against shift with this id.
+              format: ObjectId
+            values:
+              type: object
+              description: Values for custom registry fields
+          required:
+            - start
+            - end
+            - user-id
+    TokenInfo:
+      type: object
+      properties:
+        user-id:
+          type: string
+          description: ID of currently logged in user
+        role:
+          type: string
+          description: Role of currently logged in user
+        permissions:
+          type: string
+          description: Active set of permissions
+        modules:
+          type: string
+          description: Enabled Timezynk modules
+        company-id:
+          type: string
+          description: ID of current company
+        created:
+          type: number
+          description: Timestamp in milliseconds for when the token was created
+        expires:
+          type: number
+          description: Timestamp in milliseconds for when the token will expire
+        issued-by:
+          type: string
+          description: ID if issuing server
+        audience:
+          type: string
+          description: ID of intended audience for the token
+    User:
+      allOf:
+        - $ref: '#/components/schemas/BasicObject'
+        - type: object
+          properties:
+            username:
+              type: string
+              description: Unique username used for logging in
+            role:
+              type: string
+              description: The role for this user
+            email:
+              type: string
+              description: User email address
+              format: email
+            employee-no:
+              type: string
+              description: User employee number
+            id-no:
+              type: string
+              description: |
+                Users [National Indentification Number](https://en.wikipedia.org/wiki/National_identification_number)
+            bank-account:
+              type: string
+              description: Users bank account for salary payments
+            department:
+              type: string
+              description: department
+            company:
+              type: string
+              description: company for salary export
+            country-code:
+              type: number
+              description: country code for mobile number
+            mobile:
+              type: string
+              description: mobile number
+            work-phone:
+              type: string
+              description: work phone number
+            home-phone:
+              type: string
+              description: home phone number
+            lang:
+              type: string
+              description: 'users preferred language (en,sv,da or nb currently supported)'
+            address:
+              type: string
+              description: users street address
+            address2:
+              type: string
+              description: users second address line
+            zip:
+              type: string
+              description: users zip code
+            city:
+              type: string
+              description: users city
+            country:
+              type: string
+              description: users country code
+            int-mobile:
+              type: string
+              readOnly: true
+              description: users full mobile with country code applied
+            relative-name:
+              type: string
+              description: name of relative
+            relative-phone:
+              type: string
+              description: phone number of relative
+            notes:
+              type: string
+              description: notes for this user
+            start:
+              type: string
+              format: date
+              description: start date for users employment
+            end:
+              type: string
+              format: date
+              description: end date for users employment
+            permissions:
+              type: array
+              description: List of tags
+              items:
+                type: string
+            combinations:
+              type: array
+              description: List of users tag combinations
+              readOnly: true
+              items:
+                type: string
+            values:
+              type: object
+              description: Values for custom registry fields
+            last-login:
+              type: number
+              description: last login timestamp (milliseconds since unix epoch)
+            last-access:
+              type: number
+              description: last access timestamp (milliseconds since unix epoch)
+            first-login:
+              type: number
+              description: first login timestamp (milliseconds since unix epoch)
+          required:
+            - username
+            - role
+            - email
+    UserInfo:
+      type: object
+      properties:
+        sub:
+          type: string
+          description: User ID
+        name:
+          type: string
+          description: Full name
+        email:
+          type: string
+          description: User email
+          format: email
+        email_verified:
+          type: boolean
+          description: Is email email verified
+        locale:
+          type: string
+          description: User preferred language
+        phone_number:
+          type: string
+          description: Full user phone number with international prefix
+        updated_at:
+          type: integer
+          description: Timestamp in seconds for when the user was last changed
+        picture:
+          type: string
+          description: URL to users profile picture
+  parameters:
+    criteriaParam:
+      in: query
+      name: 'interval[match]'
+      description: Define how to match the interval
+      schema:
+        type: string
+        enum:
+          - intersects
+          - start-in
+        default: start-in
+    endParam:
+      in: query
+      name: 'interval[end]'
+      description: End of matching interval
+      required: true
+      schema:
+        type: string
+        format: date
+    startParam:
+      in: query
+      name: 'interval[start]'
+      description: Start of matching interval
+      required: true
+      schema:
+        type: string
+        format: date
+  requestBodies:
+    Registry:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Registry'
+      required: true
+    RegistryData:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegistryData'
+      required: true
+    Timereport:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Timereport'
+      required: true
+  securitySchemes:
+    TZApiAuth:
+      type: oauth2
+      description: OAuth2 API authentication
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://api.timezynk.com/api/oauth2/v1/auth'
+          tokenUrl: 'https://api.timezynk.com/api/oauth2/v1/token'
+          scopes:
+            'read:company': Read all company information
+            'write:company': Write all company information
+            'read:user': Read all user information
+            'write:user': Write all user information
+            'write:availability': 'Create, update and delete availability for logged in user'
+        clientCredentials:
+          tokenUrl: 'https://api.timezynk.com/api/oauth2/v1/token'
+          scopes:
+            'read:company': Read all company information
+            'write:company': Write all company information

@@ -59,9 +59,9 @@ example:
   vid: "5dde7024eded8872705aabce"
   company-id: "5dde7024eded8872705aabcf"
   created: 1558604010307
-  created-by: "string"
+  created-by: "5ec23c9eaa389eb6070c3ba1"
   valid-from: 1558604030403
-  changed-by: "string"
+  changed-by: "5ec23c9eaa389eb6070c3ba2"
   archived: null
   email: "name@example.com"
   client-company-id: null

@@ -3130,7 +3130,9 @@ paths:
         '200':
           description: Delete successful
         '400':
-          description: Linked to timereport
+          description: Cannot delete shift linked to a timereport
+        '500':
+          description: 'Repetition mode set to ''following'', but no repetition id set'
   /timereports:
     get:
       summary: Fetch time reports

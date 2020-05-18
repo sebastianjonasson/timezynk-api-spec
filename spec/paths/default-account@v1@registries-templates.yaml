@@ -1,0 +1,15 @@
+get:
+  summary: Registries templates
+  description: |
+    Get registries templates for default account
+  tags:
+    - Sign up
+  responses:
+    200:
+      description: An array of registries templates
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/RegistryTemplate"

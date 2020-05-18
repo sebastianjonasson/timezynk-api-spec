@@ -1,0 +1,15 @@
+get:
+  summary: Salary integrations
+  description: |
+    Get possible integrations options for default setup
+  tags:
+    - Sign up
+  responses:
+    200:
+      description: An array of integration modules
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/IntegrationModule"

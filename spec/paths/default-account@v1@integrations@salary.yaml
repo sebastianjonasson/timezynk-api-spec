@@ -3,7 +3,7 @@ get:
   description: |
     Get possible integrations options for default setup
   tags:
-    - Default-account  
+    - Sign up
   responses:
     200:
       description: An array of integration modules

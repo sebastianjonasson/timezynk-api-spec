@@ -3,7 +3,7 @@ post:
   description: |
     Initialize default account for the company
   tags:
-    - Default-account
+    - Sign up
   requestBody:
     description: Default account setup.
     required: true
@@ -18,10 +18,8 @@ post:
               format: ObjectId
             salary-integration:
               type: string
-              format: ObjectId
             invoice-integration:
               type: string
-              format: ObjectId
           required:
             - registry-template
             - salary-integration

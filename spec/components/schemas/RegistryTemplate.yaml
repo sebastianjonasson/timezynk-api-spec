@@ -2,7 +2,7 @@ type: object
 properties:
   id:
     type: string
-    format: ObjectID
+    format: ObjectId
   template:
     type: string
     description: Template name

@@ -3,7 +3,7 @@ get:
   description: |
     Get registries templates for default account
   tags:
-    - Default-account  
+    - Sign up
   responses:
     200:
       description: An array of registries templates

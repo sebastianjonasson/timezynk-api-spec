@@ -13,12 +13,11 @@ post:
           type: object
           description: Data of the default account setup form for initializing a new company.
           properties:
-            registry-template:
+            registry-template-id:
               type: string
-              format: ObjectId
-            salary-integration:
+            salary-integration-id:
               type: string
-            invoice-integration:
+            invoice-integration-id:
               type: string
           required:
             - registry-template

@@ -1433,6 +1433,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  '/orders/v2/suppliers/{orderSupplierId}/send-invite':
+    post:
+      summary: Send invite email
+      description: Endpoint for sending an invitation email to a created order supplier.
+      tags:
+        - Order Suppliers
+      parameters:
+        - name: orderSupplierId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        '200':
+          description: Array of order supplier forms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderForm'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   '/orders/v2/suppliers/confirm/{supplierCode}':
     put:
       summary: Confirm supplier
@@ -3968,13 +3996,17 @@ components:
             client-company-id:
               type: string
               format: ObjectId
-              description: Id to representing the client's company-id
+              description: Id representing the client's company-id.
+            supplier-company-id:
+              type: string
+              format: ObjectId
+              description: 'Id representing a supplier''s company-id, if set.'
             client-title:
               type: string
-              description: Title of the order client
+              description: Title of the order client.
             supplier-title:
               type: string
-              description: Title of the order supplier
+              description: Title of the order supplier.
             order-forms:
               type: array
               description: List of order form ids which the client has access to view.
@@ -3987,6 +4019,25 @@ components:
             supplier-code:
               type: string
               description: 'The supplier code is used to invite new clients. The code can only be used once, and to be able the user as a client, the email is required to match the invited users email.'
+      example:
+        id: 5dde7024eded8872705aabcd
+        vid: 5dde7024eded8872705aabce
+        company-id: 5dde7024eded8872705aabcf
+        created: 1558604010307
+        created-by: string
+        valid-from: 1558604030403
+        valid-to: 0
+        changed-by: string
+        archived: null
+        email: name@example.com
+        client-company-id: 5dde7024eded8872705aabd1
+        supplier-company-id: null
+        client-title: Client title
+        supplier-title: Supplier title
+        order-forms:
+          - 5dde7024eded8872705a0123
+        values: {}
+        supplier-code: 5dde7024eded8872705aabd2
     OrderForm:
       allOf:
         - $ref: '#/components/schemas/BasicObject'
@@ -4083,9 +4134,30 @@ components:
       properties:
         id:
           type: string
-          description: Unique identifier representing a specific Supplier.
+          description: 'Unique identifier representing a specific Supplier. If supplier-company-id is set, that value is returned instead of the object id.'
           format: ObjectId
           readOnly: true
+        vid:
+          type: string
+          description: Unique identifier representing a specific version of an item
+          format: ObjectId
+          readOnly: true
+        company-id:
+          type: string
+          format: ObjectId
+          description: Id of the company who owns this item.
+        archived:
+          type: integer
+          description: 'Timestamp in milliseconds for when the object was archived, or null if it is still active'
+          nullable: true
+        supplier-company-id:
+          type: string
+          format: ObjectId
+          description: Id representing the supplier's company-id.
+        client-company-id:
+          type: string
+          format: ObjectId
+          description: 'Id representing a client''s company-id, if set.'
         contact-name:
           type: string
           description: The suppliers's contact name.
@@ -4098,20 +4170,42 @@ components:
         supplier-title:
           type: string
           description: Title of the supplier.
+        client-title:
+          type: string
+          description: Title of the order client.
         order-forms:
           type: array
           description: List of order form ids which the client has access to view.
           items:
             type: string
             format: ObjectId
+        values:
+          type: object
+          description: Supplier specific values which can be inherited into an order if specified in the order form.
+        supplier-code:
+          type: string
+          description: 'The supplier code is used to invite new suppliers. The code can only be used once, and to be able the user as a client, the email is required to match the invited users email.'
       example:
         id: 5dde7024eded8872705aabcd
+        vid: 5dde7024eded8872705aabce
+        company-id: 5dde7024eded8872705aabcf
+        created: 1558604010307
+        created-by: string
+        valid-from: 1558604030403
+        changed-by: string
+        archived: null
+        email: name@example.com
+        client-company-id: null
+        supplier-company-id: 5dde7024eded8872705aabd1
         contact-name: Firstname Surname
         contact-phone: 0123-12343
         contact-email: name@example.com
+        client-title: Client title
         supplier-title: SupplierTitle
         order-forms:
           - 5dde7024eded8872705a0123
+        values: {}
+        supplier-code: 5dde7024eded8872705aabd2
     OutgoingRfq:
       allOf:
         - $ref: '#/components/schemas/BasicObject'

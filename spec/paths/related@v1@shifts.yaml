@@ -1,0 +1,65 @@
+get:
+  summary: Fetch shifts with related collections
+  description: |
+    Endpoint for fetching data from multiple collections related to shifts. Will fetch data in the specified interval along with orphaned* items.  
+
+    \* *An item not in the current interval, but related to a shift, timereport, or inquiry.*
+  parameters:
+    - $ref: "#/components/parameters/startParam"
+    - $ref: "#/components/parameters/endParam"
+    - $ref: "#/components/parameters/criteriaParam"
+    - name: inquiries
+      description: Specifies if data in the inquiries collection should be included in the response. Will fetch inquiries in the specified interval and include orphaned inquiries.
+      in: query
+      schema:
+        type: boolean
+        example: true
+        default: false
+    - name: timereports
+      description: Specifies if data in the timereports collection should be included in the response. Will fetch timereports in the specified interval and include orphaned timereports.
+      in: query
+      schema:
+        type: boolean
+        example: true
+        default: false
+    - name: approvals
+      description: Specifies if data in the approvals collection should be included in the response. Will fetch approvals related to the fetched timereports. Requires the timereport parameter to be set to true.
+      in: query
+      schema:
+        type: boolean
+        example: true
+        default: false
+    - name: availabilities
+      description: Specifies if data in the availabilities collection should be included in the response. Will fetch availabilities in the specified interval.
+      in: query
+      schema:
+        type: boolean
+        example: true
+        default: false
+  tags:
+    - Related Collections
+  responses:
+    '200':
+      description: Data from multiple collections
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              shifts:
+                $ref: "#/components/schemas/Shift"
+              timereports:
+                $ref: "#/components/schemas/Timereport"
+              approvals:
+                $ref: "#/components/schemas/Approval"
+              inquiries:
+                $ref: "#/components/schemas/Inquiry"
+              availabilities:
+                $ref: "#/components/schemas/Availability"
+          example: {
+            shifts: [],
+            timereports: [],
+            approvals: [],
+            inquiries: [],
+            availabilities: []
+          }

@@ -7,3 +7,4 @@ schema:
     - intersects
     - start-in
   default: start-in
+  example: 'start-in'

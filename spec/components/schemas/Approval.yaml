@@ -1,0 +1,15 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      approved-id:
+        type: string
+        description: Id of the approved timereport
+        format: ObjectId
+      approved-vid:
+        type: string
+        description: Vid of the approved timereport
+        format: ObjectId
+    required:
+      - approved-id
+      - approved-vid

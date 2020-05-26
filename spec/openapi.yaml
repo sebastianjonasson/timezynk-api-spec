@@ -46,6 +46,9 @@ tags:
   - name: Order Forms
   - name: Order Clients
   - name: Order Suppliers
+  - name: Related Collections
+    description:
+        API for fetching multiple collections in a single request.
   - name: Experimental
     description:
       These APIs are experimental and and may be changed at any time without

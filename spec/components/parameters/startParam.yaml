@@ -5,3 +5,4 @@ required: true
 schema:
   type: string
   format: date
+  example: '2020-01-01'

@@ -1,6 +1,8 @@
 type: object
 properties:
-  id: string
+  id:
+    type: string
+    description: ID for the integration
   name:
     type: string
     description: Name of the integration
@@ -11,4 +13,3 @@ properties:
     type: string
     description: Link to the integration partner logo
 
- 

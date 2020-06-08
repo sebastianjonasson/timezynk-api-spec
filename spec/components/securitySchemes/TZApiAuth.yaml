@@ -1,4 +1,5 @@
 type: oauth2
+scheme: bearer
 description: OAuth2 API authentication
 flows:
   authorizationCode:

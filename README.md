@@ -6,8 +6,8 @@
 - Documentation(ReDoc): https://developer.timezynk.com/
 - SwaggerUI: https://developer.timezynk.com/swagger-ui/
 - Look full spec:
-    + JSON https://developer.timezynk.com/swagger.json
-    + YAML https://developer.timezynk.com/swagger.yaml
+    + JSON https://developer.timezynk.com/openapi.json
+    + YAML https://developer.timezynk.com/openapi.yaml
 - Preview spec version for branch `[branch]`: http://developer.timezynk.com/preview/[branch]
 
 **Warning:** All above links are updated only after Travis CI finishes deployment

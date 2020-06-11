@@ -1,0 +1,14 @@
+get:
+  summary: Fetch pending invoices
+  description: Fetch all invoices whose latest linked invoice exports are pending.
+  tags:
+    - Invoice
+  responses:
+    "200":
+      description: Array of invoices
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Invoice"

@@ -22,7 +22,6 @@ post:
           required:
             - registry-template
             - salary-integration
-            - invoice-integration
   responses:
     200:
       description: "Default account has been successfully initialized"

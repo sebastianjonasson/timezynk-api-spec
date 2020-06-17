@@ -20,8 +20,8 @@ post:
             invoice-integration-id:
               type: string
           required:
-            - registry-template
-            - salary-integration
+            - registry-template-id
+            - salary-integration-id
   responses:
     200:
       description: "Default account has been successfully initialized"

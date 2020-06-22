@@ -5,7 +5,7 @@ put:
   tags:
     - Order Clients
   parameters:
-    - name: supplierCode
+    - name: clientCode
       in: path
       required: true
       schema:

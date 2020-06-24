@@ -7,10 +7,11 @@
   },
   "private": true,
   "scripts": {
-    "start": "swagger-repo serve",
+    "start": "swagger-repo serve --validate",
     "build": "swagger-repo build -o web_deploy",
     "watch": "touch /tmp/openapi.yaml && npm install && nodemon -w spec -e yaml --exec \"swagger-repo bundle -b spec -y -o /tmp/openapi.yaml\"",
-    "test": "swagger-repo validate",
+    "test": "true",
+    "validate": "swagger-repo validate",
     "gh-pages": "swagger-repo gh-pages"
   },
   "devDependencies": {

@@ -1,6 +1,10 @@
 type: oauth2
 scheme: bearer
+name: Authorization
+in: header
+bearerFormat: JWT
 description: OAuth2 API authentication
+openIdConnectUrl: https://api.timezynk.com/api/oauth2/v1/userinfo
 flows:
   password:
     tokenUrl: https://api.timezynk.com/api/oauth2/v1/token

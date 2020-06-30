@@ -27,6 +27,7 @@ properties:
     format: ObjectId
   valid-from:
     type: number
+    format: timestamp
     description: Timestamp in milliseconds for when the object was last changed
     example: 1558604030403
     readOnly: true

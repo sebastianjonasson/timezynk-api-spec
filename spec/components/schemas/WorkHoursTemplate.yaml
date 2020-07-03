@@ -1,0 +1,60 @@
+allOf:
+  - $ref: "#/components/schemas/BasicObject"
+  - properties:
+      title:
+        type: string
+        description: Template title.
+        example: "Template Title"
+      fulltime-hours:
+        type: integer
+        description: Hours in a fulltime work week.
+        example: 40
+      works-special-dates:
+        type: boolean
+        description: Can work on e.g. holidays.
+        example: false
+      rows:
+        type: array
+        description: List of shifts.
+        items:
+          type: object
+          description: Shift.
+          properties:
+            start: 
+              type: string
+              format: local-date-time
+              description: Starting date and time of shift.
+              example: "2020-04-24T10:00:00"
+            end:
+              type: string
+              format: local-date-time
+              description: Ending date and time of shift.
+              example: "2020-04-24T18:00:00"
+            breaks:
+              type: array
+              description: List of breaks.
+              items:
+                type: object
+                description: Break.
+                properties:
+                  start:
+                    type: string
+                    format: local-date-time
+                    description: Starting date and time of break.
+                    example: "2020-04-24T12:00:00"
+                  end:
+                    type: string
+                    format: local-date-time
+                    description: Ending date and time of break.
+                    example: "2020-04-24T13:00:00"
+                required:
+                  - start
+                  - end
+          required:
+            - start
+            - end
+  - required:
+    - title
+    - fulltime-hours
+    - works-special-dates
+    - rows

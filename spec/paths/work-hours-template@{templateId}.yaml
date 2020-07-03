@@ -1,0 +1,48 @@
+get:
+  summary: Fetch work hours template
+  parameters:
+    - name: templateId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Work hours
+  responses:
+    200:
+      description: Template object.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/WorkHoursTemplate"
+    404:
+      description: Work hours template not found
+put:
+  summary: Update work hours template
+  parameters:
+    - name: templateId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/WorkHoursTemplate"
+    required: true
+  tags:
+    - Work hours
+  responses:
+    200:
+      description: Updated template object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/WorkHoursTemplate"
+    400:
+      description: Validation failed
+    404:
+      description: Work hours template not found

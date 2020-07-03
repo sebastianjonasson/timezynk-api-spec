@@ -1,0 +1,33 @@
+get:
+  summary: Fetch work hours templates
+  tags:
+    - Work hours
+  responses:
+    200:
+      description: Array of templates.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/WorkHoursTemplate"
+post:
+  summary: Create work hours template
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/WorkHoursTemplate"
+    description: Template to be added.
+    required: true
+  tags:
+    - Work hours
+  responses:
+    200:
+      description: Newly added level entry object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/WorkHoursTemplate"
+    400:
+      description: Validation failed

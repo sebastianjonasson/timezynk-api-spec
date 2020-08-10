@@ -1,0 +1,75 @@
+post:
+  summary: Prepare invoices for download
+  requestBody:
+    description: Invoices to download must be posted with export type.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            ids:
+              type: array
+              description: Array of invoices to download.
+              items:
+                type: string
+                format: ObjectId
+            target:
+              type: string
+              enum: ["excel", "raindance", "ekot", "ubw"]
+              description: Export format.
+          required:
+            - ids
+            - target
+        example: {
+          ids: ["5f31459ddaf86a3cd67543bf", "5f31459ddaf86a3cd67543c1"],
+          target: "ubw"
+        }
+  tags:
+    - Invoice
+  responses:
+    200:
+      description: Invoice download object.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: ObjectId
+                description: The download Id.
+              vid:
+                type: string
+                format: ObjectId
+              valid-from:
+                type: number
+                format: Timestamp
+              ids:
+                type: array
+                items:
+                  type: string
+                  format: ObjectId
+              created:
+                type: number
+                format: Timestamp
+              company-id:
+                type: string
+                format: ObjectId
+              created-by:
+                type: string
+                format: ObjectId
+              target:
+                type: string
+          example: {
+            vid: "5f31459ddaf86a3cd67543ca",
+            valid-from: 1597064605190,
+            ids: ["5f31459ddaf86a3cd67543bf", "5f31459ddaf86a3cd67543c1"],
+            created: 1597064605000,
+            company-id: "5f313fb5daf86a3cd6754369",
+            created-by: "5f313fb5daf86a3cd675436a",
+            id: "5f31459ddaf86a3cd67543c9",
+            target: "ubw"
+          }
+    400:
+      description: Validation failed

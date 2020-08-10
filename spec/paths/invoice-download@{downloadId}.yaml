@@ -1,0 +1,26 @@
+get:
+  summary: Download invoices
+  tags:
+    - Invoice
+  parameters:
+    - name: downloadId
+      in: path
+      description: Id of the prepared download.
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: Array of invoices
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+              description: String in the desired export format.
+          example: 
+            ["\tMagnus\t\t\t\t1\t3008\tOurReference\t\tTesttext1\tDAG\t ..."]
+    404:
+      description: Download not found

@@ -64,6 +64,9 @@ allOf:
                 type: string
                 description: Project code for book-keeping this row
                 example: PL/I
+          custom:
+            type: object
+            description: Context-specific data
     required:
       - invoice-id
       - weight

@@ -79,6 +79,9 @@ allOf:
               country:
                 type: string
                 description: Address country
+          custom:
+            type: object
+            description: Context-specific data
     required:
       - invoice-date
       - export-data

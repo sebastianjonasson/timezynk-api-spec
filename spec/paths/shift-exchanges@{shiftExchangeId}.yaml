@@ -1,0 +1,75 @@
+get:
+  summary: Fetch shift exchange
+  parameters:
+    - name: shiftExchangeId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Shift Exchanges
+  responses:
+    200:
+      description: Shift exchange object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ShiftExchange"
+    404:
+      description: Shift exchange not found
+put:
+  summary: Update shift exchange
+  description: |
+    A shift exchange with status OPEN or REJECTED can be edited.
+    A REJECTED exchange will be set to OPEN.
+  parameters:
+    - name: shiftExchangeId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ShiftExchange"
+    required: true
+  tags:
+    - Shift Exchanges
+  responses:
+    200:
+      description: Updated shift exchange
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ShiftExchange"
+    400:
+      description: |
+        * Validation failed
+        * Cannot update shift exchange
+    404:
+      description: Shift exchange not found
+delete:
+  summary: Delete shift exchange
+  description: |
+    A shift exchange with status OPEN or REJECTED can be deleted.
+  parameters:
+    - name: shiftExchangeId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Shift Exchanges
+  responses:
+    200:
+      description: Deleted shift exchange
+    400:
+      description: |
+        * Validation failed
+        * Cannot delete shift exchange
+    404:
+      description: Shift exchange not found

@@ -5,41 +5,47 @@ properties:
     description: Unique ID
     format: ObjectId
     readOnly: true
+    example: 5dde7024eded8872705aabcd
   vid:
     type: string
     description: Unique identifier representing a specific version of an item
     format: ObjectId
     readOnly: true
+    example: 5dde7024eded8872705aabce
   company-id:
     type: string
     description: Id of the company who owns this item.
     format: ObjectId
     readOnly: true
+    example: 5dde7024eded8872705aabcf
   created:
     type: number
     description: Timestamp in milliseconds for when the object was created
-    example: 1558604010307
     readOnly: true
+    example: 1558604010307
   created-by:
     type: string
     description: User ID the the user that created the object.
     readOnly: true
     format: ObjectId
+    example: 5dde7024eded8872705aabd0
   valid-from:
     type: number
     format: timestamp
     description: Timestamp in milliseconds for when the object was last changed
-    example: 1558604030403
     readOnly: true
+    example: 1558604030403
   valid-to:
     type: number
     format: timestamp
     readOnly: true
+    example: 1558604030455
   changed-by:
     type: string
     description: User ID the the user that last changed the object.
     readOnly: true
     format: ObjectId
+    example: 5dde7024eded8872705aabd1
   archived:
     type: integer
     description: Timestamp in milliseconds for when the object was archived, or null if it is still active

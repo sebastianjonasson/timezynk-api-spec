@@ -1,0 +1,33 @@
+get:
+  summary: Fetch shift exchanges for a user
+  tags:
+    - Shift Exchanges
+  responses:
+    200:
+      description: Array of shifts.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/ShiftExchange"
+post:
+  summary: Create shift exchange
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ShiftExchange"
+    description: Shift exchange to be added.
+    required: true
+  tags:
+    - Shift Exchanges
+  responses:
+    200:
+      description: Newly added shift exchange
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ShiftExchange"
+    400:
+      description: Validation failed

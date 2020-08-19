@@ -20,6 +20,8 @@ tags:
     description: Calls for setting up work hours schedules and employment contracts
   - name: Shift
     description: Calls for fetching and updating scheduled shifts.
+  - name: Shift Exchanges
+    description: Endpoints for exchanging shifts between users.
   - name: Time Reports
     description: Time reports are the actual worked time as reported by the user.
   - name: Registry

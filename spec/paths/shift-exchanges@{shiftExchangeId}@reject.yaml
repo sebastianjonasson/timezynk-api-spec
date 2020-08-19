@@ -1,0 +1,18 @@
+put:
+  summary: Reject shift exchange
+  parameters:
+    - name: shiftExchangeId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Shift Exchanges
+  responses:
+    200:
+      description: Rejected shift exchange
+    400:
+      description: Validation failed
+    404:
+      description: Exchange shift not found

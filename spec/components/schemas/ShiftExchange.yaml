@@ -1,0 +1,50 @@
+allOf:
+  - $ref: "#/components/schemas/BasicObject"
+  - type: object
+    properties:
+      sender-id:
+        type: string
+        format: ObjectId
+        description: ID of user who created exchange request.
+        readOnly: true
+        example: 5dde7024eded8872705aabd2
+      sender-shift-ids:
+        type: array
+        description: Array of shifts to be changed out.
+        items:
+          type: string
+          format: ObjectId
+        example: [ 5dde7024eded8872705aabd3 ]
+      recipient-id:
+        type: string
+        format: ObjectId
+        description: ID of exchange request recipient.
+        example: 5dde7024eded8872705aabd4
+      recipient-shift-ids:
+        type: array
+        description: Array of shifts belonging to recipient, to be changed in.
+        items:
+          type: string
+          format: ObjectId
+        example: [ 5dde7024eded8872705aabd5 ]
+      status:
+        type: string
+        description: Echange status.
+        enum:
+          - OPEN
+          - SENT
+          - ACCEPTED
+          - REJECTED
+        default: OPEN
+        readOnly: true
+      comment:
+        type: string
+        nullable: true
+        description: Comments.
+        example: Rejection reasons.
+    required:
+      - sender-id
+      - sender-shift-ids
+      - recipient-id
+      - recipient-shift-ids
+      - status

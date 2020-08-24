@@ -13,6 +13,10 @@ put:
     200:
       description: Sent shift exchange
     400:
-      description: Validation failed
+      description: |
+        * Validation failed
+        * Not OPEN
+    401:
+      description: Unauthorized
     404:
       description: Exchange shift not found

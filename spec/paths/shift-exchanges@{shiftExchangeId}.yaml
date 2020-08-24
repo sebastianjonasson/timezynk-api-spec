@@ -49,6 +49,8 @@ put:
       description: |
         * Validation failed
         * Cannot update shift exchange
+    401:
+      description: Unauthorized
     404:
       description: Shift exchange not found
 delete:
@@ -71,5 +73,7 @@ delete:
       description: |
         * Validation failed
         * Cannot delete shift exchange
+    401:
+      description: Unauthorized
     404:
       description: Shift exchange not found

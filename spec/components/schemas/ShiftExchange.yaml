@@ -5,8 +5,7 @@ allOf:
       sender-id:
         type: string
         format: ObjectId
-        description: ID of user who created exchange request.
-        readOnly: true
+        description: ID of exchange request sender.
         example: 5dde7024eded8872705aabd2
       sender-shift-id:
         type: string

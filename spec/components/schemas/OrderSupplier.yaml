@@ -50,9 +50,9 @@ properties:
   values:
     type: object
     description: Supplier specific values which can be inherited into an order if specified in the order form.
-  supplier-code:
+  client-code:
     type: string
-    description: The supplier code is used to invite new suppliers. The code can only be used once, and to be able the user as a client, the email is required to match the invited users email.
+    description: The client code is used to invite new suppliers. The code can only be used once, and to be able the user as a supplier, the email is required to match the invited users email.
 
 example:
   id: "5dde7024eded8872705aabcd"
@@ -73,4 +73,4 @@ example:
   supplier-title: "SupplierTitle"
   order-forms: ["5dde7024eded8872705a0123"]
   values: {}
-  supplier-code: "5dde7024eded8872705aabd2"
+  client-code: "5dde7024eded8872705aabd2"

@@ -15,7 +15,7 @@ put:
     400:
       description: |
         * Validation failed
-        * Not SENT
+        * Already ACCEPTED/REJECTED
     401:
       description: Unauthorized
     404:

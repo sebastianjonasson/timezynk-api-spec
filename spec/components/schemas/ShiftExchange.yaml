@@ -26,11 +26,10 @@ allOf:
         type: string
         description: Echange status.
         enum:
-          - OPEN
           - SENT
           - ACCEPTED
           - REJECTED
-        default: OPEN
+        default: SENT
         readOnly: true
       comment:
         type: string

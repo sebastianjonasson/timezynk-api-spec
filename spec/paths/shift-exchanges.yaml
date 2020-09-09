@@ -13,6 +13,7 @@ get:
               $ref: "#/components/schemas/ShiftExchange"
 post:
   summary: Create shift exchange
+  description: Upon creation, a notification is sent to the request recipient.
   requestBody:
     content:
       application/json:

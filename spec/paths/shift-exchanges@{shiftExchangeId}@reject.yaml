@@ -1,5 +1,6 @@
 put:
   summary: Reject shift exchange
+  description: Upon rejection, a notification is sent to the sender.
   parameters:
     - name: shiftExchangeId
       in: path

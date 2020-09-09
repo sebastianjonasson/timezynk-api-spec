@@ -1,5 +1,6 @@
 put:
   summary: Accept shift exchange
+  description: Upon acceptance, a notification is sent to the sender.
   parameters:
     - name: shiftExchangeId
       in: path

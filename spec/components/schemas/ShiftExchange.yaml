@@ -45,6 +45,11 @@ allOf:
           - REJECTED
         default: SENT
         readOnly: true
+      expires:
+        type: number
+        format: timestamp
+        description: Timestamp in milliseconds when the shift exchange expires
+        example: 1558604030403
       comment:
         type: string
         nullable: true

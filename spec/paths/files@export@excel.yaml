@@ -1,0 +1,20 @@
+post:
+  summary: Create new Excel file
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ExcelExport"
+    description: File properties
+    required: true
+  tags:
+    - File export
+  responses:
+    "200":
+      description: File metadata and handle
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ExcelExport"
+    "400":
+      description: Validation failed

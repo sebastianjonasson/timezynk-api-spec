@@ -1,0 +1,33 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Sheet ID
+    format: ObjectId
+  title:
+    type: string
+    description: Sheet title
+  rows:
+    type: array
+    description: Data rows
+    items:
+      type: array
+      description: Row of cells
+      items:
+        $ref: "#/components/schemas/ExcelCell"
+
+
+
+
+  col-settings:
+    type: array
+    description: Column settings
+  row-settings:
+    type: array
+    description: Row settings
+  merged-regions:
+    type: array
+    description: Merged cell regions
+required:
+  - title
+  - rows

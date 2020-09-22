@@ -1,0 +1,60 @@
+type: object
+description: Cell
+properties:
+  value:
+    anyOf:
+      - type: string
+      - type: number
+    description: Cell value
+    example: "=SUM(A1:B3)"
+  data-format:
+    type: string
+    description: Cell data format, see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/BuiltinFormats.html
+    example: "#,##0"
+  style:
+    type: object
+    properties:
+      halign:
+        type: string
+        description: Horizontal alignment
+        enum: [left, right, center]
+        example: center
+      valign:
+        type: string
+        description: Vertical alignment
+        enum: [top, bottom, center]
+        example: center
+      background:
+        $ref: "#/components/schemas/ExcelColor"
+      border-left:
+        $ref: "#/components/schemas/ExcelBorder"
+      border-top:
+        $ref: "#/components/schemas/ExcelBorder"
+      border-right:
+        $ref: "#/components/schemas/ExcelBorder"
+      border-bottom:
+        $ref: "#/components/schemas/ExcelBorder"
+      left-border-color:
+        $ref: "#/components/schemas/ExcelColor"
+      top-border-color:
+        $ref: "#/components/schemas/ExcelColor"
+      right-border-color:
+        $ref: "#/components/schemas/ExcelColor"
+      bottom-border-color:
+        $ref: "#/components/schemas/ExcelColor"
+      font:
+        type: object
+        properties:
+          name:
+            type: string
+            example: Arial
+          color:
+            $ref: "#/components/schemas/ExcelColor"
+          bold:
+            type: boolean
+            description: Bold font
+            example: false
+          italic:
+            type: boolean
+            description: Italic font
+            example: false

@@ -1,0 +1,27 @@
+post:
+  summary: Add sheet to Excel file
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ExcelSheet"
+    description: File properties
+    required: true
+  tags:
+    - File export
+  responses:
+    "200":
+      description: File metadata and handle
+      content:
+        application/json:
+          properties:
+            id:
+              type: string
+              description: File id
+              format: ObjectId
+            rows-added:
+              type: number
+              description: Number of added rows from sheet
+    "400":
+      description: Validation failed
+

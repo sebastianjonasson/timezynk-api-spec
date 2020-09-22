@@ -43,6 +43,8 @@ allOf:
           - SENT
           - ACCEPTED
           - REJECTED
+          - EXPIRED
+          - CLOSED
         default: SENT
         readOnly: true
       expires:

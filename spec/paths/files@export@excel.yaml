@@ -15,6 +15,18 @@ post:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ExcelExport"
+            type: object
+            properties:
+              id:
+                type: string
+                description: File id
+                format: ObjectId
+              filename:
+                type: string
+                description: File name
+              state:
+                type: string
+                description: File state
+                enum: ["pending", "processing"]
     "400":
       description: Validation failed

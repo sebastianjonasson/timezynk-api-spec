@@ -1,5 +1,5 @@
-post:
-  summary: Add sheet to Excel file
+get:
+  summary: Get file export state
   parameters:
     - name: fileId
       in: path
@@ -7,13 +7,6 @@ post:
       schema:
         type: string
         format: ObjectId
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: "#/components/schemas/ExcelSheet"
-    description: Excel sheet
-    required: true
   tags:
     - File export
   responses:
@@ -28,13 +21,18 @@ post:
                 type: string
                 description: File id
                 format: ObjectId
-              rows-added:
-                type: number
-                description: Number of added rows from sheet
-              state:
+              filename:
                 type: string
-                description: File state
-                enum: ["pending"]
-    "400":
-      description: Validation failed
+                description: File name
+              content-type:
+                type: string
+                description: Content type
+              entity:
+                type: string
+                description: File category or type
+                example: Invoice export
+    "401":
+      description: Not authorized to read file
+    "404":
+      description: File is not ready yet or has not been created
 

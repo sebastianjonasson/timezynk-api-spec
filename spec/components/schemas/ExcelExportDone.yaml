@@ -22,7 +22,8 @@ properties:
         type: string
         description: ID of related register
     example: {}
-  sheets:
-    type: array
-    items:
-      $ref: "#/components/schemas/ExcelSheet"
+required:
+  - id
+  - title
+  - entity
+  - metadata

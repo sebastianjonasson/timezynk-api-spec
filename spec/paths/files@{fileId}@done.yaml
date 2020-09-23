@@ -1,5 +1,5 @@
 post:
-  summary: Add sheet to Excel file
+  summary: Mark file as done and start conversion to Excel
   parameters:
     - name: fileId
       in: path
@@ -11,8 +11,8 @@ post:
     content:
       application/json:
         schema:
-          $ref: "#/components/schemas/ExcelSheet"
-    description: Excel sheet
+          $ref: "#/components/schemas/ExcelExportDone"
+    description: File properties
     required: true
   tags:
     - File export
@@ -28,13 +28,10 @@ post:
                 type: string
                 description: File id
                 format: ObjectId
-              rows-added:
-                type: number
-                description: Number of added rows from sheet
               state:
                 type: string
                 description: File state
-                enum: ["pending"]
+                enum: ["processing"]
     "400":
       description: Validation failed
 

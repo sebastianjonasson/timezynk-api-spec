@@ -1,0 +1,7 @@
+type: string
+description: Excel border
+enum:
+  - thin
+  - medium
+  - thick
+example: thin

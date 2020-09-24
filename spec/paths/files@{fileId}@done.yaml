@@ -1,0 +1,37 @@
+post:
+  summary: Mark file as done and start conversion to Excel
+  parameters:
+    - name: fileId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ExcelExportDone"
+    description: File properties
+    required: true
+  tags:
+    - File export
+  responses:
+    "200":
+      description: File metadata and handle
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: File id
+                format: ObjectId
+              state:
+                type: string
+                description: File state
+                enum: ["processing"]
+    "400":
+      description: Validation failed
+

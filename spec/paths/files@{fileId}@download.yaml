@@ -1,0 +1,25 @@
+get:
+  summary: Download file as stream
+  parameters:
+    - name: fileId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - File export
+  responses:
+    "200":
+      description: File contents
+      content:
+        application/vnd.ms-excel:
+          schema:
+            type: string
+            format: binary
+    "401":
+      description: Not authorized to read file
+    "404":
+      description: File is not ready yet or has not been created
+
+

@@ -1,0 +1,38 @@
+get:
+  summary: Get file export state
+  parameters:
+    - name: fileId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - File export
+  responses:
+    "200":
+      description: File metadata and handle
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: File id
+                format: ObjectId
+              filename:
+                type: string
+                description: File name
+              content-type:
+                type: string
+                description: Content type
+              entity:
+                type: string
+                description: File category or type
+                example: Invoice export
+    "401":
+      description: Not authorized to read file
+    "404":
+      description: File is not ready yet or has not been created
+

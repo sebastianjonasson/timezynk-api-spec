@@ -1,0 +1,29 @@
+type: object
+properties:
+  id:
+    type: string
+    description: File ID
+    format: ObjectId
+  title:
+    type: string
+    description: File title
+  description:
+    type: string
+    description: File description
+  entity:
+    type: string
+    description: File category or type
+    example: Invoice export
+  metadata:
+    type: object
+    description: File metadata
+    properties:
+      registry-id:
+        type: string
+        description: ID of related register
+    example: {}
+required:
+  - id
+  - title
+  - entity
+  - metadata

@@ -1,0 +1,21 @@
+get:
+  summary: Fetch open shift
+  description: Fetch a single shift that is open for booking.
+  parameters:
+    - name: shiftId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Shift
+  responses:
+    200:
+      description: Shift object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Shift"
+    404:
+      description: Shift not found

@@ -1,0 +1,14 @@
+get:
+  summary: Fetch open shifts
+  description: Fetch all shifts that are open for booking.
+  tags:
+    - Shift
+  responses:
+    200:
+      description: Array of shifts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Shift"

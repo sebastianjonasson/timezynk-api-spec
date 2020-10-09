@@ -11,6 +11,11 @@ allOf:
         description: Data belongs to this registry
       permissions:
         $ref: "#/components/schemas/PermissionsObject"
+      blocked-users:
+        type: array
+        readOnly: true
+        items:
+          $ref: "#/components/schemas/BlockedUser"
       values:
         type: object
         description: Values for custom fields

@@ -1,0 +1,42 @@
+get:
+  summary: List all blocked users for a registry data instance
+  tags:
+    - Registry Data
+  parameters:
+    - in: path
+      name: registryDataId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: List of blocked users
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/BlockedUser"
+post:
+  summary: Add a new blocked user
+  tags:
+    - Registry Data
+  parameters:
+    - in: path
+      name: registryDataId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    $ref: "#/components/schemas/BlockedUser"
+  responses:
+    "200":
+      description: Created blocked user
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BlockedUser"
+    "400":
+      description: Validation failed

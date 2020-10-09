@@ -1,0 +1,36 @@
+type: object
+properties:
+  id:
+    type: string
+    description: User ID of blocked user
+    format: ObjectId
+    example: 5c88de8e1ae9c4230e51ab8a
+  comment:
+    type: string
+    description: Blocking reason or comment
+    example: Previous employee, 6 months cool-down period
+  start-date:
+    type: string
+    description: First date of blocked interval
+    format: iso-date
+    example: "2020-07-01"
+  end-date:
+    type: string
+    description: Last date of blocked interval, leave as null to block user forever
+    format: iso-date
+    example: "2020-12-31"
+  created-by:
+    type: string
+    description: User ID of creating user
+    format: ObjectId
+    example: 5c6ad17093d052121a82a6ae
+    readOnly: true
+  created:
+    type: number
+    description: Timestamp when this block was created
+    format: timestamp
+    readOnly: true
+    example: 1558604030403
+required:
+  - user-id
+  - start-date

@@ -1,0 +1,82 @@
+get:
+  summary: Get single blocked user instance
+  tags:
+    - Registry Data
+  parameters:
+    - in: path
+      name: registryDataId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    - in: path
+      name: blockedUserId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    "200":
+      description: Blocked user data
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BlockedUser"
+    "404":
+      description: Not found
+put:
+  summary: Update blocked user settings
+  tags:
+    - Registry Data
+  parameters:
+    - in: path
+      name: registryDataId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    - in: path
+      name: blockedUserId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    $ref: "#/components/schemas/BlockedUser"
+  responses:
+    "200":
+      description: Updated registry data
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BlockedUser"
+    "400":
+      description: Validation failed
+    "404":
+      description: Not found
+delete:
+  summary: Remove blocked user
+  tags:
+    - Registry Data
+  parameters:
+    - in: path
+      name: registryDataId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    - in: path
+      name: blockedUserId
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    $ref: "#/components/schemas/BlockedUser"
+  responses:
+    "204":
+      description: Successfully removed, no content
+    "400":
+      description: Validation failed
+    "404":
+      description: Not found

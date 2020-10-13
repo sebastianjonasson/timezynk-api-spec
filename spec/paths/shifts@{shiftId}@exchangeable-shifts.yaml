@@ -13,6 +13,8 @@ get:
       schema:
         type: string
         format: ObjectId
+    - $ref: "#/components/parameters/startParam"
+    - $ref: "#/components/parameters/endParam"
   tags:
     - Shift
   responses:

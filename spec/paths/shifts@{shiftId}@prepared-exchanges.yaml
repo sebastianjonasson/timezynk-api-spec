@@ -1,0 +1,98 @@
+get:
+  summary: Fetch prepared shift exchanges 
+  description: |
+    To be used with Shift Exchanges API. Fetches an array of prepared Shift Exchanges for the requested shift. The shifts in the response are filtered by user permissions (tags) and shifts overlapping the sender shift.
+
+  parameters:
+    - name: shiftId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    - name: from
+      in: query
+      description: Start of interval
+      required: true
+      schema:
+        type: string
+        format: date
+        example: '2020-01-01'
+    - name: to
+      in: query
+      description: End of interval
+      required: true
+      schema:
+        type: string
+        format: date
+        example: '2020-01-08'
+  tags:
+    - Shift Exchanges
+  responses:
+    200:
+      description: Object including exchangeable shifts and the permitted users for each shift.
+      content:
+        application/json:
+          schema:
+            type: array
+            description: TEST
+            items:
+              type: object
+              properties:
+                sender-id:
+                  type: string
+                  format: ObjectId
+                  description: ID of exchange request sender.
+                  example: 5dde7024eded8872705aabd2
+                sender-shift-id:
+                  type: string
+                  format: ObjectId
+                  description: Shift to be changed out.
+                  example: 5dde7024eded8872705aabd3
+                sender-shift-start:
+                  type: string
+                  format: date
+                  pattern: ^\d{4}-\d{2}-\d{2}$
+                  description: Start date of shift, collected from the object.
+                  readOnly: true
+                  example: "2016-01-10"
+                recipient-id:
+                  type: string
+                  format: ObjectId
+                  description: ID of exchange request recipient.
+                  example: 5dde7024eded8872705aabd4
+                recipient-shift-id:
+                  type: string
+                  format: ObjectId
+                  description: Shift belonging to recipient, to be changed in.
+                  example: 5dde7024eded8872705aabd5
+                sender-shift-end:
+                  type: string
+                  format: date
+                  pattern: ^\d{4}-\d{2}-\d{2}$
+                  description: End date of shift, collected from the object.
+                  readOnly: true
+                  example: "2016-01-10"
+
+
+            # example: {
+              #   "5f807788c1a3304d86cf3fdf": [
+              #     "5f849edb1151e3fd13631d97",
+              #     "5f849ee5b2f4eed555dbd003"
+              #   ],
+              #   "5f849f58a797c11815c168f7": [
+              #     "5f849f6013196146cf938768",
+              #     "5f849f66cad0a7f86177eeca"
+              #   ]
+            # }
+            # properties:
+              # shiftId:
+              #   type: array
+              #   description: List of user ids of users permitted to be used in the shift exchange request.
+              #   items:
+              #     type: string
+              #     format: ObjectId
+    400:
+      description: ShiftId invalid format
+    404:
+      description: Shift not found

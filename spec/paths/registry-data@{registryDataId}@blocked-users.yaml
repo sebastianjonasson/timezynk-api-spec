@@ -10,14 +10,16 @@ get:
         type: string
         format: ObjectId
   responses:
-    "200":
-      description: List of blocked users
+    200:
+      description: List of blocked users.
       content:
         application/json:
           schema:
             type: array
             items:
               $ref: "#/components/schemas/BlockedUser"
+    404:
+      description: Registry data object not found.
 post:
   summary: Add a new blocked user
   tags:
@@ -30,13 +32,20 @@ post:
         type: string
         format: ObjectId
   requestBody:
-    $ref: "#/components/schemas/BlockedUser"
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/BlockedUser"
+    description: Blocked user.
+    required: true
   responses:
-    "200":
-      description: Created blocked user
+    200:
+      description: Created blocked user.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/BlockedUser"
-    "400":
-      description: Validation failed
+    400:
+      description: Validation failed.
+    404:
+      description: Registry data object not found.

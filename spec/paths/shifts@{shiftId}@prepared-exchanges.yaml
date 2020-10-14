@@ -73,25 +73,6 @@ get:
                   description: End date of shift, collected from the object.
                   readOnly: true
                   example: "2016-01-10"
-
-
-            # example: {
-              #   "5f807788c1a3304d86cf3fdf": [
-              #     "5f849edb1151e3fd13631d97",
-              #     "5f849ee5b2f4eed555dbd003"
-              #   ],
-              #   "5f849f58a797c11815c168f7": [
-              #     "5f849f6013196146cf938768",
-              #     "5f849f66cad0a7f86177eeca"
-              #   ]
-            # }
-            # properties:
-              # shiftId:
-              #   type: array
-              #   description: List of user ids of users permitted to be used in the shift exchange request.
-              #   items:
-              #     type: string
-              #     format: ObjectId
     400:
       description: ShiftId invalid format
     404:

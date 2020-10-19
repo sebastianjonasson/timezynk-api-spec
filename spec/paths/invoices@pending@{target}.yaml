@@ -1,6 +1,7 @@
 get:
   summary: Fetch pending invoices
-  description: For given target, fetch all invoices whose latest linked invoice exports are pending.
+  description: |
+    For given target, fetch all invoices whose latest linked invoice exports are pending.
   parameters:
     - name: target
       in: path
@@ -10,7 +11,7 @@ get:
   tags:
     - Invoice
   responses:
-    "200":
+    200:
       description: Array of invoices
       content:
         application/json:

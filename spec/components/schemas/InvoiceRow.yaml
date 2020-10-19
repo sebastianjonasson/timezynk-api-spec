@@ -4,30 +4,36 @@ allOf:
     properties:
       invoice-id:
         type: string
-        description: Unique shift ID
+        description: Unique shift ID.
         format: ObjectId
+        example: 5dde7024eded8872705aabde
       weight:
         type: number
         description: Lighter rows float to the top of the invoice, heavier rows sink.
+        example: 1
       sku:
         type: string
-        description: SKU (article number)
+        description: SKU .
+        example: "1002"
       description:
         type: string
-        description: Date when invoice is due for payment
+        description: Item description.
+        example: Some text describing the row.
       count:
         type: number
-        description: Count
+        description: Count.
+        example: 8
       unit:
         type: string
-        description: Unit of measurement
+        description: Unit of measurement.
         example: hours
       price:
         type: number
-        description: Price per item
+        description: Price per item.
+        example: 8.2
       currency:
         type: string
-        description: Currency in ISO 4217 format, must match invoice head
+        description: Currency in ISO 4217 format, must match invoice head.
         example: USD
       discount:
         type: number
@@ -35,11 +41,12 @@ allOf:
         example: 0.05
       house-work:
         type: boolean
-        description: True if the invoice row concerns tax deductible house work
+        description: True if the invoice row concerns tax deductible house work.
         example: false
       duration:
         type: number
-        description: Duration in hours of underlying time report. Used for statistics only.
+        description: |
+          Duration in hours of underlying time report. Used for statistics only.
         example: 2.5
       report-ids:
         type: array
@@ -50,23 +57,60 @@ allOf:
           example: 5bf6d703571d013b348713cb
       export-data:
         type: object
-        description: Structed invoice row data. Exact content dependent on target invoicing software.
+        description: |
+          Structed invoice row data. Exact content dependent on target invoicing
+          software.
         properties:
           generic:
             type: object
-            description: invoice row data applicable to most target systems
+            description: invoice row data applicable to most target systems.
             properties:
               cost-center:
                 type: string
-                description: Cost center for book-keeping this row
+                description: Cost center for book-keeping this row.
                 example: 034
               project-code:
                 type: string
-                description: Project code for book-keeping this row
+                description: Project code for book-keeping this row.
                 example: PL/I
           custom:
             type: object
-            description: Context-specific data
+            description: Context-specific data.
+          raindance:
+            type: object
+            properties:
+              description-s:
+                type: string
+              kstl-s: 
+                type: string
+              vht-s: 
+                type: string
+              obj-s: 
+                type: string
+              project-s: 
+                type: string
+              slag-s: 
+                type: string
+              kmp-s: 
+                type: string
+              konto-s: 
+                type: string
+              description-k: 
+                type: string
+              kstl-k: 
+                type: string
+              vht-k: 
+                type: string
+              obj-k: 
+                type: string
+              project-k: 
+                type: string
+              slag-k: 
+                type: string
+              kmp-k: 
+                type: string
+              konto-k: 
+                type: string
     required:
       - invoice-id
       - weight

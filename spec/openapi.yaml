@@ -12,8 +12,12 @@ tags:
     description: Fetching and updating availability
   - name: Invoice
     description: Fetching, updating and creating invoices
+  - name: Invoice rows
+    description: Fetching, updating and creating invoice rows
   - name: Invoice articles
     description: Fetching, updating and creating invoices articles
+  - name: Invoice export
+    description: Fetching and creating invoice exports
   - name: User
     description: Calls for fetching and updating the system users.
   - name: Work hours

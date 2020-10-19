@@ -8,16 +8,16 @@ get:
         type: string
         format: ObjectId
   tags:
-    - Invoice
+    - Invoice rows
   responses:
-    "200":
-      description: Invoice object
+    200:
+      description: Invoice object.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/InvoiceRow"
-    "404":
-      description: Invoice not found
+    404:
+      description: Invoice not found.
 put:
   summary: Update invoice row
   parameters:
@@ -34,18 +34,18 @@ put:
           $ref: "#/components/schemas/InvoiceRow"
     required: true
   tags:
-    - Invoice
+    - Invoice rows
   responses:
-    "200":
-      description: Updated invoice row object
+    200:
+      description: Updated invoice row object.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/InvoiceRow"
-    "400":
-      description: Validation failed
-    "404":
-      description: Invoice not found
+    400:
+      description: Validation failed.
+    404:
+      description: Invoice not found.
 delete:
   summary: Delete invoice row
   parameters:
@@ -56,7 +56,9 @@ delete:
         type: string
         format: ObjectId
   tags:
-    - Invoice
+    - Invoice rows
   responses:
-    "200":
-      description: Delete successful
+    200:
+      description: Delete successful.
+    404:
+      description: Invoice not found.

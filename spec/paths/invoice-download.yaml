@@ -14,19 +14,17 @@ post:
               items:
                 type: string
                 format: ObjectId
+              example: [ 5f31459ddaf86a3cd67543bf, 5f31459ddaf86a3cd67543c1]
             target:
               type: string
-              enum: ["excel", "raindance", "ekot", "ubw"]
+              enum: [excel, raindance, ekot, ubw]
               description: Export format.
+              example: ubw
           required:
             - ids
             - target
-        example: {
-          ids: ["5f31459ddaf86a3cd67543bf", "5f31459ddaf86a3cd67543c1"],
-          target: "ubw"
-        }
   tags:
-    - Invoice
+    - Invoice export
   responses:
     200:
       description: Invoice download object.
@@ -39,37 +37,35 @@ post:
                 type: string
                 format: ObjectId
                 description: The download Id.
+                example: 5f31459ddaf86a3cd67543c9
               vid:
                 type: string
                 format: ObjectId
+                example: 5f31459ddaf86a3cd67543ca
               valid-from:
                 type: number
                 format: Timestamp
+                example: 1597064605190
               ids:
                 type: array
                 items:
                   type: string
                   format: ObjectId
+                example: [5f31459ddaf86a3cd67543bf, 5f31459ddaf86a3cd67543c1]
               created:
                 type: number
                 format: Timestamp
+                example: 1597064605000
               company-id:
                 type: string
                 format: ObjectId
+                example: 5f313fb5daf86a3cd6754369
               created-by:
                 type: string
                 format: ObjectId
+                example: 5f313fb5daf86a3cd675436a
               target:
                 type: string
-          example: {
-            vid: "5f31459ddaf86a3cd67543ca",
-            valid-from: 1597064605190,
-            ids: ["5f31459ddaf86a3cd67543bf", "5f31459ddaf86a3cd67543c1"],
-            created: 1597064605000,
-            company-id: "5f313fb5daf86a3cd6754369",
-            created-by: "5f313fb5daf86a3cd675436a",
-            id: "5f31459ddaf86a3cd67543c9",
-            target: "ubw"
-          }
+                example: ubw
     400:
-      description: Validation failed
+      description: Validation failed.

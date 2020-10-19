@@ -1,17 +1,17 @@
 get:
   summary: Fetch invoice rows
   tags:
-    - Invoice
+    - Invoice rows
   parameters:
     - name: invoice-id
       in: query
       required: true
-      description: Invoice to fetch the rows for
+      description: Invoice to fetch the rows for.
       schema:
         type: string
         format: ObjectId
   responses:
-    "200":
+    200:
       description: Array of invoice rows
       content:
         application/json:
@@ -26,16 +26,16 @@ post:
       application/json:
         schema:
           $ref: "#/components/schemas/InvoiceRow"
-    description: Invoice to be added
+    description: Invoice to be added.
     required: true
   tags:
-    - Invoice
+    - Invoice rows
   responses:
-    "200":
-      description: Newly added invoice row
+    200:
+      description: Newly added invoice row.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/InvoiceRow"
-    "400":
-      description: Validation failed
+    400:
+      description: Validation failed.

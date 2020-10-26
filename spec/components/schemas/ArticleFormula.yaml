@@ -5,11 +5,11 @@ properties:
     type: object
     description: Formula for more complex calculations
     properties:
-      lhs:
-        $ref: "#/components/schemas/ArticleFormula"
-      rhs:
-        $ref: "#/components/schemas/ArticleFormula"
-      op:
+      operands:
+        type: array
+        items:
+          $ref: "#/components/schemas/ArticleFormula"
+      operator:
         type: string
         enum:
           - +
@@ -18,11 +18,11 @@ properties:
           - /
           - MIN
           - MAX
+          - AVG
         example: +
     required:
-      - lhs
-      - rhs
-      - op
+      - operands
+      - operator
   field-id:
     type: string
     format: ObjectId

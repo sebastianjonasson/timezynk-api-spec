@@ -17,6 +17,7 @@ properties:
     type: number
     description: Price in specified currency
     example: 19.99
+    deprecated: true
   price-formula:
     $ref: "#/components/schemas/ArticleFormula"
   price-settings:

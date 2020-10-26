@@ -1,9 +1,15 @@
 type: object
-description: Article formula
+description: Article formula.
 properties:
   formula:
     type: object
-    description: Formula for more complex calculations
+    description: |
+      Formula for more complex calculations.
+      Operator is applied between each operand. For example
+      ```json
+      { operands: [{ value: 1 }, { value: 2 }, { value:3 }], operator: "+" }
+      ```
+      means `1 + 2 + 3`
     properties:
       operands:
         type: array

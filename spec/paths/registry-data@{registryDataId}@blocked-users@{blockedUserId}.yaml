@@ -16,14 +16,16 @@ get:
         type: string
         format: ObjectId
   responses:
-    "200":
-      description: Blocked user data
+    200:
+      description: Blocked user data.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/BlockedUser"
-    "404":
-      description: Not found
+    404:
+      description: |
+        * Not found.
+        * Registry data object not found.
 put:
   summary: Update blocked user settings
   tags:
@@ -42,18 +44,38 @@ put:
         type: string
         format: ObjectId
   requestBody:
-    $ref: "#/components/schemas/BlockedUser"
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            start-date:
+              type: string
+              description: First date of blocked interval.
+              format: iso-date
+              example: "2020-07-01"
+            end-date:
+              type: string
+              description: Last date of blocked interval.
+              format: iso-date
+              example: "2020-12-31"
+            comment:
+              type: string
+              description: Blocking reason or comment.
+              example: Previous employee, 6 months cool-down period
   responses:
-    "200":
-      description: Updated registry data
+    200:
+      description: Updated blocked user.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/BlockedUser"
-    "400":
-      description: Validation failed
-    "404":
-      description: Not found
+    400:
+      description: Validation failed.
+    404:
+      description: |
+        * Not found.
+        * Registry data object not found.
 delete:
   summary: Remove blocked user
   tags:
@@ -71,12 +93,12 @@ delete:
       schema:
         type: string
         format: ObjectId
-  requestBody:
-    $ref: "#/components/schemas/BlockedUser"
   responses:
-    "204":
-      description: Successfully removed, no content
-    "400":
-      description: Validation failed
-    "404":
-      description: Not found
+    204:
+      description: Successfully removed, no content.
+    400:
+      description: Validation failed.
+    404:
+      description: |
+        * Not found.
+        * Registry data object not found.

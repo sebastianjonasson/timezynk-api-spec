@@ -1,0 +1,34 @@
+type: object
+description: Article formula
+properties:
+  formula:
+    type: object
+    description: Formula for more complex calculations
+    properties:
+      lhs:
+        $ref: "#/components/schemas/ArticleFormula"
+      rhs:
+        $ref: "#/components/schemas/ArticleFormula"
+      op:
+        type: string
+        enum:
+          - +
+          - "-"
+          - "*"
+          - /
+          - MIN
+          - MAX
+        example: +
+    required:
+      - lhs
+      - rhs
+      - op
+  field-id:
+    type: string
+    format: ObjectId
+    description: Field ID reference where value should be fetched. Used as default value if formula is null or returns null.
+    example: 507f191e810c19729de860ea
+  value:
+    type: number
+    description: Fixed value. Default value if formula value and field-id referenced value are both null.
+    example: 42.0

@@ -17,9 +17,12 @@ properties:
     type: number
     description: Price in specified currency
     example: 19.99
+  price-formula:
+    $ref: "#/components/schemas/ArticleFormula"
   price-settings:
     type: object
     description: Settings for calculation and interpretation of price
+    deprecated: true
   unit:
     type: string
     description: Article unit. Hours, pieces, kilometers, etc.

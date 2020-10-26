@@ -3,7 +3,7 @@ get:
   tags:
     - Invoice
   responses:
-    "200":
+    200:
       description: Array of invoices
       content:
         application/json:
@@ -23,11 +23,11 @@ post:
   tags:
     - Invoice
   responses:
-    "200":
-      description: Newly added invoice object
+    200:
+      description: Newly added invoice object.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Invoice"
-    "400":
-      description: Validation failed
+    400:
+      description: Validation failed.

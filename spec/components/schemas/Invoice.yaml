@@ -6,82 +6,105 @@ allOf:
         type: string
         format: local-date
         pattern: ^\d{4}-\d{2}-\d{2}$
-        description: First day of invoiced interval
+        description: First day of invoiced interval.
+        example: "2018-10-01"
       end-date:
         type: string
         format: local-date
         pattern: ^\d{4}-\d{2}-\d{2}$
-        description: Last day of invoiced interval
+        description: Last day of invoiced interval.
+        example: "2018-10-10"
       invoice-date:
         type: string
         format: local-date
         pattern: ^\d{4}-\d{2}-\d{2}$
         description: The invoice date (date invoice was created, sent or booked).
+        example: "2018-10-20"
       due-date:
         type: string
         format: local-date
         pattern: ^\d{4}-\d{2}-\d{2}$
-        description: Date when invoice is due for payment
+        description: Date when invoice is due for payment.
+        example: "2018-10-23"
       currency:
         type: string
-        description: Currency in ISO 4217 format
+        description: Currency in ISO 4217 format.
         example: USD
       total:
         type: number
-        description: Total invoice amount
+        description: Total invoice amount.
+        example: 1000
       invoice-text:
         type: string
-        description: Longer multi-line message to the invoice receiver
+        description: Longer multi-line message to the invoice receiver.
+        example: This is a longer text.
       order-no:
         type: string
-        description: Order number or code
+        description: Order number or code.
+        example: na1234
       invoice-no:
         type: string
-        description: Invoice number or code. Upon successful transfer Timezynk sets the invoice-no to the invoice number provided by third-party service.
+        description: |
+          Invoice number or code. Upon successful transfer Timezynk sets the invoice-no
+          to the invoice number provided by third-party service.
+        example: kv4321
       read-only:
         type: boolean
-        description: When read-only is set to true, the invoice can no longer be edited. Only cancel and delete action can be performed. Timezynk sets read-only as true upon successful transfer to third-party service.
+        description: |
+          When read-only is set to true, the invoice can no longer be edited. Only
+          cancel and delete action can be performed. Timezynk sets read-only as true
+          upon successful transfer to third-party service.
       canceled:
         type: boolean
-        description: True if the invoice is canceled
+        description: True if the invoice is canceled.
       export-data:
         type: object
-        description: Structed invoice head data. Exact content dependent on target invoicing software.
+        description: |
+          Structed invoice head data. Exact content dependent on target invoicing software.
         properties:
           generic:
             type: object
-            description: invoice head data applicable to most target systems
+            description: invoice head data applicable to most target systems.
             properties:
               customer-no:
                 type: string
-                description: Customer number or ID
+                description: Customer number or ID.
+                example: 3008
               customer-name:
                 type: string
-                description: Customer name
+                description: Customer name.
+                example: Thor
               your-reference:
                 type: string
-                description: Your reference
+                description: Your reference.
+                example: 123
               our-reference:
                 type: string
-                description: Our reference
+                description: Our reference.
+                example: 123
               address-1:
                 type: string
-                description: Address line 1
+                description: Address line 1.
+                example: Street
               address-2:
                 type: string
-                description: Address line 2
+                description: Address line 2.
+                example: c/o
               zip-code:
                 type: string
-                description: Address zip code
+                description: Address zip code.
+                example: 12345
               city:
                 type: string
-                description: Address city
+                description: Address city.
+                example: Borås
               country:
                 type: string
-                description: Address country
+                description: Address country.
+                example: SWE
           custom:
             type: object
-            description: Context-specific data
+            description: Context-specific data.
     required:
       - invoice-date
       - export-data

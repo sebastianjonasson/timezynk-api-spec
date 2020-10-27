@@ -1,7 +1,7 @@
 get:
   summary: Fetch prepared shift exchanges 
   description: |
-    To be used with Shift Exchanges API. Fetches an array of prepared Shift Exchanges for the requested shift. The shifts in the response are filtered by user permissions (tags) and shifts overlapping the sender shift.
+    To be used with Shift Exchanges API. Fetches an array of prepared Shift Exchanges for the requested shift. The shifts in the response will be filtered by user permissions (tags) and shifts that might potentionally overlap after exchange has occured.
 
   parameters:
     - name: shiftId
@@ -35,7 +35,6 @@ get:
         application/json:
           schema:
             type: array
-            description: TEST
             items:
               type: object
               properties:
@@ -49,13 +48,6 @@ get:
                   format: ObjectId
                   description: Shift to be changed out.
                   example: 5dde7024eded8872705aabd3
-                sender-shift-start:
-                  type: string
-                  format: date
-                  pattern: ^\d{4}-\d{2}-\d{2}$
-                  description: Start date of shift, collected from the object.
-                  readOnly: true
-                  example: "2016-01-10"
                 recipient-id:
                   type: string
                   format: ObjectId
@@ -66,13 +58,6 @@ get:
                   format: ObjectId
                   description: Shift belonging to recipient, to be changed in.
                   example: 5dde7024eded8872705aabd5
-                sender-shift-end:
-                  type: string
-                  format: date
-                  pattern: ^\d{4}-\d{2}-\d{2}$
-                  description: End date of shift, collected from the object.
-                  readOnly: true
-                  example: "2016-01-10"
     400:
       description: ShiftId invalid format
     404:

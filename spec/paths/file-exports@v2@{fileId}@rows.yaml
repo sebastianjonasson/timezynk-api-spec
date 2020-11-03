@@ -1,0 +1,41 @@
+post:
+  summary: Add rows to Excel file
+  parameters:
+    - name: fileId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ExcelExportRows"
+    description: File properties
+    required: true
+  tags:
+    - File export
+  responses:
+    "200":
+      description: File metadata and handle
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: File id
+                format: ObjectId
+              rows-added:
+                type: number
+                description: Amount of rows added to export
+                format: ObjectId
+              state:
+                type: string
+                description: File state
+                enum: ["pending"]
+    "400":
+      description: Validation failed
+

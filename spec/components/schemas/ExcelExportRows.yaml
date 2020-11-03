@@ -1,0 +1,6 @@
+type: array
+items:
+  type: array
+  items:
+    type: string
+example: [["username", "name", "email"], ["john.doe29", "John Doe", "john.doe@email.com"]]

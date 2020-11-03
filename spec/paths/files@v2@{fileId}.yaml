@@ -1,0 +1,35 @@
+get:
+  summary: Fetch file
+  parameters:
+    - name: fileId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Files
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/File"
+
+delete:
+  summary: Delete file
+  parameters:
+    - name: fileId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Files
+  responses:
+    "200":
+      description: OK

@@ -1,0 +1,14 @@
+get:
+  summary: Index files
+  tags:
+    - Files
+  responses:
+    "200":
+      description: >
+          A list of all files stored in Timezynk files api.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/File"

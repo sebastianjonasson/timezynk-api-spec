@@ -1,0 +1,23 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      filename:
+        type: string
+        description: Name of the file
+      content-type:
+        type: string
+        description: Content type
+      description:
+        type: string
+        description: File description
+      entity:
+        type: string
+        description: Type of exported data. e.g timereports or registry-data
+      url:
+        type: string
+        description: Where to access the file
+      delete-at:
+        type: number
+        format: timestamp
+        description: Epoch timestamp of when the file will be deleted.

@@ -1,0 +1,20 @@
+get:
+  description: Endpoint for downloading a file
+  summary: Download file
+  parameters:
+    - name: fileId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Files
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: string
+            format: binary

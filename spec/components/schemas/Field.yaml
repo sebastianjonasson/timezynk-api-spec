@@ -15,9 +15,33 @@ allOf:
       field-type:
         type: string
         description: Field storage type
+        enum:
+          - string
+          - number
+          - boolean
+          - text
+          - address
+          - materials
+          - phone
+          - color
+          - date
+          - date-time
+          - start-end
+          - breaks
+          - date-duration
+          - registry-reference
+          - field-reference
+          - article-reference
       field-section:
         type: string
         description: Field section ID
+        enum:
+          - generic
+          - invoice-head
+          - invoice-section
+          - invoice-row
+          - payroll-row
+          - registers
       weight:
         type: number
         description: Sort order for this field. Lower weight floats on top, higher weight
@@ -46,9 +70,41 @@ allOf:
       values:
         type: object
         description: Type specific values
+        properties:
+          'default-val':
+            description: Default value for this field, if unset in the instance
+            nullable: true
       settings:
         type: object
         description: Type specific settings
+        properties:
+          registry-id:
+            type: string
+            format: ObjectId
+            description: ID of referenced registry, in case field-type === "registry-reference"
+          visibility-options:
+            type: object
+            description: Visibility settings, if conditionally-visible is true
+            properties:
+              fields:
+                type: array
+                description: Array of fields requiried for visibility
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                      description: Referenced field ID
+                    value:
+                      description: Field value to match against
+                    type:
+                      type: string
+                      description: Field type
+                      enum:
+                        - string
+                        - boolean
+                        - registry-reference
+                        - registry-reference_EXCLUDE
       meta:
         type: object
         description: Arbitary field meta data

@@ -36,6 +36,13 @@ get:
         type: boolean
         example: true
         default: false
+    - name: approval-requests
+      description: Specifies if data in the approval requests collection should be included in the response. Will fetch approval requests in the specified interval.
+      in: query
+      schema:
+        type: boolean
+        example: true
+        default: false
   tags:
     - Related Collections
   responses:
@@ -56,10 +63,14 @@ get:
                 $ref: "#/components/schemas/Inquiry"
               availabilities:
                 $ref: "#/components/schemas/Availability"
+              approval-requests:
+                $ref: "#/components/schemas/ApprovalRequest"
           example: {
             shifts: [],
             timereports: [],
             approvals: [],
             inquiries: [],
-            availabilities: []
+            availabilities: [],
+            "approval-requests": []
+
           }

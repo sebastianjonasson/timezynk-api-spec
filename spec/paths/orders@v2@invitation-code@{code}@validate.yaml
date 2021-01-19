@@ -1,0 +1,11 @@
+get:
+  summary: Validate code
+  description: |
+    Check if a client/supplier code exists for an order client/supplier.
+  tags:
+    - Orders
+  responses:
+    204:
+      description: An entity with this code exists.
+    404:
+      description: No entity found.

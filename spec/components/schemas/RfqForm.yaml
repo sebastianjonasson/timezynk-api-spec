@@ -4,25 +4,24 @@ allOf:
       supplier-id:
         type: string
         description: |
-          Id of the company supplying the order form.
-          Should be used to set `order.supplier-id` when creating a new order.
+          Id of the company supplying the form.
         format: ObjectId
         readOnly: true
         example: 5dde7024eded8872705aabcf
       title:
         type: string
-        description: Name of the order form
+        description: Name of the form.
         required: true
         example: "test form"
       shift-fields:
         type: array
-        description: List of shifts fields related to the order.
+        description: List of shifts fields related to the form.
         items:
-          $ref: '#/components/schemas/OrderFormShiftField'
+          $ref: '#/components/schemas/RfqFormShiftField'
         example: []
       fields:
         type: array
-        description: List of additional custom fields related to the order.
+        description: List of additional custom fields related to the form.
         items:
-          $ref: '#/components/schemas/OrderFormCustomField'
+          $ref: '#/components/schemas/RfqFormCustomField'
         example: []

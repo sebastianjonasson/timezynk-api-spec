@@ -1,0 +1,8 @@
+allOf:
+  - $ref: '#/components/schemas/RfqFormField'
+  - properties:
+      field-id:
+        type: string
+        format: ObjectId
+        description: Id of the field instance
+        required: true

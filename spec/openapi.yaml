@@ -48,6 +48,7 @@ tags:
   - name: Quote shifts - incoming
   - name: Quote shift responses - outgoing
   - name: Quote shift responses - incoming
+  - name: RfQ Forms
   - name: Orders
   - name: Order Forms
   - name: Order Clients

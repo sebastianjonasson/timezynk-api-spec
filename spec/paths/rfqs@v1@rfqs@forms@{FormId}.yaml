@@ -1,0 +1,55 @@
+get:
+  summary: Fetch single RfQ form
+  description: Endpoint for fetching a single form.
+  tags:
+    - RfQ Forms
+  parameters:
+    - name: FormId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: Single form
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RfqForm'
+    404:
+      description: Form not found
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+put:
+  summary: Update single RfQ form
+  description: endpoint.
+  tags:
+    - RfQ Forms
+  parameters:
+    - name: FormId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: Single form
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RfqForm'
+    404:
+      description: Form not found
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

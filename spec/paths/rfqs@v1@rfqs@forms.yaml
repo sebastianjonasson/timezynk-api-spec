@@ -1,18 +1,18 @@
 get:
-  summary: List order forms
+  summary: List RfQ forms
   description: |
-    The Order Forms endpoint returns a list of all created order forms.
+    Returns an array of all RfQ forms.
   tags:
-    - Order Forms
+    - RfQ Forms
   responses:
     200:
-      description: An array of order forms
+      description: An array of forms.
       content:
         application/json:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/OrderForm'
+              $ref: '#/components/schemas/RfqForm'
     default:
       description: Unexpected error
       content:
@@ -21,23 +21,29 @@ get:
             $ref: '#/components/schemas/Error'
 
 post:
-  summary: Create order form
+  summary: Create RfQ form
   description: |
     Endpoint for creating a new form.
   requestBody:
-    description: Order form to be created.
+    description: RfQ form to be created.
     required: true
     content:
       application/json:
         schema:
           allOf:
-          - $ref: '#/components/schemas/OrderForm'
+          - $ref: '#/components/schemas/RfqForm'
   tags:
-    - Order Forms
+    - RfQ Forms
   responses:
     200:
       description: Newly added form
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/OrderForm'
+            $ref: '#/components/schemas/RfqForm'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

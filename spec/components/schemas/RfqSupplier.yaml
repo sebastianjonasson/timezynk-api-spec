@@ -1,0 +1,51 @@
+allOf:
+  - $ref: "#/components/schemas/BasicObject"
+  - properties:
+      email:
+        type: string
+        description: The rfq supplier's email.
+      client-company-id:
+        type: string
+        format: ObjectId
+        description: Id representing the supplier's company-id.
+      supplier-company-id:
+        type: string
+        format: ObjectId
+        description: Id representing a client's company-id, if set.
+      client-title:
+        type: string
+        description: Title of the rfq supplier.
+      supplier-title:
+        type: string
+        description: Title of the rfq client.
+      rfq-forms:
+        type: array
+        description: List of rfq form ids which the supplier has access to view.
+        items:
+          type: string
+          format: ObjectId
+      values:
+        type: object
+        description: Supplier specific values which can be inherited into an rfq if specified in the rfq form.
+      client-code:
+        type: string
+        description: The client code is used to invite new suppliers. The code can only be used once, and to be able the user as a supplier, the email is required to match the invited users email.
+
+example:
+  id: "5dde7024eded8872705aabcd"
+  vid: "5dde7024eded8872705aabce"
+  company-id: "5dde7024eded8872705aabcf"
+  created: 1558604010307
+  created-by: "5ec23c9eaa389eb6070c3b9f"
+  valid-from: 1558604030403
+  valid-to: 0
+  changed-by: "5ec23c9eaa389eb6070c3ba0"
+  archived: null
+  email: "name@example.com"
+  client-company-id: "5dde7024eded8872705aabd1"
+  supplier-company-id: null
+  client-title: "Client title"
+  supplier-title: "Supplier title"
+  rfq-forms: ["5dde7024eded8872705a0123"]
+  values: {}
+  client-code: "5dde7024eded8872705aabd2"

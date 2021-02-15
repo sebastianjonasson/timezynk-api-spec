@@ -1,0 +1,49 @@
+get:
+  summary: List RfQ suppliers
+  description: |
+    The RfQ Suppliers endpoint returns a list of all invited and active RfQ Suppliers.
+  tags:
+    - RfQ Suppliers
+  responses:
+    200:
+      description: An array of rfq suppliers
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RfqSupplier'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+post:
+  summary: Create RfQ Suppliers
+  description: |
+    Endpoint for creating a RfQ Supplier. When the RfQ Supplier is created, an email invitation will be sent to the entered email.
+  tags:
+    - RfQ Suppliers
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/RfqSupplier'
+    description: RfQ Supplier to be created.
+    required: true
+  responses:
+    200:
+      description: An array of RfQ Supplier
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RfqSupplier'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

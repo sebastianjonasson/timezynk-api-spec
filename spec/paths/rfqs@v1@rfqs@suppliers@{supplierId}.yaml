@@ -1,0 +1,22 @@
+get:
+  summary: Fetch single RfQ Supplier
+  description: Endpoint for fetching a single RfQ Supplier
+  tags:
+    - RfQ Suppliers
+  responses:
+    200:
+      description: Single rfq supplie
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RfqSupplier'
+    404:
+      description: Rfq Supplier not found
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

@@ -1,0 +1,22 @@
+put:
+  summary: Confirm client
+  description: |
+    The Confirm Client endpoint allows a user to confirm a supplier invitation from a client.
+  tags:
+    - RfQ Clients
+  parameters:
+    - name: clientCode
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: OK
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

@@ -1,0 +1,21 @@
+get:
+  summary: List available clients
+  description: The Rfq Clients endpoint returns a list of all available clients to recieve rfqs from.
+  tags:
+    - RfQ Clients
+  responses:
+    200:
+      description: An array of rfq clients
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RfqSupplier'
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+

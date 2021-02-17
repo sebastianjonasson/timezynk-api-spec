@@ -1,0 +1,13 @@
+get:
+  summary: Fetch house work categories for invoice articles
+  tags:
+    - Invoice articles
+  responses:
+    200:
+      description: Array of house work categories
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/HouseWorkCategory"

@@ -43,6 +43,13 @@ get:
         type: boolean
         example: true
         default: false
+    - name: orders
+      description: Specifies if data in the orders collection should be included in the response. Will fetch orders related to shifts in the specified interval.
+      in: query
+      schema:
+        type: boolean
+        example: true
+        default: false
   tags:
     - Related Collections
   responses:

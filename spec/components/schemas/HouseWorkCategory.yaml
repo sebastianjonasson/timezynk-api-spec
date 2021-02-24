@@ -1,0 +1,23 @@
+type: object
+properties:
+  id:
+    type: string
+    example: ROT
+  name: 
+    type: string
+    example: Renovation and extension
+  types:
+    type: array
+    items: 
+      type: object
+      properties:
+        id:
+          type: string
+          example: MASONRY
+        name:
+          type: string
+          example: Masonry
+required:
+  - id
+  - name
+  - types

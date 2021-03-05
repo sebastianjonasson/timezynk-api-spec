@@ -1,0 +1,31 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      code:
+        type: string
+        description: The campaign code
+        example: 604241714cc83a2b454df71e
+      type:
+        type: string
+        description: Type of campaign code
+        enum:
+            - REFERRAL
+      companies:
+        type: array
+        description: List of companies that have used the campaign code
+        items:
+          properties:
+            id:
+              type: string
+              format: ObjectId
+              description: Id of the company 
+              example: 60424216b2ddf96af1266c26
+            name:
+              type: string
+              description: Name of the company 
+              example: "Timezynk"
+            date:
+              type: string
+              description: Date when the campaign code was used 
+              example: "2020-12-03"

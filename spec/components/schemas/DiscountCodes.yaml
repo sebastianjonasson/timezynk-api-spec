@@ -4,16 +4,17 @@ allOf:
     properties:
       code:
         type: string
-        description: The campaign code
+        description: The discount code
         example: 604241714cc83a2b454df71e
       type:
         type: string
-        description: Type of campaign code
+        description: Type of discount code
         enum:
             - REFERRAL
       companies:
         type: array
-        description: List of companies that have used the campaign code
+        description: A read only list of companies that have used the discount code
+        readOnly: true
         items:
           properties:
             id:
@@ -27,5 +28,8 @@ allOf:
               example: "Timezynk"
             date:
               type: string
-              description: Date when the campaign code was used 
+              description: Date when the discount code was used 
               example: "2020-12-03"
+    required:
+      - code
+      - type

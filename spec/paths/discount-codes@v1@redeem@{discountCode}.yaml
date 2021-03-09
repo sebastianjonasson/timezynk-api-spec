@@ -1,0 +1,16 @@
+post:
+  summary: Redeem discount code
+  description: >
+      Redeem a discount code
+  tags:
+    - Discount codes
+  responses:
+    "204":
+      description: Discount code applied
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+

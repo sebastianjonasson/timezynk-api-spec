@@ -1,0 +1,49 @@
+get:
+  summary: Index discount codes
+  description: >
+    The discount codes endpoint returns a list of all avaiable discount codes for the current company.
+  tags:
+    - Discount codes
+  responses:
+    "200":
+      description: An array of discount codes
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/DiscountCodes"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+post:
+  summary: Create discount codes
+  description: >
+      Create discount code
+  requestBody:
+    description: Discount code entry to be created.
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/DiscountCodes"
+  tags:
+    - Discount codes
+  responses:
+    "200":
+      description: An array of discount codes
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/DiscountCodes"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

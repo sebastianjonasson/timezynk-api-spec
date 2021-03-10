@@ -1,0 +1,35 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      code:
+        type: string
+        description: The discount code
+        example: 604241714cc83a2b454df71e
+      type:
+        type: string
+        description: Type of discount code
+        enum:
+            - REFERRAL
+      companies:
+        type: array
+        description: A read only list of companies that have used the discount code
+        readOnly: true
+        items:
+          properties:
+            id:
+              type: string
+              format: ObjectId
+              description: Id of the company 
+              example: 60424216b2ddf96af1266c26
+            name:
+              type: string
+              description: Name of the company 
+              example: "Timezynk"
+            date:
+              type: string
+              description: Date when the discount code was used 
+              example: "2020-12-03"
+    required:
+      - code
+      - type

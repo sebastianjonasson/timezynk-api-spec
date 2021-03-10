@@ -30,4 +30,5 @@ properties:
   title:
     type: string
     description: Human-readable field title
-    required: true
+required:
+  - title

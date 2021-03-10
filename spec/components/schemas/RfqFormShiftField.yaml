@@ -5,4 +5,5 @@ allOf:
         type: string
         format: ObjectId
         description: Id of the field instance
-        required: true
+required:
+  - field-id

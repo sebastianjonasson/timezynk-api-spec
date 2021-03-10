@@ -12,7 +12,6 @@ allOf:
       title:
         type: string
         description: Name of the order form
-        required: true
         example: "test form"
       shift-fields:
         type: array
@@ -26,3 +25,5 @@ allOf:
         items:
           $ref: '#/components/schemas/OrderFormCustomField'
         example: []
+required:
+  - title

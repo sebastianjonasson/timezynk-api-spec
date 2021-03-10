@@ -5,4 +5,5 @@ allOf:
         type: string
         format: ObjectId
         description: Id of the registry field type used
-        required: true
+required:
+  - field-template-id

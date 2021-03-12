@@ -4,7 +4,7 @@ allOf:
   - properties: 
       status:
         type: string
-        description: Quote shift status
+        description: Quote shift status.
         enum:
           - OPEN
           - SENT
@@ -12,15 +12,21 @@ allOf:
         readOnly: true
       expires:
         type: number
-        description: Timestamp in milliseconds for when the rfq expires
+        description: Timestamp in milliseconds for when the rfq expires.
       client:
         $ref: '#/components/schemas/Client'
         description: Name and contact defails of the client owning the request.
       rfq-no:
         type: string
-        description: The RfQ number
+        description: The RfQ number.
         format: ObjectId
         readOnly: true
+      shift-ids:
+        type: array
+        description: Array of connected shifts. (Intended for internal use.)
+        items:
+          type: string
+          format: ObjectId
       
 example:
   # basic
@@ -50,3 +56,4 @@ example:
     company: "Company AB"
     name: "Firstname Surname"
   rfq-no: "13"
+  shift-ids: ["5dde6e21c9e77c0001a1e3b3", "5dde6e21c9e77c0001a1e3b4"]

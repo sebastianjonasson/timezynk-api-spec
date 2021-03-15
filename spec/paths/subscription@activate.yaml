@@ -23,8 +23,14 @@ post:
   tags:
     - Subscriptions
   responses:
-    "204":
-      description: Subscription activated
+    "200":
+      description: Subscription activated - Subscription entry in response body
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Subscriptions"
     default:
       description: Unexpected error
       content:

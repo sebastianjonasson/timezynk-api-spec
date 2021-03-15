@@ -1,18 +1,18 @@
 get:
-  summary: Index discount codes
+  summary: Index subscriptions
   description: >
-    The discount codes endpoint returns a list of all available discount codes for the current company.
+    The Subscriptions endpoint returns a list of all subscriptions activated by the current company.
   tags:
-    - Discount codes
+    - Subscriptions
   responses:
     "200":
-      description: An array of discount codes
+      description: An array of subscriptions
       content:
         application/json:
           schema:
             type: array
             items:
-              $ref: "#/components/schemas/DiscountCodes"
+              $ref: "#/components/schemas/Subscriptions"
     default:
       description: Unexpected error
       content:
@@ -20,27 +20,27 @@ get:
           schema:
             $ref: "#/components/schemas/Error"
 post:
-  summary: Create discount codes
+  summary: Create Subscriptions
   description: >
-      Create discount code
+      Create Subscriptions
   requestBody:
-    description: Discount code entry to be created.
+    description: Subscription entry to be created.
     required: true
     content:
       application/json:
         schema:
-          $ref: "#/components/schemas/DiscountCodes"
+          $ref: "#/components/schemas/Subscriptions"
   tags:
-    - Discount codes
+    - Subscriptions
   responses:
     "200":
-      description: Single discount code entry
+      description: Single subscription entry
       content:
         application/json:
           schema:
             type: array
             items:
-              $ref: "#/components/schemas/DiscountCodes"
+              $ref: "#/components/schemas/Subscriptions"
     default:
       description: Unexpected error
       content:

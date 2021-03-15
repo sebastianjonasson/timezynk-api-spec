@@ -1,0 +1,61 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      start-date:
+        type: string
+        description: Start of the subscription
+        example: "2020-12-03"
+      end-date:
+        type: string
+        description: End of the subscription
+        example: "2021-12-31"
+      title:
+        type: string
+        description: Subscription title
+        example: "Subscription 2021"
+      price-month:
+        type: number
+        format: float
+        description: Montly base fee
+      price-user-month:
+        type: number
+        format: float
+        description: Maximum montly cost per user
+      price-user-day:
+        type: number
+        format: float
+        description: Maximum daily cost per scheduled user
+      price-user-rfq:
+        type: number
+        format: float
+        description: Price per booked user on a RFQ shift 
+      currency:
+        type: string
+        description: Subscription currency
+        example: "SEK"
+      currency-rate:
+        type: string
+        description: Subscription currency rate
+        example: 1.1
+      fixed-users:
+        type: number
+        format: float
+        example: 100
+      fixed-price:
+        type: number
+        format: float
+        example: 200
+      fixed-prepaid-months:
+        type: number
+        format: float
+        example: 13000
+      account:
+        type: string
+      discount-code:
+        type: string
+        description: Discount code used when activating subscription
+        example: TIMEZYNK2021
+    required:
+      - start-date
+      - title

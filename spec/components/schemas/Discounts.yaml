@@ -1,0 +1,43 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      start-date:
+        type: string
+        description: Start of the discounts
+        example: "2020-12-03"
+      end-date:
+        type: string
+        description: End of the discount
+        example: "2021-12-31"
+      title:
+        type: string
+        description: Discount title
+        example: "Referral discount"
+      account:
+        type: string
+      discount:
+        type: number
+        format: float
+        description: Discount amount
+      calculation:
+        type: string
+        description: How to calculate discount based on discount field value.
+        enum:
+            - percent
+            - fixed
+      type:
+        type: string
+        description: Type of discount
+        enum:
+          - SUBSCRIPTION_DISCOUNT_CODE
+          - REFERRAL_KICKBACK
+      weight:
+        type: number
+        format: int32
+    required:
+      - start-date
+      - title
+      - discount
+      - calculation
+      - type

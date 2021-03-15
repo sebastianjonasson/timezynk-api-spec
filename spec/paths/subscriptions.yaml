@@ -19,31 +19,3 @@ get:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
-post:
-  summary: Create Subscriptions
-  description: >
-      Create Subscriptions
-  requestBody:
-    description: Subscription entry to be created.
-    required: true
-    content:
-      application/json:
-        schema:
-          $ref: "#/components/schemas/Subscriptions"
-  tags:
-    - Subscriptions
-  responses:
-    "200":
-      description: Single subscription entry
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: "#/components/schemas/Subscriptions"
-    default:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/Error"

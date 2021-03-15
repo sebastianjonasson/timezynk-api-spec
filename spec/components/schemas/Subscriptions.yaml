@@ -6,56 +6,70 @@ allOf:
         type: string
         description: Start of the subscription
         example: "2020-12-03"
+        readOnly: true
       end-date:
         type: string
         description: End of the subscription
         example: "2021-12-31"
+        readOnly: true
       title:
         type: string
         description: Subscription title
         example: "Subscription 2021"
+        readOnly: true
       price-month:
         type: number
         format: float
         description: Montly base fee
+        readOnly: true
       price-user-month:
         type: number
         format: float
         description: Maximum montly cost per user
+        readOnly: true
       price-user-day:
         type: number
         format: float
         description: Maximum daily cost per scheduled user
+        readOnly: true
       price-user-rfq:
         type: number
         format: float
         description: Price per booked user on a RFQ shift 
+        readOnly: true
       currency:
         type: string
         description: Subscription currency
         example: "SEK"
+        readOnly: true
       currency-rate:
         type: string
         description: Subscription currency rate
         example: 1.1
+        readOnly: true
       fixed-users:
         type: number
         format: float
         example: 100
+        readOnly: true
       fixed-price:
         type: number
         format: float
         example: 200
+        readOnly: true
       fixed-prepaid-months:
         type: number
         format: float
         example: 13000
+        readOnly: true
       account:
         type: string
+        readOnly: true
       discount-code:
         type: string
         description: Discount code used when activating subscription
         example: TIMEZYNK2021
+        readOnly: true
     required:
       - start-date
       - title

@@ -1,7 +1,7 @@
 get:
   summary: Index discount codes
   description: >
-    The discount codes endpoint returns a list of all avaiable discount codes for the current company.
+    The discount codes endpoint returns a list of all available discount codes for the current company.
   tags:
     - Discount codes
   responses:
@@ -34,7 +34,7 @@ post:
     - Discount codes
   responses:
     "200":
-      description: An array of discount codes
+      description: Single discount code entry
       content:
         application/json:
           schema:

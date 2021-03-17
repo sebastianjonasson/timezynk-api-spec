@@ -1,0 +1,21 @@
+get:
+  summary: Index subscriptions
+  description: >
+    The Subscriptions endpoint returns a list of all subscriptions activated by the current company.
+  tags:
+    - Subscriptions
+  responses:
+    "200":
+      description: An array of subscriptions
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Subscriptions"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

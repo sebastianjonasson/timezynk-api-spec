@@ -1,0 +1,39 @@
+post:
+  summary: Activate Subscriptions
+  description: >
+      Active subscription
+  requestBody:
+    description: Subscription options.
+    required: true
+    content:
+      application/json:
+        schema:
+          properties:
+            currency:
+              type: string
+              description: Subscription currency
+              example: "SEK"
+            discount-code:
+              type: string
+              description: Discount code used when activating subscription
+              example: TIMEZYNK2021
+          required:
+            - start-date
+            - title
+  tags:
+    - Subscriptions
+  responses:
+    "200":
+      description: Subscription activated - Subscription entry in response body
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Subscriptions"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

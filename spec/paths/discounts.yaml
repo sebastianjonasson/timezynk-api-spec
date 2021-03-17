@@ -1,0 +1,21 @@
+get:
+  summary: Index discounts
+  description: >
+    The Discounts endpoint returns a list of all discounts used by the current company.
+  tags:
+    - Subscriptions
+  responses:
+    "200":
+      description: An array of discounts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Discounts"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

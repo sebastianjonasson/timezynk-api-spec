@@ -1,0 +1,46 @@
+put:
+  summary: Update relations for a list of shifts
+  description: |
+    Given a list of shift ids, update the relations field according to
+    the set fields in the request body.
+  tags:
+    - Shift
+  requestBody:
+    content: 
+      application/json:
+        schema:
+          type: object
+          properties:
+            shift-ids:
+              description: Can be empty, resulting in no changes.
+              type: array
+              items:
+                type: string
+                format: ObjectId
+              example: [5dde7024eded8872705aabcd, 5dde7024eded8872705aabce]
+            outgoing-rfq-id:
+              type: string
+              format: ObjectId
+              nullable: true
+              example: 5dde7024eded8872705aabcf
+            incoming-rfq-id:
+              type: string
+              format: ObjectId
+              nullable: true
+              example: 5dde7024eded8872705aabd0
+            rfq-quote-shift-response-id:
+              type: string
+              format: ObjectId
+              nullable: true
+              example: 5dde7024eded8872705aabd1
+  responses:
+    200:
+      description: Number of matched shifts.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              match:
+                type: integer
+                example: 2

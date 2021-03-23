@@ -1,0 +1,18 @@
+get:
+  summary: Check username availability
+  tags:
+    - User
+  parameters:
+    - name: username
+      description: Username to be validated
+      in: path
+      required: true
+      schema:
+        type: string
+        example: JohnDoe
+
+  responses:
+    "204":
+      description: Username available
+    "409":
+      description: Username already in use

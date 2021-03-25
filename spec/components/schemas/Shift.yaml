@@ -49,13 +49,24 @@ allOf:
         readOnly: true
       relations:
         type: object
+        description: References to other objects.
+        nullable: true
         properties:
-          incoming-order:
-            $ref: "#/components/schemas/ShiftRelation"
-          outgoing-order:
-            $ref: "#/components/schemas/ShiftRelation"
-          outgoing-rfq:
-            $ref: "#/components/schemas/ShiftRelation"
+          outgoing-rfq-id:
+            type: string
+            format: ObjectId
+            nullable: true
+            example: 5dde7024eded8872705aabcf
+          incoming-rfq-id:
+            type: string
+            format: ObjectId
+            nullable: true
+            example: 5dde7024eded8872705aabd0
+          rfq-quote-shift-response-id:
+            type: string
+            format: ObjectId
+            nullable: true
+            example: 5dde7024eded8872705aabd1
     required:
       - start
       - end

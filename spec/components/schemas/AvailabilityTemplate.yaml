@@ -15,6 +15,11 @@ allOf:
         format: date
         description: Ending date of template. Will repeat indefinitely if set to null.
         example: "2020-04-30"
+      user-id:
+        type: string
+        description: User ID
+        format: ObjectId
+        example: "607567b64c35963408f3838a"
       available:
         type: boolean
         description: Does this mark the user as available or not available.

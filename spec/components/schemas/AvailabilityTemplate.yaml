@@ -1,0 +1,44 @@
+allOf:
+  - $ref: "#/components/schemas/BasicObject"
+  - properties:
+      title:
+        type: string
+        description: Template title.
+        example: "Template Title"
+      start: 
+        type: string
+        format: date
+        description: Starting date of template.
+        example: "2020-04-24"
+      end: 
+        type: string
+        format: date
+        description: Ending date of template. Will repeat indefinitely if set to null.
+        example: "2020-04-30"
+      available:
+        type: boolean
+        description: Does this mark the user as available or not available.
+      length: 
+        type: integer
+        description: Interval length 
+        example: 7
+      occurences: 
+        type: array
+        description: On which days in the interval the availabilities should occur. 
+        example: [0, 5, 6]
+        items: 
+          type: integer
+      deleted-ids: 
+        type: array
+        description: List of deleted ids which should not be included in generated availabilities
+        example: ["60754bd1269f1c2a68b43ba2", "60754be52f7d2d33958066c2"]
+        read-only: true
+        items: 
+          type: integer
+
+  - required:
+    - title
+    - start
+    - available
+    - rows
+

@@ -1,0 +1,26 @@
+get:
+  summary: Fetch availability templates
+  tags:
+    - Availability Templates
+  responses:
+    200:
+      description: Array of templates.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/AvailabilityTemplate"
+post:
+  summary: Create availability template
+  tags:
+    - Availability Templates
+  responses:
+    200:
+      description: The created Availability Template
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/AvailabilityTemplate"

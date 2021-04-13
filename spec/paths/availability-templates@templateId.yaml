@@ -1,0 +1,32 @@
+get:
+  summary: Fetch availability template
+  parameters:
+    - name: templateId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Availability Templates
+  responses:
+    200:
+      description: Availability template.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AvailabilityTemplate"
+delete:
+  summary: Delete availability template
+  parameters:
+    - name: templateId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Availability Templates
+  responses:
+    200:
+      description: Delete successful

@@ -1,0 +1,32 @@
+get:
+  summary: Fetch repeating template by id
+  parameters:
+    - name: templateId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Repeating Templates
+  responses:
+    200:
+      description: Repeating template.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RepeatingTemplate"
+delete:
+  summary: Delete repeating template
+  parameters:
+    - name: templateId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Repeating Templates
+  responses:
+    200:
+      description: Delete successful

@@ -1,0 +1,26 @@
+get:
+  summary: Fetch repeating templates
+  tags:
+    - Repeating Templates
+  responses:
+    200:
+      description: Array of templates.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/RepeatingTemplate"
+post:
+  summary: Create repeating template
+  tags:
+    - Repeating Templates
+  responses:
+    200:
+      description: The created template
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/RepeatingTemplate"

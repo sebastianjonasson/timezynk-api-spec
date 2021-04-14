@@ -10,6 +10,8 @@ tags:
     description: Endpoints for authentication and configuration
   - name: Availability
     description: Fetching and updating availability
+  - name: Repeating Templates
+    description: Fetching and updating repeating templates
   - name: Invoice
     description: Fetching, updating and creating invoices
   - name: Invoice rows

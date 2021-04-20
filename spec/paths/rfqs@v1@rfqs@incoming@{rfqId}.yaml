@@ -1,6 +1,6 @@
 get:
   summary: Fetch single RfQ
-  description: Endpoint for fetching a single RfQ
+  description: Endpoint for fetching a single RfQ.
   tags:
     - RfQs - incoming
   parameters:
@@ -12,15 +12,101 @@ get:
         format: ObjectId
   responses:
     200:
-      description: A single RfQ object
+      description: A single RfQ object.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Rfq'
     404:
-      description: RfQ not found
+      description: RfQ not found.
     default:
-      description: Unexpected error
+      description: Unexpected error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+put:
+  summary: Archive single RfQ
+  description: Endpoint for archiving a single RfQ.
+  tags:
+    - RfQs - incoming
+  parameters:
+    - name: rfqId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content: 
+      application/json:
+        schema:
+          type: object
+          properties:
+            archived:
+              type: number
+              format: timestamp
+              example: 1558604030403
+  responses:
+    200:
+      description: Updated object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Rfq'
+          example:
+            id: "5dde7024eded8872705a0002"
+            vid: "5dde71e4c9e77c0001730002"
+            company-id: "5dde6e21c9e77c0001a1e3a7"
+            created: 1574858788000
+            created-by: "5dde6e21c9e77c0001a1e3b0"
+            valid-from: 1574859236203
+            valid-to: 0
+            changed-by: "5dde6e21c9e77c0001a1e3b0"
+            archived: 1558604030403
+            form-id: "5dde7024eded8872705a1ff7"
+            form-vid: "5dde71e4c9e77c000173dd03"
+            original-duplicity: 3
+            values: {}
+            shift-dates: ["2019-11-29", "2019-11-30", "2019-11-28"]
+            expires: 1233545
+            client:
+              phone: "0123-405060"
+              email: "name@company.com"
+              company: "Company AB"
+              name: "Firstname Surname"
+            rfq-no: "13"
+            client-id: "5dde7024eded8872705a0017"
+            outgoing-rfq-id: "5dde7024eded8872705a0001"
+    404:
+      description: RfQ not found.
+    default:
+      description: Unexpected error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+delete:
+  summary: Delete archived RfQ
+  description: Endpoint for deleting an archived RfQ.
+  tags:
+    - RfQs - incoming
+  parameters:
+    - name: rfqId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: Deleted.
+    400:
+      description: RfQ not archived.
+    404:
+      description: RfQ not found.
+    default:
+      description: Unexpected error.
       content:
         application/json:
           schema:

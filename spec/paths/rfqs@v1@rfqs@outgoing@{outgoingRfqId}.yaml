@@ -67,3 +67,28 @@ put:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
+delete:
+  summary: Delete archived RfQ
+  description: Endpoint for deleting an archived RfQ.
+  tags:
+    - RfQs - outgoing
+  parameters:
+    - name: rfqId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: Deleted.
+    400:
+      description: RfQ not archived.
+    404:
+      description: RfQ not found.
+    default:
+      description: Unexpected error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

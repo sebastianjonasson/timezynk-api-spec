@@ -1,0 +1,32 @@
+allOf:
+  - $ref: "#/components/schemas/BasicObject"
+  - type: object
+    properties:
+      title:
+        type: string
+        description: |
+          Role's title.
+        example: supervisor+
+      description:
+        type: string
+        description: |
+          Role's description.
+        example: Supervisor with extra permissions
+      abilities:
+        type: array
+        items:
+          $ref: "#/components/schemas/Ability"
+      extensions:
+        type: object
+        properties:
+          tzcontrol:
+            type: array
+            items:
+              $ref: "#/components/schemas/Ability"
+          tzmobile:
+            type: array
+            items:
+              $ref: "#/components/schemas/Ability"
+    required:
+      - title
+      - abilities

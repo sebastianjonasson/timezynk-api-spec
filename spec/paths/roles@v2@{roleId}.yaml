@@ -1,0 +1,61 @@
+get:
+  summary: Fetch role
+  description: Endpoint for fetching role
+  tags:
+    - Roles
+  parameters:
+    - name: roleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  responses:
+    200:
+      description: Role
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Role"
+    404:
+      description: Role not found
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+put:
+  summary: Update role
+  description: Endpoint for updating role
+  tags:
+    - Roles
+  parameters:
+    - name: roleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Role"
+    description: Fields to be updated
+    required: true
+  responses:
+    200:
+      description: Updated role
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Role"
+    404:
+      description: Role not found
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

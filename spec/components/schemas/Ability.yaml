@@ -1,0 +1,17 @@
+type: object
+properties:
+  object:
+    type: string
+    description: Collection of the ability
+    example: shifts
+  action:
+    type: string
+    description: Action of the ability
+    example: create
+  conditions:
+    type: array
+    items:
+      type: string
+required:
+  - object
+  - action

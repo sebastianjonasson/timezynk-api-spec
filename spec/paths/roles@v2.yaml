@@ -1,0 +1,45 @@
+get:
+  summary: Fetch all roles
+  description: Endpoint for fetching all roles
+  tags:
+    - Roles
+  responses:
+    200:
+      description: Roles
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Role"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+post:
+  summary: Create new role
+  description: Endpoint for creating new roles
+  tags:
+    - Roles
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Role"
+    description: Role to be created
+    required: true
+  responses:
+    200:
+      description: Created role
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Role"
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

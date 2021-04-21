@@ -42,6 +42,7 @@ allOf:
         enum:
           - SENT
           - ACCEPTED
+          - APPROVED
           - REJECTED
           - EXPIRED
           - CLOSED

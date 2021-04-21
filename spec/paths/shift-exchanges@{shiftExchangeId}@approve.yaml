@@ -1,6 +1,6 @@
 put:
-  summary: Reject shift exchange
-  description: Upon rejection, a notification is sent to the sender.
+  summary: Approve shift exchange
+  description: Approve a shift exchange.
   parameters:
     - name: shiftExchangeId
       in: path
@@ -12,7 +12,7 @@ put:
     - Shift Exchanges
   responses:
     200:
-      description: Rejected shift exchange
+      description: Approved shift exchange
     400:
       description: |
         * Validation failed

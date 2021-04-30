@@ -1,0 +1,36 @@
+get:
+  summary: Externally booked users
+  description: Endpoint for indexing externally booked users. The endpoint will index all users booked on any RFQ shift by any of the caller's suppliers
+  parameters:
+    - $ref: "#/components/parameters/startParam"
+    - $ref: "#/components/parameters/endParam"
+    - $ref: "#/components/parameters/criteriaParam"
+  tags:
+    - RfQ shifts - outgoing
+  responses:
+    200:
+      description: An array of users.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                  id:
+                    type: string
+                    description: id of the user
+                    format: ObjectId
+                    readOnly: true
+                    example: 5dde7024eded8872705aabcd
+                  name: 
+                    type: string
+                    descrition: name of the user
+                    readOnly: true
+                    example: Dwight Schrute
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

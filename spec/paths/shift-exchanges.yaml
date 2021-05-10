@@ -1,7 +1,24 @@
 get:
-  summary: Fetch shift exchanges for a user
+  summary: Fetch shift exchanges
   tags:
     - Shift Exchanges
+  parameters:
+    - in: query
+      name: recipient-id
+      description: Filter on id of the recipient
+      required: false
+      schema:
+        type: string
+        format: ObjectId
+        example: 6098ecce5f56b9c7b3f9a42b
+    - in: query
+      name: sender-id
+      description: Filter on id of the sender
+      required: false
+      schema:
+        type: string
+        format: ObjectId
+        example: 6098ecce5f56b9c7b3f9a42b
   responses:
     200:
       description: Array of shifts.

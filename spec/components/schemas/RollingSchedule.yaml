@@ -1,0 +1,45 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      title:
+        type: string
+        description: Title of the rolling schedule
+      start:
+        type: string
+        format: local-date-time
+        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$
+        description: Start of time report without time zone (i.e. 2019-04-30T15:41:00.000)
+        example: 2020-01-01
+      end:
+        type: string
+        format: local-date-time
+        pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?$
+        description: End of time report without time zone (i.e. 2019-04-30T15:41:00.000)
+        example: 2022-12-31
+      interval:
+        type: number
+        description: Interval of rolling schedule
+        format: integer
+      dates:
+        type: array
+        items:
+          type: string
+          format: local-date
+          description: Dates to be included in interval
+          example: 2020-01-03
+      type:
+        type: string
+        enum:
+          - shift
+          - timereport
+          - availability
+        description: Collection used for the rolling schedule
+        default: shift
+        example: availability
+    required:
+      - title
+      - start
+      - interval
+      - dates
+

@@ -1,0 +1,34 @@
+get:
+  summary: Fetch rolling schedules
+  tags:
+    - Rolling Schedule
+  responses:
+    "200":
+      description: Array of rolling schedules
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/RollingSchedule"
+post:
+  summary: Create rolling schedule
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/RollingSchedule"
+    description: Rolling schedule to be added
+    required: true
+  tags:
+    - Rolling Schedule
+  responses:
+    "200":
+      description: Newly added rolling schedule object
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RollingSchedule"
+    "400":
+      description: Validation failed
+

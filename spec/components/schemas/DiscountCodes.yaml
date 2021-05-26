@@ -1,5 +1,5 @@
 allOf:
-  - $ref: '#/components/schemas/BasicObject'
+  - $ref: "#/components/schemas/BasicObject"
   - type: object
     properties:
       code:
@@ -8,9 +8,52 @@ allOf:
         example: 604241714cc83a2b454df71e
       type:
         type: string
-        description: Type of discount code
+        description: Type of discount code `REFERRAL` is for customers and `TIMEZYNK_CUSTOM` is for timeZynk admins
         enum:
-            - REFERRAL
+          - REFERRAL
+          - TIMEZYNK_CUSTOM
+      discount:
+        type: object
+        properties:
+          value:
+            type: number
+            description: Discount value
+            example: 45
+          unit:
+            type: string
+            description: Unit of discount
+            example: "percent"
+            default: "percent"
+            enum:
+              - "percent"
+        required:
+          - value
+          - unit
+      duration:
+        type: object
+        properties:
+          value:
+            type: number
+            description: Duration value
+            example: 3
+          unit:
+            type: string
+            description: Unit of duration
+            example: "month"
+            default: "month"
+            enum:
+              - "month"
+        required:
+          - value
+          - unit
+      start-date:
+        type: string
+        format: date
+        description: dateString when the discount code could be applied
+      expires:
+        type: number
+        format: timestamp
+        description: Timestamp when the discount expires
       companies:
         type: array
         description: A read only list of companies that have used the discount code
@@ -20,15 +63,15 @@ allOf:
             id:
               type: string
               format: ObjectId
-              description: Id of the company 
+              description: Id of the company
               example: 60424216b2ddf96af1266c26
             name:
               type: string
-              description: Name of the company 
+              description: Name of the company
               example: "Timezynk"
             date:
               type: string
-              description: Date when the discount code was used 
+              description: Date when the discount code was used
               example: "2020-12-03"
     required:
       - code

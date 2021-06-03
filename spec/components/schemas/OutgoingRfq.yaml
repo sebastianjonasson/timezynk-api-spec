@@ -1,6 +1,6 @@
 allOf:
   - $ref: '#/components/schemas/BasicObject'
-  - $ref: '#/components/schemas/BaseOrder'
+  - $ref: '#/components/schemas/Basenrder'
   - properties: 
       status:
         type: string
@@ -29,7 +29,7 @@ allOf:
           format: ObjectId
       duplicity:
         type: number
-        description: Amount of people to be booked for the this order.
+        description: Amount of people to be booked for the this rfq.
         readOnly: true
       booked-duplicity:
         type: number

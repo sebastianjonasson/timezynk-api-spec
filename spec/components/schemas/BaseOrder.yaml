@@ -15,7 +15,7 @@ allOf:
         format: ObjectId
       original-duplicity:
         type: number
-        description: Amount of people to be booked for the this order.
+        description: Original (when created) amount of people to be booked for the this order.
         readOnly: true
       values:
         type: object

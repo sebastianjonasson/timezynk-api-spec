@@ -29,6 +29,18 @@ allOf:
         type: string
         format: ObjectId
         description: ID of order that created the shift
+      status:
+        type: string
+        description: >
+          Status of the rfq:
+           * `active` - Part of a RFQ
+           * `removed` - Shift got removed form RFQ
+        default: active
+        example: active
+        enum:
+          - active
+          - removed
+
     required:
       - outgoing-rfq-id
       - shift-id

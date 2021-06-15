@@ -1,7 +1,7 @@
 get:
   summary: Fetch shifts with related collections
   description: |
-    Endpoint for fetching data from multiple collections related to shifts. Will fetch data in the specified interval along with orphaned* items.  
+    Endpoint for fetching data from multiple collections related to shifts. Will fetch data in the specified interval along with orphaned* items.
 
     \* *An item not in the current interval, but related to a shift, timereport, or inquiry.*
   parameters:
@@ -61,17 +61,29 @@ get:
             type: object
             properties:
               shifts:
-                $ref: "#/components/schemas/Shift"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Shift"
               timereports:
-                $ref: "#/components/schemas/Timereport"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Timereport"
               approvals:
-                $ref: "#/components/schemas/Approval"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Approval"
               inquiries:
-                $ref: "#/components/schemas/Inquiry"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Inquiry"
               availabilities:
-                $ref: "#/components/schemas/Availability"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Availability"
               approval-requests:
-                $ref: "#/components/schemas/ApprovalRequest"
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApprovalRequest"
           example: {
             shifts: [],
             timereports: [],

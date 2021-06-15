@@ -1,0 +1,51 @@
+get:
+  summary: Fetch order with related collections
+  description: |
+    Endpoint for fetching data from multiple collections related to an order. Will fetch data related to the order-id.
+  parameters:
+    - name: orderId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+  tags:
+    - Related Collections
+  responses:
+    '200':
+      description: Data from multiple collections
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              order:
+                $ref: "#/components/schemas/Order"
+              shifts:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Shift"
+              timereports:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Timereport"
+              approvals:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Approval"
+              inquiries:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Inquiry"
+              journal-entries:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JournalEntry"
+          example: {
+            order: {},
+            shifts: [],
+            timereports: [],
+            approvals: [],
+            inquiries: [],
+            "journal-entries": []
+          }

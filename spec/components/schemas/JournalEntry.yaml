@@ -1,0 +1,39 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      type:
+        type: string
+        description: Type of Journal event
+        enum:
+          - "order-created"
+          - "order-seen"
+          - "order-accepted"
+          - "order-confirmation-sent"
+          - "order-update-bookings"
+          - "order-update-shifts"
+          - "order-delete-shifts"
+          - "order-fully-booked"
+          - "order-approval-request-sent"
+          - "order-approval-request-approved"
+          - "order-approval-request-rejected"
+          - "order-booking-confirmation"
+          - "order-rejected"
+          - "order-discarded"
+          - "order-client-discarded"
+          - "order-done"
+          - "comment"
+          - "log-item"
+          - "duplicity-change"
+        example: comment
+      target:
+        type: string
+        format: ObjectId
+        description: Target object this journal entry is about
+        example: 60c8b280a7780aada80cc106
+      content:
+        type: any
+        description: Type-dependent content of the journal entry
+        example: {
+          text: "Please note schedule changes around midsummer!"
+        }

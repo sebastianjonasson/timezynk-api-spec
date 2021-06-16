@@ -9,6 +9,20 @@ get:
       schema:
         type: string
         format: ObjectId
+    - name: timereports
+      description: Specifies if data in the timereports collection should be included in the response. Will fetch timereports in the specified interval and include orphaned timereports.
+      in: query
+      schema:
+        type: boolean
+        example: true
+        default: false
+    - name: approvals
+      description: Specifies if data in the approvals collection should be included in the response. Will fetch approvals related to the fetched timereports. Requires the timereport parameter to be set to true.
+      in: query
+      schema:
+        type: boolean
+        example: true
+        default: false
   tags:
     - Related Collections
   responses:
@@ -19,8 +33,10 @@ get:
           schema:
             type: object
             properties:
-              order:
-                $ref: "#/components/schemas/Order"
+              orders:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
               shifts:
                 type: array
                 items:
@@ -37,7 +53,7 @@ get:
                 type: array
                 items:
                   $ref: "#/components/schemas/Inquiry"
-              journal-entries:
+              journal:
                 type: array
                 items:
                   $ref: "#/components/schemas/JournalEntry"
@@ -47,5 +63,5 @@ get:
             timereports: [],
             approvals: [],
             inquiries: [],
-            "journal-entries": []
+            journal: []
           }

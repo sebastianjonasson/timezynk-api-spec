@@ -19,7 +19,7 @@ properties:
         format: ObjectId
   not-booked-user-ids:
     type: array
-    description: User IDs that should not be booked on these shifts
+    description: User IDs that should not be booked on these shifts, use "*" to unbook everyone
     items:
       type: string
       format: ObjectId

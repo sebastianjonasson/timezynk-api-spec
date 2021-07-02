@@ -6,7 +6,7 @@ get:
     - $ref: "#/components/parameters/endParam"
     - $ref: "#/components/parameters/criteriaParam"
   tags:
-    - RfQ shifts - outgoing
+    - RfQs - outgoing
   responses:
     200:
       description: An array of users.

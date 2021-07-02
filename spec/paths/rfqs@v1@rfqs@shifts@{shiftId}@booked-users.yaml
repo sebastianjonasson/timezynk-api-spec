@@ -1,0 +1,41 @@
+get:
+  summary: Externally booked users by shift
+  description: Endpoint for fetching externally booked users for a specific shift
+  tags:
+    - RfQs - outgoing
+  parameters:
+    - name: shiftId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+        example: 60defbca60f6dea92ca82caa
+        description: Id of the shift
+  responses:
+    200:
+      description: Array of booked users for the specified shift
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: ObjectId
+                description: Id of the user
+                example: 60defbbe5f3eee7be0a12413
+              name:
+                type: string
+                description: Name of the user
+                example: Kevin Malone
+            example: [{
+                "id": "60defc172bddad389b645c2f",
+                "name": "David Wallace",
+            },{
+                "id": "60defc33637d0d644e869a7d",
+                "name": "Nellie Bertram",
+            },{
+                "id": "60defc4fb32cb4dcb5276269",
+                "name": "Mose",
+            }]

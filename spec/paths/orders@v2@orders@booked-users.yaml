@@ -1,0 +1,52 @@
+get:
+  summary: Externally booked users by interval
+  description: Endpoint for fetching externally booked users for a specific interval
+  tags:
+    - Orders
+  parameters:
+    - name: from
+      in: path
+      required: true
+      schema:
+        type: string
+        format: date-time
+        example: 2020-01-01T10:00:00.000
+        description: Start of interval
+    - name: to
+      in: path
+      required: true
+      schema:
+        type: string
+        format: date-time
+        example: 2020-01-08T10:00:00.000
+        description: End of interval
+  responses:
+    200:
+      description: Array of booked users in interval
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: ObjectId
+                description: Id of the user
+                example: 60defbbe5f3eee7be0a12413
+              name:
+                type: string
+                description: Name of the user
+                example: Kevin Malone
+            example: [{
+                "id": "60defc172bddad389b645c2f",
+                "name": "Darryl Philbin",
+            },{
+                "id": "60defc33637d0d644e869a7d",
+                "name": "Holly Flax",
+            },{
+                "id": "60defc4fb32cb4dcb5276269",
+                "name": "Jan Levinson Gould",
+            }]
+
+    404:
+      description: Order/Shift not found

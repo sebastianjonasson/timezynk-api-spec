@@ -1,0 +1,43 @@
+# get:
+#   summary: Fetch Outgoing RfQs
+#   description: |
+#     The Outgoing RfQs endpoint returns an array of all outgoing rfq parents.
+#   tags:
+#     - RfQs - outgoing
+#   responses:
+#     200:
+#       description: An array of rfq parents
+#       content:
+#         application/json:
+#           schema:
+#             type: array
+#             items:
+#               $ref: '#/components/schemas/OutgoingRfq'
+#     default:
+#       description: Unexpected error
+#       content:
+#         application/json:
+#           schema:
+#             $ref: '#/components/schemas/Error'
+
+post:
+  summary: Queue payment
+  description: |
+    Endpoint for queuing payments to be processed.
+  requestBody:
+    description: Payment object to be created
+    required: true
+    content:
+      application/json:
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/PaymentQueue'
+  tags:
+    - Payments
+  responses:
+    200:
+      description: Newly added Payment object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentQueue'

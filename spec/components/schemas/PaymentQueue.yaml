@@ -1,0 +1,40 @@
+allOf:
+  - $ref: '#/components/schemas/BasicObject'
+  - type: object
+    properties:
+      status:
+        type: string
+        description: Payment status
+        enum:
+          - processed
+          - pending
+          - failed
+        default: pending
+        readOnly: true
+        example: pending
+      target:
+        type: string
+        format: ObjectId
+        description: Id of the target being processed. E.g. If an invoice is being processed, then the target value should be the id of the invoice.
+        example: 60e4503b6ffc928ce5f9e534
+      type:
+        type: string
+        description: type of payment
+        enum:
+          - invoice
+        example: invoice
+      amount:
+        type: number
+        format: double
+        description: Amount to be charged
+        example: 7842.27
+      currency:
+        type: string
+        description: Currency code
+        example: SEK
+    required:
+      - target
+      - type
+      - amount
+      - currency
+

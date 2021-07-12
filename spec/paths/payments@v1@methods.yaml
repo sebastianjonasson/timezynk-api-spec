@@ -1,0 +1,55 @@
+get:
+  summary: Adyen payment methods 
+  description: |
+    A proxy endpoint for indexing available Adyen payment methods.  This endpoint should be used for rendering the the Adyen [pre-built UI option: Drop-in](https://docs.adyen.com/online-payments/drop-in-web) component.
+
+    For more information about the endpoint see the Adyen docs [POST /paymentMethods endpoint](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/paymentMethods).
+  tags:
+    - Payments
+  responses:
+    200:
+      description: List of all the available payment methods Timezynk accepts.
+      content:
+        application/json:
+          example: {
+                      "paymentMethods": [
+                        {
+                          "brands": [
+                            "amex",
+                            "bcmc",
+                            "cup",
+                            "diners",
+                            "discover",
+                            "jcb",
+                            "maestro",
+                            "mc",
+                            "visa"
+                          ],
+                          "details": [
+                            {
+                              "key": "number",
+                              "type": "text"
+                            },
+                            {
+                              "key": "expiryMonth",
+                              "type": "text"
+                            },
+                            {
+                              "key": "expiryYear",
+                              "type": "text"
+                            },
+                            {
+                              "key": "cvc",
+                              "type": "text"
+                            },
+                            {
+                              "key": "holderName",
+                              "optional": true,
+                              "type": "text"
+                            }
+                          ],
+                          "name": "Credit Card",
+                          "type": "scheme"
+                        }
+                      ]
+                    }

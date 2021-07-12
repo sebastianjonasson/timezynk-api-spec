@@ -1,0 +1,15 @@
+get:
+  summary: Target payment transactions 
+  description: |
+    Index payment transactions for a payment target
+  tags:
+    - Payments
+  responses:
+    200:
+      description: List of transactions
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/BasicObject'

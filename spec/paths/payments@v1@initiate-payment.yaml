@@ -1,0 +1,46 @@
+post:
+  summary: Initiate payment 
+  description: |
+    A proxy endpoint for initiating an Adyen payment.
+
+    The request is proxied to  [POST /initiatePayment endpoint](https://docs.adyen.com/api-explorer/#/CheckoutService/67/post/payments).
+  requestBody:
+    description: Payment details.
+    required: true
+    content:
+      application/json:
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/AdyenInitiatePaymentRequest'
+  tags:
+    - Payments
+  responses:
+    200:
+      description: List of all the available payment methods Timezynk accepts.
+      content:
+        application/json:
+          example: {
+                   "resultCode":"RedirectShopper",
+                   "action":{
+                      "data":{
+                         "MD":"OEVudmZVMUlkWjd0MDNwUWs2bmhSdz09...",
+                         "PaReq":"eNpVUttygjAQ/RXbDyAXBYRZ00HpTH3wUosPfe...",
+                         "TermUrl":"https://example.com/checkout?shopperOrder=12xy.."
+                      },
+                      "method":"POST",
+                      "paymentData":"Ab02b4c0!BQABAgCJN1wRZuGJmq8dMncmypvknj9s7l5Tj...",
+                      "paymentMethodType":"scheme",
+                      "type":"redirect",
+                      "url":"https://test.adyen.com/hpp/3d/validate.shtml"
+                   },
+                   "details":[
+                      {
+                         "key":"MD",
+                         "type":"text"
+                      },
+                      {
+                         "key":"PaRes",
+                         "type":"text"
+                      }
+                   ],
+                }

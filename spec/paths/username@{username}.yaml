@@ -13,6 +13,35 @@ get:
 
   responses:
     "204":
-      description: Username available
+      description: No Content - Username available
+    "400":
+      description: Bad Request - Validation errors
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                description: Status code. Always 400.
+                example: 400
+              message:
+                type: string
+                description: Error message
+                example: Username is considered a url.
+              error-code:
+                type: string
+                enum:
+                  - USERNAME_NO_URL
+                  - INVALID_USERNAME
+                description: Error code.
+                example: USERNAME_NO_URL
+
     "409":
-      description: Username already in use
+      description: Conflict - Username already in use
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

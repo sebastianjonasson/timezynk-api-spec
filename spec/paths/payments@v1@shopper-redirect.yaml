@@ -1,0 +1,60 @@
+get:
+  summary: Shopper redirect 
+  description: |
+    Endpoint for handling an Adyen shopper redirects. Sends payment details during a page redirect and determines the outcome for the shopper. Used for all payment methods that require a redirect
+
+    For more information about how to use the endpoint see the Adyen docs:  
+    - [Drop-in UI docs](https://docs.adyen.com/online-payments/drop-in-web/tutorial-node-js#build-the-client)
+    - [POST /payment/defails endpoint](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details)
+  parameters:
+    - name: redirectResult
+      in: query
+      schema:
+        type: string
+        description: redirectResult field definition in [Adyen docs description](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details__reqParam_details-redirectResult).
+    - name: MD
+      in: query
+      schema:
+        type: string
+        description: MD field definition in [Adyen docs description](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details__reqParam_details-MD).
+    - name: PaRes
+      in: query
+      schema:
+        type: string
+        description: PaRes field definition in [Adyen docs description](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details__reqParam_details-PaRes).
+  tags:
+    - Payments
+  responses:
+    301:
+      description: Visit Adyen [POST /payments/details](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/details) for details
+
+post:
+  summary: Shopper redirect 
+  description: |
+    Endpoint for handling an Adyen shopper redirects. Sends payment details during a page redirect and determines the outcome for the shopper. Used for all payment methods that require a redirect
+
+    For more information about how to use the endpoint see the Adyen docs:  
+    - [Drop-in UI docs](https://docs.adyen.com/online-payments/drop-in-web/tutorial-node-js#build-the-client)
+    - [POST /payment/defails endpoint](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details)
+  requestBody:
+    description: Payment details.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            redirectResult:
+              type: string
+              description: redirectResult field definition in [Adyen docs description](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details__reqParam_details-redirectResult).
+            MD:
+              type: string
+              description: MD field definition in [Adyen docs description](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details__reqParam_details-MD).
+            PaRes:
+              type: string
+              description: PaRes field definition in [Adyen docs description](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details__reqParam_details-PaRes).
+  tags:
+    - Payments
+  responses:
+    301:
+      description: Visit Adyen [POST /payments/details](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/details) for details

@@ -1,9 +1,11 @@
 get:
   summary: Adyen payment methods 
   description: |
-    A proxy endpoint for indexing available Adyen payment methods.  This endpoint should be used for rendering the the Adyen [pre-built UI option: Drop-in](https://docs.adyen.com/online-payments/drop-in-web) component.
+    A proxy endpoint for indexing available Adyen payment methods. This endpoint should be used for rendering the Adyen [pre-built UI option: Drop-in](https://docs.adyen.com/online-payments/drop-in-web) component.
 
-    For more information about the endpoint see the Adyen docs [POST /paymentMethods endpoint](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/paymentMethods).
+    For more information about how to use the endpoint see the Adyen docs:  
+    - [Drop-in UI docs](https://docs.adyen.com/online-payments/drop-in-web/tutorial-node-js#build-the-client)
+    - [POST /paymentMethods endpoint](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/paymentMethods)
   tags:
     - Payments
   responses:

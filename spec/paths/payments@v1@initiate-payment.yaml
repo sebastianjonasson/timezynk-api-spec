@@ -1,9 +1,11 @@
 post:
   summary: Initiate payment 
   description: |
-    A proxy endpoint for initiating an Adyen payment.
+    A proxy endpoint for initiating an Adyen payment, proxied through to [POST /initiatePayment endpoint](https://docs.adyen.com/api-explorer/#/CheckoutService/67/post/payments). The endpoint should be used to initiate a payment via the Adyen [pre-built UI option: Drop-in](https://docs.adyen.com/online-payments/drop-in-web) component.
 
-    The request is proxied to  [POST /initiatePayment endpoint](https://docs.adyen.com/api-explorer/#/CheckoutService/67/post/payments).
+    For more information about how to use the endpoint see the Adyen docs:  
+    - [Drop-in UI docs](https://docs.adyen.com/online-payments/drop-in-web/tutorial-node-js#build-the-client)  
+    - [POST /initiatePayment endpoint](https://docs.adyen.com/api-explorer/#/CheckoutService/67/post/payments)
   requestBody:
     description: Payment details.
     required: true
@@ -16,7 +18,7 @@ post:
     - Payments
   responses:
     200:
-      description: List of all the available payment methods Timezynk accepts.
+      description: Adyen initiate payment response
       content:
         application/json:
           example: {

@@ -1,0 +1,27 @@
+post:
+  summary: Shopper redirect 
+  description: |
+    A proxy endpoint for submitting additional details, if requested by payment provider.
+
+    For more information about how to use the endpoint see the Adyen docs:  
+    - [Drop-in UI docs](https://docs.adyen.com/online-payments/drop-in-web/tutorial-node-js#additional-details)
+    - [POST /payment/defails endpoint](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details)
+  requestBody:
+    description: Payment details.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            details:
+              type: object
+              description: details definition in [Adyen docs description](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details__reqParam_details).
+            paymentData:
+              type: string
+              description: payment field definition in [Adyen docs description](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details__reqParam_paymentData).
+  tags:
+    - Payments
+  responses:
+    200:
+      description: Visit Adyen [POST /payments/details](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/details__section_resParams) for response details

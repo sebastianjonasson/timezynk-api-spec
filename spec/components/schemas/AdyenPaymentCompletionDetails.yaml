@@ -1,0 +1,61 @@
+properties:
+  MD:
+    description: A payment session identifier returned by the card issuer.
+    maxLength: 20000
+    type: string
+  PaReq:
+    description: (3D) Payment Authentication Request data for the card issuer.
+    type: string
+  PaRes:
+    description: (3D) Payment Authentication Response data by the card issuer.
+    maxLength: 20000
+    type: string
+  billingToken:
+    description: PayPal-generated token for recurring payments.
+    type: string
+  cupsecureplus.smscode:
+    description: The SMS verification code collected from the shopper.
+    type: string
+  facilitatorAccessToken:
+    description: PayPal-generated third party access token.
+    type: string
+  oneTimePasscode:
+    description: A random number sent to the mobile phone number of the shopper
+      to verify the payment.
+    type: string
+  orderID:
+    description: PayPal-assigned ID for the order.
+    type: string
+  payerID:
+    description: PayPal-assigned ID for the payer (shopper).
+    type: string
+  payload:
+    description: Payload appended to the `returnURL` as a result of the redirect.
+    maxLength: 20000
+    type: string
+  paymentID:
+    description: PayPal-generated ID for the payment.
+    type: string
+  paymentStatus:
+    description: 'Value passed from the WeChat MiniProgram `wx.requestPayment`
+      **complete** callback. Possible values: any value starting with `requestPayment:`.'
+    type: string
+  redirectResult:
+    description: The result of the redirect as appended to the `returnURL`.
+    maxLength: 20000
+    type: string
+  threeDSResult:
+    description: 'Base64-encoded string returned by the Component after the
+      challenge flow. It contains the following parameters: `transStatus`, `authorisationToken`.'
+    maxLength: 50000
+    type: string
+  threeds2.challengeResult:
+    description: 'Base64-encoded string returned by the Component after the
+      challenge flow. It contains the following parameter: `transStatus`.'
+    maxLength: 50000
+    type: string
+  threeds2.fingerprint:
+    description: 'Base64-encoded string returned by the Component after the
+      challenge flow. It contains the following parameter: `threeDSCompInd`.'
+    maxLength: 100000
+    type: string

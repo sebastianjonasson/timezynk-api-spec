@@ -30,7 +30,7 @@ post:
     description: Order object to be created.
     required: true
     content:
-      application/json: 
+      application/json:
         schema:
           allOf:
           - $ref: '#/components/schemas/Order'
